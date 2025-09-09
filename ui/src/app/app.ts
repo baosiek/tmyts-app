@@ -26,7 +26,7 @@ export class App {
 
   /* Executed every time collapse status changes */
   sideNavWidth = computed(
-    () => this.collapsed() ? '65px' : '230px'
+    () => this.collapsed() ? '65px' : '240px'
   );
 
   themeService = inject(ThemeService)

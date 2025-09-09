@@ -5,13 +5,22 @@ export const routes: Routes = [
         path: '',
         pathMatch: 'full',
         loadComponent: () => {
-            return import('./components/panels/dashboards/assets-analysis/assets-analysis').then(
-                (m) => m.AssetsAnalysis
+            return import('.//components/panels/dashboards/portfolios/portfolios').then(
+                (m) => m.Portfolios
             );
         },
     },
     {
-        path: 'scanners',
+        path: 'portfolio_management',
+        pathMatch: 'full',
+        loadComponent: () => {
+            return import('./components/panels/dashboards/portfolios/portfolios').then(
+                (m) => m.Portfolios
+            );
+        },
+    },
+    {
+        path: 'assets_analysis',
         pathMatch: 'full',
         loadComponent: () => {
             return import('./components/panels/dashboards/assets-analysis/assets-analysis').then(

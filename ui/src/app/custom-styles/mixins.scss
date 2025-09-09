@@ -1,0 +1,22 @@
+@mixin flex-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-space-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@mixin main-colors {
+  color: var(--mat-sys-on-surface);
+  background: var(--mat-sys-surface);
+}
+
+@mixin flex-stacked {
+  display: flex;
+  flex-direction: row;
+}

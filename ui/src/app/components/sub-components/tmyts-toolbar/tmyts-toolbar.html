@@ -1,0 +1,9 @@
+<mat-toolbar class="container-space-between">
+    <span>{{title()}}</span>
+    @if (model_name()) {
+            <button mat-raised-button (click)="add()">
+        New {{model_name()}}
+        <mat-icon>add</mat-icon>
+    </button>
+    }
+</mat-toolbar>

@@ -24,6 +24,11 @@ export class Sidenav {
     [
       {
         icon: "dashboard_customize",
+        label: "Portfolio management",
+        route: "/portfolio_management"
+      },
+      {
+        icon: "finance_mode",
         label: "Assets analysis",
         route: "/assets_analysis"
       },
