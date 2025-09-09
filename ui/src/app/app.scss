@@ -1,0 +1,43 @@
+@use '@angular/material' as mat;
+@use '../app/themes/main_theme.scss' as main-theme;
+
+
+// customizes toolbar to work with different colors from
+// those set at styles.scss
+mat-toolbar {
+    @include mat.toolbar-overrides((
+    container-background-color: var(--mat-sys-primary-container),
+    container-text-color: var(--mat-sys-on-primary-container),
+  ));
+    position: relative;
+    z-index: 5;
+}
+
+// uses total height minus toolbar height
+mat-sidenav-container {
+    height: calc(100vh - 64px);
+}
+
+// customizes toolbar to work with different colors from
+// those set at styles.scss
+mat-sidenav {
+    @include mat.sidenav-overrides((
+    container-background-color: var(--mat-sys-background),
+    container-shape: 0px
+  ));
+}
+
+// dashboard-area is meant to set mat-sidenav-content area where 
+// dashboards will be rendered
+.dashboard-area {
+    padding: 24px;
+    background-color: var(--mat-sys-background);
+    color: var(--mat-sys-on-background);
+}
+
+.theme-button {
+    position: absolute;
+    right: 32px;
+    color: var(--mat-sys-on-background);
+}
+

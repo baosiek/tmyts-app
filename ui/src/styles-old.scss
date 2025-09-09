@@ -1,0 +1,78 @@
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+@use '../src/app/themes/main_theme.scss' as main-theme;
+
+// variables
+// 1. Density
+$density: -2;
+
+// light-theme
+$light-theme: mat.define-theme((color: (theme-type: light,
+        primary: main-theme.$primary-palette,
+        tertiary: main-theme.$tertiary-palette,
+      ),
+      typography: (plain-family: Roboto,
+      ),
+      density: (scale: $density),
+    ));
+
+// dark-theme
+$dark-theme: mat.define-theme((color: (theme-type: dark,
+        primary: main-theme.$primary-palette,
+        tertiary: main-theme.$tertiary-palette,
+      ),
+      typography: (plain-family: Roboto,
+      ),
+      density: (scale: $density),
+    ));
+
+// Define both light and dark theme classes
+.light-theme {
+  color-scheme: light dark;
+  @include mat.all-component-themes($light-theme);
+}
+
+.dark-theme {
+  color-scheme: light dark;
+  @include mat.all-component-themes($dark-theme);
+}
+
+// material mixins do not affect plain html tags
+body {
+  &.light-theme {
+    background-color: var(--mat-app-background-color);
+    color: var(--mat-app-text-color);
+  }
+
+  &.dark-theme {
+    background-color: var(--mat-app-background-color);
+    color: var(--mat-app-text-color);
+  }
+}
+
+/* App Component Customization */
+:root {
+  @include mat.card-overrides(
+    (
+      outlined-container-shape: 0px,
+      outlined-outline-width: 0px,
+      // outlined-container-color: blue
+    )
+  );
+}
+
+/* Centers the title and subtitle horizontally within the header */
+.mat-mdc-card-header .mat-mdc-card-header-text {
+  text-align: center;
+  width: 100%;
+}
+
+/* Override any default margins to prevent misalignment */
+.mat-mdc-card-header .mat-mdc-card-title,
+.mat-mdc-card-header .mat-mdc-card-subtitle {
+  margin: 0 auto;
+}

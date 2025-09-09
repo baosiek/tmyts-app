@@ -5,15 +5,17 @@
 // Learn more about theming and how to use it for your application's
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
+@use '../src/app/themes/main_theme.scss' as main-theme;
 
 html {
   @include mat.theme((
     color: (
-      primary: mat.$magenta-palette,
-      tertiary: mat.$violet-palette,
+      theme-type: light,
+      primary: main-theme.$primary-palette,
+      tertiary: main-theme.$tertiary-palette,
     ),
     typography: Roboto,
-    density: 0,
+    density: -2,
   ));
 }
 
@@ -28,7 +30,7 @@ body {
   // variables at https://material.angular.dev/guide/system-variables
   background-color: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-medium);
+  font: var(--mat-sys-body-large);
 
   // Reset the user agent margin.
   margin: 0;
@@ -37,3 +39,31 @@ body {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.dark-theme {
+  @include mat.theme((color: (theme-type: dark,
+        primary: main-theme.$primary-palette,
+        tertiary: main-theme.$tertiary-palette,
+      )));
+}
+
+
+/* App Component Customization */
+:root {
+  @include mat.card-overrides((
+    outlined-container-shape: 0px,
+    outlined-outline-width: 0px,
+  ));
+}
+
+/* Centers the title and subtitle horizontally within the header */
+.mat-mdc-card-header .mat-mdc-card-header-text {
+  text-align: center;
+  width: 100%;
+}
+
+/* Override any default margins to prevent misalignment */
+.mat-mdc-card-header .mat-mdc-card-title,
+.mat-mdc-card-header .mat-mdc-card-subtitle {
+  margin: 0 auto;
+}
