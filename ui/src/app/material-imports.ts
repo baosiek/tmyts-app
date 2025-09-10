@@ -15,6 +15,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import {MatDividerModule} from '@angular/material/divider';
 export const MATERIAL_IMPORTS = [
   MatButtonModule,
   MatCardModule,
@@ -32,5 +33,6 @@ export const MATERIAL_IMPORTS = [
   MatTableModule,
   MatPaginatorModule,
   MatSortModule,
-  MatProgressBarModule
+  MatProgressBarModule,
+  MatDividerModule
 ];

@@ -2,8 +2,9 @@ import { AfterViewInit, Component, inject, input, signal, Type } from '@angular/
 import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { MatDialog } from '@angular/material/dialog';
 import { GeneraliDialog } from '../../dialogs/general-dialog/general-dialog';
+import { ITmytsToolBar } from '../../../interfaces/tmyts-toolbar-interface';
 
-export type IDialog = {
+export interface IDialog {
   id: number;
   title: string;
   dialog: Type<unknown>;
@@ -19,27 +20,26 @@ export type IDialog = {
 })
 export class TmytsToolbar implements AfterViewInit{
 
-  title = input.required()
-  model_name = input()
+  // title = input.required()
+  // model_name = input()
   dialog = inject(MatDialog);
-  data = input<IDialog>()
+  data = input.required<ITmytsToolBar>()
 
   constructor() {
   }
 
   ngAfterViewInit(): void {
-    console.log("DATA: ", this.data())
+    console.log("DATA after view init: ", this.data())
   }
 
   add() {
-    if (this.model_name()) {
-      console.log("Button add was clicked")
+    if (this.data()?.dialog) {
       this.dialog.open(
         GeneraliDialog,
         {
           data: {
-            title: this.data()?.title,
-            content: this.data()?.dialog,
+            title: this.data()?.dialog?.dialog_title,
+            content: this.data()?.dialog?.dialog_content,
           }
         }
       )

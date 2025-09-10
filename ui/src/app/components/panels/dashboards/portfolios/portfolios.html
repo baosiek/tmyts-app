@@ -1,7 +1,7 @@
 <div>
+    @if (data) {
     <app-tmyts-toolbar
-     [title]="title"
-     [model_name]="model_name"
-     [data]="portfolioService.dialogTypes()">
+     [data]="data">
     </app-tmyts-toolbar>
+    }
 </div>

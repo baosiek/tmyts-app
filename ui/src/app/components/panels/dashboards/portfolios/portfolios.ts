@@ -1,8 +1,8 @@
-import { Component, inject, Injectable, input, signal, Type } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../../material-imports';
-import { IDialog, TmytsToolbar } from '../../../sub-components/tmyts-toolbar/tmyts-toolbar';
-import { AddPortfolioDialog } from '../../../dialogs/add-portfolio-dialog/add-portfolio-dialog';
+import { TmytsToolbar } from '../../../sub-components/tmyts-toolbar/tmyts-toolbar';
 import { PortfolioTypeService } from '../../../../services/portfolio-type/portfolio-type-service';
+import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
 @Component({
   selector: 'app-portfolios',
   imports: [
@@ -15,11 +15,19 @@ import { PortfolioTypeService } from '../../../../services/portfolio-type/portfo
 
 export class Portfolios {
 
-  protected title: string = "Portfolio management"
-  protected model_name: string = "portfolio"
+  protected id: string = 'portfolio'
   portfolioService = inject(PortfolioTypeService);
+  data: ITmytsToolBar | undefined;
 
   constructor() {
-    console.log("Dialogs: ", this.portfolioService.dialogTypes())
+    this.portfolioService.dialogTypes().find(
+      (portfolio) => {
+        if (portfolio) {
+          if (portfolio.id === this.id){
+            this.data = portfolio;
+          }          
+        }        
+      }
+    );
   }
 }

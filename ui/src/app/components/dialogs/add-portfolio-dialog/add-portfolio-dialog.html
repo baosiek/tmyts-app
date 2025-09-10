@@ -1,1 +1,18 @@
-<p>add-portfolio-dialog works!</p>
+<div>
+    <form #newPortfolioForm="ngForm">
+        <div>
+            <mat-form-field appearance="outline" style="width: 300px">
+                <mat-label>Portfolio name</mat-label>
+                <input matInput placeholder="Type in the portfolio name" ngModel name="portfolio-name">
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline" style="width: 900px">
+                <mat-label>Description</mat-label>
+                <input matInput placeholder="Type a short description" ngModel name="description">
+            </mat-form-field>
+        </div>
+        <!-- {{newPortfolioForm.value | json }} -->
+    </form>
+
+</div>

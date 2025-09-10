@@ -54,6 +54,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     outlined-container-shape: 0px,
     outlined-outline-width: 0px,
   ));
+  @include mat.dialog-overrides((
+    container-shape: 16px,
+    container-min-width: 1000px
+
+  ));
+  @include mat.form-field-overrides((
+    outlined-focus-outline-color: var(--mat-sys-primary-container),
+    outlined-focus-label-text-color: var(--mat-sys-primary-container)
+  ));
 }
 
 /* Centers the title and subtitle horizontally within the header */

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TmytsToolbar } from "../../../sub-components/tmyts-toolbar/tmyts-toolbar";
+import { PortfolioTypeService } from '../../../../services/portfolio-type/portfolio-type-service';
+import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
 
 @Component({
   selector: 'app-assets-analysis',
@@ -11,6 +13,21 @@ import { TmytsToolbar } from "../../../sub-components/tmyts-toolbar/tmyts-toolba
 })
 export class AssetsAnalysis {
 
-  protected title: string = "Assets analysis"
+  protected id: string = 'assets_analysis'
+  portfolioService = inject(PortfolioTypeService);
+  data: ITmytsToolBar | undefined;
+
+  constructor() {
+    this.portfolioService.dialogTypes().find(
+      (portfolio) => {
+        if (portfolio) {
+          if (portfolio.id === this.id){
+            this.data = portfolio;
+          }          
+        }        
+      }
+    );
+  }
+
 
 }
