@@ -34,7 +34,7 @@ export class TmytsToolbar implements AfterViewInit{
 
   add() {
     if (this.data()?.dialog) {
-      this.dialog.open(
+      const dialogRef = this.dialog.open(
         GeneraliDialog,
         {
           data: {
@@ -43,6 +43,10 @@ export class TmytsToolbar implements AfterViewInit{
           }
         }
       )
+
+      dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
     }
   }
 }
