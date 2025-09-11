@@ -5,7 +5,7 @@ import { ITmytsToolBar } from '../../interfaces/tmyts-toolbar-interface';
 @Injectable({
   providedIn: 'root'
 })
-export class PortfolioTypeService {
+export class PortfolioDashboardService {
 
     dialogTypes = signal<ITmytsToolBar[]>(
       [

@@ -1,7 +1,6 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MATERIAL_IMPORTS } from './material-imports';
-import { DarkModeService } from './services/dark_mode/dark-mode-service';
 import { Sidenav } from './components/panels/sidenav/sidenav';
 import { ThemeService } from './services/theme-service/theme-service';
 
@@ -33,7 +32,6 @@ export class App {
 
   toggleDarkMode() {    
     this.darkMode.set(!this.darkMode())
-    console.log("Theme is: ", this.darkMode())
     this.themeService.setTheme(this.darkMode())
   }
 }

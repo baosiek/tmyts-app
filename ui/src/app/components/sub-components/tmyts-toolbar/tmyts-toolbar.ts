@@ -20,8 +20,6 @@ export interface IDialog {
 })
 export class TmytsToolbar implements AfterViewInit{
 
-  // title = input.required()
-  // model_name = input()
   dialog = inject(MatDialog);
   data = input.required<ITmytsToolBar>()
 
@@ -29,7 +27,6 @@ export class TmytsToolbar implements AfterViewInit{
   }
 
   ngAfterViewInit(): void {
-    console.log("DATA after view init: ", this.data())
   }
 
   add() {
@@ -45,7 +42,6 @@ export class TmytsToolbar implements AfterViewInit{
       )
 
       dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
     });
     }
   }

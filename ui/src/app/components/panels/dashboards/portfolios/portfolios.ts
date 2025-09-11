@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../../material-imports';
 import { TmytsToolbar } from '../../../sub-components/tmyts-toolbar/tmyts-toolbar';
-import { PortfolioTypeService } from '../../../../services/portfolio-type/portfolio-type-service';
 import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
+import { PortfolioDashboardService } from '../../../../services/portfolio-dashboard/portfolio-type-service';
 @Component({
   selector: 'app-portfolios',
   imports: [
@@ -16,7 +16,7 @@ import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
 export class Portfolios {
 
   protected id: string = 'portfolio'
-  portfolioService = inject(PortfolioTypeService);
+  portfolioService = inject(PortfolioDashboardService);
   data: ITmytsToolBar | undefined;
 
   constructor() {

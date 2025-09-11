@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { TmytsToolbar } from "../../../sub-components/tmyts-toolbar/tmyts-toolbar";
-import { PortfolioTypeService } from '../../../../services/portfolio-type/portfolio-type-service';
 import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
+import { PortfolioDashboardService } from '../../../../services/portfolio-dashboard/portfolio-type-service';
+import { TmytsToolbar } from '../../../sub-components/tmyts-toolbar/tmyts-toolbar';
 
 @Component({
   selector: 'app-assets-analysis',
@@ -14,7 +14,7 @@ import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
 export class AssetsAnalysis {
 
   protected id: string = 'assets_analysis'
-  portfolioService = inject(PortfolioTypeService);
+  portfolioService = inject(PortfolioDashboardService);
   data: ITmytsToolBar | undefined;
 
   constructor() {
@@ -28,6 +28,4 @@ export class AssetsAnalysis {
       }
     );
   }
-
-
 }
