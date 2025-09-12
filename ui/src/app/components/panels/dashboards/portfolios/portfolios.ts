@@ -5,7 +5,6 @@ import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
 import { PortfolioDashboardService } from '../../../../services/portfolio-dashboard/portfolio-type-service';
 import { PortfolioModel } from '../../../../models/portfolio-model';
 import { PortfolioTableRud } from "./portfolio-tables/portfolio-table-rud/portfolio-table-rud";
-import { PortfolioTableRenderer } from "./portfolio-tables/portfolio-table-renderer/portfolio-table-renderer";
 import { MatDialog } from '@angular/material/dialog';
 import { AddPortfolioDialog } from '../../../dialogs/add-portfolio-dialog/add-portfolio-dialog';
 import { GeneraliDialog } from '../../../dialogs/general-dialog/general-dialog';
@@ -13,15 +12,16 @@ import { PortfolioDatabaseService } from '../../../../services/portfolio-databas
 import { catchError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
+import { PortfolioPerformanceTable } from "./portfolio-tables/portfolio-performance-table/portfolio-performance-table";
 @Component({
   selector: 'app-portfolios',
   imports: [
     ...MATERIAL_IMPORTS,
     TmytsToolbar,
     PortfolioTableRud,
-    PortfolioTableRenderer,
-    FormsModule
-  ],
+    FormsModule,
+    PortfolioPerformanceTable
+],
   templateUrl: './portfolios.html',
   styleUrl: './portfolios.scss'
 })
