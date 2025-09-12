@@ -13,3 +13,12 @@ table {
     row-item-outline-color: var(--mat-sys-inverse-primary)
   ));
 }
+
+/* In your component's CSS file */
+.mat-column-purchase_price {
+  text-align: end;
+}
+
+.mat-column-quantity {
+  text-align: end;
+}

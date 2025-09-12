@@ -4,28 +4,54 @@
   <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
 
-  <!-- Position Column -->
-  <ng-container matColumnDef="position">
-    <th mat-header-cell *matHeaderCellDef> No. </th>
-    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-  </ng-container>
-
-  <!-- Name Column -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
-    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-  </ng-container>
-
-  <!-- Weight Column -->
-  <ng-container matColumnDef="weight">
-    <th mat-header-cell *matHeaderCellDef> Weight </th>
-    <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
-  </ng-container>
-
-  <!-- Symbol Column -->
-  <ng-container matColumnDef="symbol">
+  <!-- Position Symbol -->
+  <ng-container matColumnDef="symbol_id">
     <th mat-header-cell *matHeaderCellDef> Symbol </th>
-    <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.symbol_id}} </td>
+  </ng-container>
+
+  <!-- Name Symbol name -->
+  <ng-container matColumnDef="symbol_name">
+    <th mat-header-cell *matHeaderCellDef> Symbol name </th>
+    <td mat-cell *matCellDef="let element"> {{element.symbol_name}} </td>
+  </ng-container>
+
+  <!-- Purchase price Column -->
+  <ng-container matColumnDef="purchase_price">
+    <th mat-header-cell *matHeaderCellDef> Purchase price </th>
+    <td mat-cell *matCellDef="let element"> {{element.purchase_price | currency }} </td>
+  </ng-container>
+
+  <!-- Qantity Column -->
+  <ng-container matColumnDef="quantity">
+    <th mat-header-cell *matHeaderCellDef> Quantity </th>
+    <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+  </ng-container>
+
+  <!-- Purchase date Column -->
+  <ng-container matColumnDef="purchase_date">
+    <th mat-header-cell *matHeaderCellDef> Purchase date </th>
+    <td mat-cell *matCellDef="let element"> {{element.purchase_date | date:'shortDate'}} </td>
+  </ng-container>
+
+    <!-- Edit Column -->
+  <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef> Edit </th>
+      <td mat-cell *matCellDef="let element">
+          <button style="color: blueviolet;" mat-icon-button (click)="editRow(element.ticker)">
+              <mat-icon fontSet="material-symbols-outlined">edit_document</mat-icon>
+          </button>
+      </td>
+  </ng-container>
+
+  <!-- Delete Column -->
+  <ng-container matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef> Delete </th>
+      <td mat-cell *matCellDef="let element; let i = index">
+          <button style="color: red;" mat-icon-button (click)="deleteRow(element.ticker)">
+              <mat-icon fontSet="material-symbols-outlined">delete</mat-icon>
+          </button>
+      </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
