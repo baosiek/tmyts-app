@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, input, OnInit } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -23,9 +23,10 @@ export class AddPortfolioDialog implements OnInit {
   portfolio_model: PortfolioModel = createPortfolio();
   portfilioDbService = inject(PortfolioDatabaseService)
   private _snackBar = inject(MatSnackBar);
+  @Input() user_id!: string;
 
   ngOnInit() {
-    this.portfolio_model.user_id = 'baosiek'
+    this.portfolio_model.user_id = this.user_id;
   }
 
   save() {

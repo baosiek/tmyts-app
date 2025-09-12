@@ -21,4 +21,9 @@ export class PortfolioDatabaseService {
 
     return this.http.post<ReturnMessage>(`${this.apiUrl}/${apiMethod}/`, body, { headers })
   }  
+
+  readAllPortfolios(portfolio_id: string): Observable<PortfolioModel[]> {
+     const apiMethod = 'get_all';
+    return this.http.get<PortfolioModel[]>(`${this.apiUrl}/${apiMethod}/?user_id=${portfolio_id}`)
+  }
 }

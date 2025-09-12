@@ -18,5 +18,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class GeneraliDialog {
 
   data = inject(MAT_DIALOG_DATA)
+  dialogInputs = {
+    user_id: this.data.user_id
+  };
 
 }

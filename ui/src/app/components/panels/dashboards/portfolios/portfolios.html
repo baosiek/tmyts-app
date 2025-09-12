@@ -1,24 +1,22 @@
 <div>
     @if (data) {
-    <app-tmyts-toolbar [data]="data">
-    </app-tmyts-toolbar>
+    <app-tmyts-toolbar [data]="data"></app-tmyts-toolbar>
     }
-
-    @if (portfolioList.length !== 0) {
-    <div class="container-flex-center">
-        <h1>You have no saved portfolios. Click on the top write button to create one.</h1>
-    </div>
-    } @else {
     <div class="borders">
         <div class="custom-card-header">
             <mat-form-field appearance="outline" style="width: 40cm;">
-                <mat-label>Select</mat-label>
-                <mat-select>
-                    <mat-option value="one">First option</mat-option>
-                    <mat-option value="two">Second option</mat-option>
+                @if (selectedPortfolio) {
+                    <mat-label>Portfolio id</mat-label>
+                } @else {
+                    <mat-label>You have no saved portfolios. Click on the button to create one ==></mat-label>
+                }
+                <mat-select matNativeControl [(ngModel)]="selectedPortfolio">
+                    <option value="" selected></option>
+                    @for (portfolio of portfolioList; track portfolio.portfolio_id){
+                        <mat-option [value]="portfolio.portfolio_id">{{portfolio.portfolio_id}}</mat-option>
+                    }
                 </mat-select>
             </mat-form-field>
-
             <button mat-raised-button class="add-button" (click)="add()">
                 New portfolio
                 <mat-icon>add</mat-icon>
@@ -41,5 +39,4 @@
             </mat-card-actions>
         </mat-card-footer>
     </div>
-    }
 </div>
