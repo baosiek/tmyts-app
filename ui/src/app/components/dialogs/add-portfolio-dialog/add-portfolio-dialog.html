@@ -17,7 +17,7 @@
                 <mat-icon>cancel_presentation</mat-icon>
                 Cancel
             </button>
-            <button mat-raised-button (click)="save()">
+            <button mat-raised-button (click)="save()" [mat-dialog-close]="portfolio_model">
                 <mat-icon fontSet="material-symbols-outlined">save_as</mat-icon>
                 Save
             </button>
