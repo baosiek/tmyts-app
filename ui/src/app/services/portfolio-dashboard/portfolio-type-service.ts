@@ -12,12 +12,6 @@ export class PortfolioDashboardService {
         {
           id: 'portfolio',
           title: "Portfolio management",
-          dialog: {
-            button_text: 'portfolio',
-            button_icon: 'add',
-            dialog_title: 'Create a new portfolio',
-            dialog_content: AddPortfolioDialog
-          } 
         },
         {
           id: 'assets_analysis',

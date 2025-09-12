@@ -2,12 +2,45 @@
 @use '../../../../custom-styles/index.scss' as global;
 
 mat-toolbar {
-  @include mat.toolbar-overrides((
-    title-text-size: 32px,
-    title-text-weight: normal
-  ));
+  @include mat.toolbar-overrides((title-text-size: 32px,
+      title-text-weight: normal));
 }
 
-.container-space-between {
-    @include global.flex-space-between;
+.borders {
+  border: 2px solid var(--mat-sys-outline);
 }
+
+/* Styling for the header, specifically targeting the mat-card-header */
+.custom-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px; /* Example padding */
+  // background-color: var(--mat-sys-on-tertiary);
+}
+
+
+.content-wrapper {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  padding: 16px;
+  gap: 16px;
+}
+
+/* Styling for the footer button alignment */
+.footer-actions {
+  display: flex;
+  justify-content: flex-end; /* Align items to the right */
+  padding: 8px 16px; /* Add padding for spacing */
+}
+
+// .add-button {
+//   position: absolute;
+//   right: 48px;
+// }
+
+
+
+
+
+

@@ -6,6 +6,7 @@
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 @use '../src/app/themes/main_theme.scss' as main-theme;
+@use '../src/app/themes/secondary_theme.scss' as secondary-theme;
 
 html {
   @include mat.theme((
@@ -52,7 +53,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 :root {
   @include mat.card-overrides((
     outlined-container-shape: 0px,
-    outlined-outline-width: 0px,
+    outlined-outline-width: 2px,
   ));
   @include mat.dialog-overrides((
     container-shape: 16px,
@@ -66,10 +67,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 /* Centers the title and subtitle horizontally within the header */
-.mat-mdc-card-header .mat-mdc-card-header-text {
-  text-align: center;
-  width: 100%;
-}
+// .mat-mdc-card-header .mat-mdc-card-header-text {
+//   text-align: center;
+//   width: 100%;
+// }
 
 /* Override any default margins to prevent misalignment */
 .mat-mdc-card-header .mat-mdc-card-title,
