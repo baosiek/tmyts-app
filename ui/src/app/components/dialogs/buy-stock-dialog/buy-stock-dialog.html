@@ -1,0 +1,8 @@
+<div>
+    <mat-form-field appearance="outline">
+        <mat-label>Outline form field</mat-label>
+        <input matInput placeholder="Placeholder" (keydown)="searchTerm($event)">
+        <mat-icon matSuffix>search_insights</mat-icon>
+    </mat-form-field>
+    {{results() | json}}
+</div>

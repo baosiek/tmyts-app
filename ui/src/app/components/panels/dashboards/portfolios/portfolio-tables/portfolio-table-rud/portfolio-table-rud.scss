@@ -1,9 +1,11 @@
 @use '@angular/material' as mat;
 
 .table-container {
-  border: 1px solid black;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds a subtle drop shadow */
+  // border: 1px solid black;
+  // border-radius: 8px;
+  // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds a subtle drop shadow */
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   padding: 16px;
 }
@@ -21,4 +23,10 @@ table {
 
 .mat-column-quantity {
   text-align: end;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 0;
 }
