@@ -3,7 +3,7 @@ import { MATERIAL_IMPORTS } from '../../../../../../material-imports';
 import { PortfolioLogModel } from '../../../../../../models/portfolio-log-model';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { GeneraliDialog } from '../../../../../dialogs/general-dialog/general-dialog';
+import { DialogData, GeneraliDialog } from '../../../../../dialogs/general-dialog/general-dialog';
 import { BuyStockDialog } from '../../../../../dialogs/buy-stock-dialog/buy-stock-dialog';
 
 const LOG_DATA: PortfolioLogModel[] = [
@@ -37,13 +37,16 @@ export class PortfolioTableRud {
   dataSource = LOG_DATA;
 
   buyStock() {
+    // Set the attributes to pass to the actual dialog, not the General one
+    const dialogData = new DialogData();
+    dialogData.addProperty('portfolioId', this.portfolioId());
     const dialogRef = this.dialog.open(
       GeneraliDialog,
       {
         data: {
           title: "Buy stock",
-          portfolio_id: this.portfolioId(),
-          content: BuyStockDialog
+          content: BuyStockDialog,
+          dialogData: dialogData
         }
       }
     )
