@@ -16,6 +16,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatChipsModule} from '@angular/material/chips';
+
 export const MATERIAL_IMPORTS = [
   MatButtonModule,
   MatCardModule,
@@ -34,5 +37,7 @@ export const MATERIAL_IMPORTS = [
   MatPaginatorModule,
   MatSortModule,
   MatProgressBarModule,
-  MatDividerModule
+  MatDividerModule,
+  MatStepperModule,
+  // MatChipsModule
 ];

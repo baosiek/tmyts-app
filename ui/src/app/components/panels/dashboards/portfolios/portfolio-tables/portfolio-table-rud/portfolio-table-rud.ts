@@ -38,15 +38,15 @@ export class PortfolioTableRud {
 
   buyStock() {
     // Set the attributes to pass to the actual dialog, not the General one
-    const dialogData = new DialogData();
-    dialogData.addProperty('portfolioId', this.portfolioId());
+    const actualDialogData = new DialogData();
+    actualDialogData.addProperty('portfolioId', this.portfolioId());
     const dialogRef = this.dialog.open(
       GeneraliDialog,
       {
         data: {
           title: "Buy stock",
           content: BuyStockDialog,
-          dialogData: dialogData
+          actualDialogData: actualDialogData
         }
       }
     )

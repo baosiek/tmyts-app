@@ -35,7 +35,7 @@ export class GeneraliDialog {
 
 
   dialogInputs = {
-    data: this.generalDialogData.dialogData
+    data: this.generalDialogData.actualDialogData
   };
 
   constructor() {}

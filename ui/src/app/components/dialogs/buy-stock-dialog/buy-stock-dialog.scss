@@ -1,0 +1,26 @@
+// To make the div fill the stepper's full content area.
+// Adjust the padding as needed for your design.
+:host ::ng-deep .mat-horizontal-stepper-content {
+  padding: 0; // Remove default padding from the stepper content area
+}
+
+.stock-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  // Key change: Include padding and border within the 100% width
+  box-sizing: border-box; 
+  width: 100%; 
+
+  border: 1px solid #ccc;
+  padding: 1rem; // Add back padding inside your div for content spacing
+
+  h3, h4 {
+    margin: 0; // Remove default margins from heading elements
+    white-space: nowrap; // Prevent text from wrapping if it gets too long
+    overflow: hidden;    // Hide any overflowing text
+    text-overflow: ellipsis; // Add ellipses to cut-off text if desired
+  }
+}
+

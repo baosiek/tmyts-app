@@ -12,7 +12,7 @@ export const createPortfolio = (): PortfolioLogModel => ({
     portfolio_id: '',
     symbol_id: '',
     symbol_name: '',
-    purchase_price: 0.0,
     quantity: 0,
-    purchase_date: new Date()
+    purchase_date: new Date(),
+    purchase_price: 0.0    
 });

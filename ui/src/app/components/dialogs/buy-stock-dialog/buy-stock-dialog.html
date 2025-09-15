@@ -1,8 +1,75 @@
 <div>
+    <!-- <div>
     <mat-form-field appearance="outline">
         <mat-label>Outline form field</mat-label>
         <input matInput placeholder="Placeholder" (keydown)="searchTerm($event)">
         <mat-icon matSuffix>search_insights</mat-icon>
     </mat-form-field>
     {{results() | json}}
+    </div> -->
+
+
+    <!-- ------------------------------------- -->
+    <div>
+
+        <button matButton="elevated" (click)="isEditable = !isEditable">
+            {{!isEditable ? 'Enable edit mode' : 'Disable edit mode'}}
+        </button>
+
+        <div>
+        <mat-stepper linear #stepper>
+            <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
+                <form [formGroup]="firstFormGroup">
+                    <ng-template matStepLabel>Type an investament name or symbol</ng-template>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Symbol or investment</mat-label>
+                        <input matInput formControlName="firstCtrl" placeholder="Placeholder"
+                            (keydown)="searchTerm($event)">
+                        <mat-icon matSuffix>search_insights</mat-icon>
+                    </mat-form-field>
+                    {{results() | json}}
+                    <div>
+                        <button matButton matStepperNext>Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
+                <div class="stock-card">
+                    <span>AAPL</span>
+                    <span>Apple Inc.</span>
+                    <span>230.00</span>
+                    <span>6.56%</span>
+                </div>
+                <form [formGroup]="secondFormGroup">
+                    <ng-template matStepLabel>Fill purchase information</ng-template>
+                    <mat-form-field>
+                        <mat-label>Quantity</mat-label>
+                        <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Purchase date</mat-label>
+                        <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Purchase price</mat-label>
+                        <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
+                    </mat-form-field>
+                    <div>
+                        <button matButton matStepperPrevious>Back</button>
+                        <button matButton matStepperNext>Buy</button>
+                    </div>
+                </form>
+            </mat-step>
+            <!-- <mat-step>
+                <ng-template matStepLabel>Done</ng-template>
+                <p>You are now done.</p>
+                <div>
+                    <button matButton matStepperPrevious>Back</button>
+                    <button matButton (click)="stepper.reset()">Reset</button>
+                </div>
+            </mat-step> -->
+        </mat-stepper>
+        </div>
+
+    </div>
 </div>

@@ -1,19 +1,22 @@
 import { AfterViewInit, Component, inject, Input, input, signal } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { QuickSearchService } from '../../../services/quick-search/quick-search-service';
 import { SymbolModel } from '../../../models/symbol-model';
 import { JsonPipe } from '@angular/common';
 import { DialogData } from '../general-dialog/general-dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatChip, MatChipSet } from '@angular/material/chips';
+
 
 @Component({
   selector: 'app-buy-stock-dialog',
   imports: [
     ...MATERIAL_IMPORTS,
     FormsModule,
+    ReactiveFormsModule,
     JsonPipe
-  ],
+],
   templateUrl: './buy-stock-dialog.html',
   styleUrl: './buy-stock-dialog.scss'
 })
@@ -22,9 +25,21 @@ export class BuyStockDialog implements AfterViewInit{
   term: string = ''
   quichSearch = inject(QuickSearchService)
   results = signal<SymbolModel[]>([])
-
-
   data = input.required<DialogData>()
+
+  // Imported code start
+  private _formBuilder = inject(FormBuilder);
+
+  firstFormGroup = this._formBuilder.group({
+    firstCtrl: ['', Validators.required],
+  });
+  secondFormGroup = this._formBuilder.group({
+    secondCtrl: ['', Validators.required],
+  });
+
+  isEditable: boolean = false;
+
+  // Imported code end
 
   ngAfterViewInit(): void {
     console.log("Portfolio to add stock is: ", this.data().getProperty('portfolioId'))
