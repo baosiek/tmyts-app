@@ -2,7 +2,8 @@
     @if (data) {
     <app-tmyts-toolbar [data]="data"></app-tmyts-toolbar>
     }
-    <div class="borders">
+    @if (selectedPortfolio) {
+            <div class="borders">
         <div class="custom-card-header">
             <mat-form-field appearance="outline" style="width: 40cm;">
                 @if (selectedPortfolio) {
@@ -39,4 +40,6 @@
             </mat-card-actions>
         </mat-card-footer> -->
     </div>
+    }
+
 </div>

@@ -1,14 +1,14 @@
 export type SymbolModel = {
   id: number  | null;
-  symbol_id: number;
+  symbol: string;
   symbol_name: string;
   exchange: string;
 }
 
 // Factory function to create a new PortfolioModel object
-export const createPortfolio = (): SymbolModel => ({
+export const createNewSymbol = (): SymbolModel => ({
   id: null,
-  symbol_id: 0,
+  symbol: '',
   symbol_name: '',
   exchange: '',
 });

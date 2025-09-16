@@ -14,7 +14,7 @@ export class PortfolioActivityService {
 
   constructor() {}
 
-  createPortfolio(portfolio_activity_data: PortfolioActivityModel): Observable<ReturnMessage> {
+  insertNewActivity(portfolio_activity_data: PortfolioActivityModel): Observable<ReturnMessage> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const apiMethod = 'create';
     const body = portfolio_activity_data ;
@@ -22,8 +22,9 @@ export class PortfolioActivityService {
     return this.http.post<ReturnMessage>(`${this.apiUrl}/${apiMethod}/`, body, { headers })
   }  
 
-  readAllPortfolios(user_id: string, portfolio_id: string): Observable<PortfolioActivityModel[]> {
-     const apiMethod = 'get_all';
+  getActivityForPortfolio(user_id: number, portfolio_id: number): Observable<PortfolioActivityModel[]> {
+    const apiMethod = 'get_all';
+    console.log(`URL: ${this.apiUrl}/${apiMethod}/?user_id=${user_id}&portfolio_id=${portfolio_id}`)
     return this.http.get<PortfolioActivityModel[]>(`${this.apiUrl}/${apiMethod}/?user_id=${user_id}&portfolio_id=${portfolio_id}`)
   }
   

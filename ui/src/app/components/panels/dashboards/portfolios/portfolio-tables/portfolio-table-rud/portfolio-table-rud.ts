@@ -40,28 +40,29 @@ export class PortfolioTableRud  implements OnInit {
   }
 
   getPortfolioActivityContent(userId: number, portfolioId: number) {
-    // this.portfolioActivityService.readAllPortfolios(userId, portfolioId)
-    // .pipe(
-    //   catchError(
-    //     (error) => {
-    //       console.log(error)
-    //       throw error
-    //     }
-    //   )
-    // )
-    // .subscribe(
-    //   (response) => {
-    //     this.dataSource.data = response;
-    //   }
-    // )
-    console.log("Should be querying microservice...")
+    this.portfolioActivityService.getActivityForPortfolio(this.userId(), portfolioId)
+    .pipe(
+      catchError(
+        (error) => {
+          console.log(error)
+          throw error
+        }
+      )
+    )
+    .subscribe(
+      (response) => {
+        this.dataSource.data = response;
+        console.log(response)
+      }
+    )
+    
 
   }
 
   buyStock() {
     // Set the attributes to pass to the actual dialog, not the General one
     const actualDialogData = new DialogData();
-    // actualDialogData.addProperty('userId', this.portfolioId());
+    
     actualDialogData.addProperty('portfolioId', this.portfolioId);
     const dialogRef = this.dialog.open(
       GeneraliDialog,
