@@ -7,6 +7,8 @@ import { JsonPipe } from '@angular/common';
 import { DialogData } from '../general-dialog/general-dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatChip, MatChipSet } from '@angular/material/chips';
+import { PortfolioActivityModel } from '../../../models/portfolio-log-model';
+import { PortfolioActivityService } from '../../../services/portfolio-activity/portfolio-activity-service';
 
 
 @Component({
@@ -22,6 +24,9 @@ import { MatChip, MatChipSet } from '@angular/material/chips';
 })
 export class BuyStockDialog implements AfterViewInit{
 
+  // Inject required services
+  portfolioActivityService = inject(PortfolioActivityService);
+  
   term: string = ''
   quichSearch = inject(QuickSearchService)
   results = signal<SymbolModel[]>([])
@@ -55,6 +60,9 @@ export class BuyStockDialog implements AfterViewInit{
       }
     );
     console.log(this.term)
+  }
+
+  buy_stock(portfilioActivity: PortfolioActivityModel) {
   }
 
 

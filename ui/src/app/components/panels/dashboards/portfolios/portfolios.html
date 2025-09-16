@@ -12,8 +12,8 @@
                 }
                 <mat-select matNativeControl [(ngModel)]="selectedPortfolio">
                     <option value="" selected></option>
-                    @for (portfolio of portfolioList; track portfolio.portfolio_id){
-                        <mat-option [value]="portfolio.portfolio_id">{{portfolio.portfolio_id}}</mat-option>
+                    @for (portfolio of portfolioList; track portfolio.id){
+                        <mat-option [value]="portfolio.id">{{portfolio.portfolio_name}}</mat-option>
                     }
                 </mat-select>
             </mat-form-field>
@@ -24,7 +24,7 @@
         </div>
         <div class="content-wrapper">
             <div>
-                <app-portfolio-table-rud [portfolioId]="selectedPortfolio"></app-portfolio-table-rud>
+                <app-portfolio-table-rud [userId]="user_id" [portfolioId]="selectedPortfolio"></app-portfolio-table-rud>
             </div>
             <div>
                 <app-portfolio-performance-table></app-portfolio-performance-table>

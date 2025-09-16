@@ -1,12 +1,14 @@
 export type PortfolioModel = {
-    portfolio_id: string;
-    user_id: string;
+    id: number;
+    user_id: number;
+    portfolio_name: string;
     description: string;
 }
 
 // Factory function to create a new PortfolioModel object
 export const createPortfolio = (): PortfolioModel => ({
-  portfolio_id: '',
-  user_id: '',
-  description: '',
+  id: 0,
+  user_id: 0,
+  portfolio_name: '',
+  description: ''
 });

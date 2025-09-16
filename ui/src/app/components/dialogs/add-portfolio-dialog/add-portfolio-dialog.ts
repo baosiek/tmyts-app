@@ -23,7 +23,7 @@ export class AddPortfolioDialog implements OnInit {
   portfolio_model: PortfolioModel = createPortfolio();
   portfilioDbService = inject(PortfolioDatabaseService)
   private _snackBar = inject(MatSnackBar);
-  @Input() user_id!: string;
+  @Input() user_id!: number;
 
   ngOnInit() {
     this.portfolio_model.user_id = this.user_id;
@@ -46,7 +46,7 @@ export class AddPortfolioDialog implements OnInit {
           },
           error: (error) => {
             // Handle error response
-            this._snackBar.open(`HTTPError:${error.status}: Portfolio ${this.portfolio_model.portfolio_id} already exists.`, 'Close');
+            this._snackBar.open(`HTTPError:${error.status}: Portfolio ${this.portfolio_model.id} already exists.`, 'Close');
           }
         }
       )

@@ -29,14 +29,14 @@ import { PortfolioPerformanceTable } from "./portfolio-tables/portfolio-performa
 export class Portfolios implements OnInit{
 
   protected id: string = 'portfolio'
-  user_id: string = 'baosiek'
+  user_id: number = 1
   portfolioService = inject(PortfolioDashboardService);
   portfilioDbService = inject(PortfolioDatabaseService)
   data: ITmytsToolBar | undefined;
   portfolioList: PortfolioModel[] = []
   dialog = inject(MatDialog);
   private _snackBar = inject(MatSnackBar);
-  selectedPortfolio!: string;
+  selectedPortfolio!: number;
 
   constructor() {
     this.portfolioService.dialogTypes().find(
@@ -86,8 +86,10 @@ export class Portfolios implements OnInit{
           next: (response: PortfolioModel[]) => {
             // Handle successful response
             this.portfolioList = [ ...response ]
+
+            // typescript syntax to get the first element
             const [firstPortfolio] = response;
-            this.selectedPortfolio = firstPortfolio.portfolio_id;
+            this.selectedPortfolio = firstPortfolio.id;
           },
           error: (error) => {
             // Handle error response
