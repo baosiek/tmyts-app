@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogData, GeneraliDialog } from '../../../../../dialogs/general-dialog/general-dialog';
 import { BuyStockDialog } from '../../../../../dialogs/buy-stock-dialog/buy-stock-dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { PortfolioActivityModel } from '../../../../../../models/portfolio-log-model';
+import { PortfolioActivityMode, PortfolioActivityModel } from '../../../../../../models/portfolio-activity-model';
 import { PortfolioActivityService } from '../../../../../../services/portfolio-activity/portfolio-activity-service';
 import { catchError } from 'rxjs';
 
@@ -19,14 +19,14 @@ import { catchError } from 'rxjs';
   templateUrl: './portfolio-table-rud.html',
   styleUrl: './portfolio-table-rud.scss'
 })
-export class PortfolioTableRud  implements OnInit {
+export class PortfolioTableRud implements OnInit {
 
   // portfolioId = input.required<string>()
   dialog = inject(MatDialog);
 
   portfolioActivityService = inject(PortfolioActivityService)
 
-  displayedColumns: string[] = ['symbol_id', 'symbol_name', 'purchase_price', 'quantity', 'purchase_date', 'sell', "delete"];
+  displayedColumns: string[] = ['symbol', 'symbol_name', 'purchase_price', 'quantity', 'purchase_date', 'broker_name', 'sell', "delete"];
   dataSource: MatTableDataSource<PortfolioActivityModel> = new MatTableDataSource();
 
   userId: InputSignal<number> = input.required<number>()
@@ -35,34 +35,32 @@ export class PortfolioTableRud  implements OnInit {
   ngOnInit(): void {
     this.getPortfolioActivityContent(
       this.userId(),
-     this.portfolioId()
+      this.portfolioId()
     );
   }
 
   getPortfolioActivityContent(userId: number, portfolioId: number) {
     this.portfolioActivityService.getActivityForPortfolio(this.userId(), portfolioId)
-    .pipe(
-      catchError(
-        (error) => {
-          console.log(error)
-          throw error
+      .pipe(
+        catchError(
+          (error) => {
+            console.log(error)
+            throw error
+          }
+        )
+      )
+      .subscribe(
+        (response) => {
+          this.dataSource.data = response;
+          console.log(response)
         }
       )
-    )
-    .subscribe(
-      (response) => {
-        this.dataSource.data = response;
-        console.log(response)
-      }
-    )
-    
-
   }
 
   buyStock() {
     // Set the attributes to pass to the actual dialog, not the General one
     const actualDialogData = new DialogData();
-    
+
     actualDialogData.addProperty('portfolioId', this.portfolioId);
     const dialogRef = this.dialog.open(
       GeneraliDialog,
@@ -76,16 +74,19 @@ export class PortfolioTableRud  implements OnInit {
     )
     dialogRef.afterClosed().subscribe(
       () => {
-        console.log("Stock bought");
+        this.getPortfolioActivityContent(
+          this.userId(),
+          this.portfolioId()
+        );
       }
     )
   }
 
-  editRow(element: PortfolioActivityModel) {
+  editRow(element: PortfolioActivityMode) {
     console.log(`editing symbol: ${element.symbol_id}`)
   }
 
-  deleteRow(element: PortfolioActivityModel) {
+  deleteRow(element: PortfolioActivityMode) {
     console.log(`deleting symbol: ${element.symbol_id}`)
   }
 }

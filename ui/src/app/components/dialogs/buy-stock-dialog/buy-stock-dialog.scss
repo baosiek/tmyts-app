@@ -10,6 +10,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 24px;
 
   // Key change: Include padding and border within the 100% width
   box-sizing: border-box;
@@ -44,4 +45,14 @@ mat-selection-list {
       list-item-label-text-weight: bold,
       list-item-supporting-text-size: 12px,
       list-item-supporting-text-weight: bold));
+}
+
+.form-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-field {
+  width: 300px;
 }

@@ -27,9 +27,10 @@ export class TmytsToolbar implements AfterViewInit{
   }
 
   ngAfterViewInit(): void {
+     console.log(`this.data().dialog: ${this.data()?.dialog}`)
   }
 
-  add() {
+  add() {   
     if (this.data()?.dialog) {
       const dialogRef = this.dialog.open(
         GeneraliDialog,

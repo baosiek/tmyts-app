@@ -2,28 +2,24 @@
     <div>
         <div>
             <mat-stepper linear #stepper>
-                <mat-step [completed]="stepOneCompleted">
+                <mat-step [stepControl]="symbolFormGroup">
                     <form [formGroup]="symbolFormGroup">
                         <ng-template matStepLabel>Type an investament name or symbol</ng-template>
-                        <mat-form-field appearance="outline" style="margin-top: 12px;">
+                        <mat-form-field appearance="outline" style="margin-top: 12px; width: 500px">
                             <mat-label>Symbol or investment</mat-label>
                             <input matInput formControlName="symbol" placeholder="Select a symbol"
                                 (keyup)="searchTerm($event)">
                             <mat-icon matSuffix>search_insights</mat-icon>
                         </mat-form-field>
                         @if (results().length > 0){
-                        <mat-selection-list
-                        [multiple]="false"
-                        hideSingleSelectionIndicator
-                        #selectedSymbols
-                        (selectionChange)="onSelectionChange(stepper, selectedSymbols.selectedOptions.selected)"                        
-                        >
+                        <mat-selection-list [multiple]="false" hideSingleSelectionIndicator #selectedSymbols
+                            (selectionChange)="onSelectionChange(stepper, selectedSymbols.selectedOptions.selected)">
                             @for (result of results(); track result.id) {
-                                <mat-list-option [value]="result">
-                                    <div matListItemTitle>{{result.symbol}}</div>
-                                    <div matListItemLine>{{result.symbol_name}}</div>
-                                </mat-list-option>
-                                <mat-divider></mat-divider>
+                            <mat-list-option [value]="result">
+                                <div matListItemTitle>{{result.symbol}}</div>
+                                <div matListItemLine>{{result.symbol_name}}</div>
+                            </mat-list-option>
+                            <mat-divider></mat-divider>
                             }
                         </mat-selection-list>
                         }
@@ -32,35 +28,36 @@
                         </div>
                     </form>
                 </mat-step>
-                <mat-step [stepControl]="symbolFormGroup">
+                <mat-step [stepControl]="symbolDetailFormGroup">
                     <div class="stock-card">
-                        <span>{{selectedItem.symbol}}</span>
-                        <span>{{selectedItem.symbol_name}}</span>
-                        <span>230.00</span>
-                        <span>6.56%</span>
+                        <span>{{tickerData().symbol}}</span>
+                        <span>{{tickerData().symbol_name}}</span>
+                        <span>{{tickerData().variation | currency:'USD':'symbol':'1.2-2' }}</span>
+                        <span>{{tickerData().percentage  | percent:'1.2-2'}}</span>
                     </div>
-                    <form [formGroup]="symbolFormGroup">
+                    <form [formGroup]="symbolDetailFormGroup" class="form-container">
                         <ng-template matStepLabel>Fill purchase information</ng-template>
-                        <mat-form-field>
+                        <mat-form-field appearance="outline" class="form-field">
                             <mat-label>Quantity</mat-label>
-                            <input matInput formControlName="quantity" placeholder="Type quantity to be purchased"
-                                required>
+                            <input matInput type="number" formControlName="quantity"
+                                placeholder="Type quantity to be purchased" required>
                         </mat-form-field>
-                        <mat-form-field>
+                        <mat-form-field appearance="outline" class="form-field">
                             <mat-label>Purchase price</mat-label>
-                            <input matInput formControlName="purchasePrice" placeholder="Type the purchase price"
-                                required>
+                            <input matInput type="number" formControlName="purchase_price"
+                                placeholder="Type the purchase price" required>
                         </mat-form-field>
-                        <mat-form-field>
+                        <mat-form-field appearance="outline" class="form-field">
                             <mat-label>Purchase date</mat-label>
-                            <input matInput formControlName="purchaseDate" placeholder="Choose a purchase date"
+                            <input matInput formControlName="purchase_date" placeholder="Choose a purchase date"
                                 required>
                         </mat-form-field>
-                        <div>
-                            <button matButton type="button" matStepperPrevious>Back</button>
-                            <button matButton type="submit" matStepperNext (click)="buyStock()">Buy</button>
-                        </div>
                     </form>
+                    <div>
+                        <button matButton type="button" matStepperPrevious>Back</button>
+                        <button matButton type="submit" matStepperNext (click)="buyStock()"
+                            [mat-dialog-close]="true">Buy</button>
+                    </div>
                 </mat-step>
             </mat-stepper>
         </div>

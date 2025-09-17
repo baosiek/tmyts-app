@@ -3,15 +3,17 @@ import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { QuickSearchService } from '../../../services/quick-search/quick-search-service';
 import { SymbolModel, createNewSymbol } from '../../../models/symbol-model';
-import { JsonPipe } from '@angular/common';
+import { CurrencyPipe, JsonPipe, PercentPipe } from '@angular/common';
 import { DialogData } from '../general-dialog/general-dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatChip, MatChipSet } from '@angular/material/chips';
-import { PortfolioActivityModel } from '../../../models/portfolio-log-model';
+import { PortfolioActivityMode } from '../../../models/portfolio-activity-model';
 import { PortfolioActivityService } from '../../../services/portfolio-activity/portfolio-activity-service';
 import { catchError } from 'rxjs';
 import { MatStepper } from '@angular/material/stepper';
 import { MatListOption, MatSelectionList } from '@angular/material/list';
+import { LiveDataService } from '../../../services/live-data/live-data-service';
+import { createNewBasicTickerData } from '../../../interfaces/basic-ticker-data-interface';
 
 
 @Component({
@@ -20,6 +22,8 @@ import { MatListOption, MatSelectionList } from '@angular/material/list';
     ...MATERIAL_IMPORTS,
     FormsModule,
     ReactiveFormsModule,
+    CurrencyPipe,
+    PercentPipe
 ],
   templateUrl: './buy-stock-dialog.html',
   styleUrl: './buy-stock-dialog.scss'
@@ -31,6 +35,7 @@ export class BuyStockDialog implements OnInit{
   
   term: string | null | undefined = ''
   quichSearch = inject(QuickSearchService)
+  liveData = inject(LiveDataService)
   results = signal<SymbolModel[]>([])
   data = input.required<DialogData>()
 
@@ -38,18 +43,21 @@ export class BuyStockDialog implements OnInit{
   private _formBuilder = inject(FormBuilder);
 
   symbolFormGroup = this._formBuilder.group({
-    userId: [1],
-    poertfolioId: [1],
     symbol: ['', Validators.required],
+  });
+
+  symbolDetailFormGroup = this._formBuilder.group({
+    user_id: [1],
+    portfolio_id: [1],
+    symbol_id: [0, Validators.required],
     quantity: [0, Validators.required],
-    purchasePrice: [0.00, Validators.required],
-    purchaseDate: [new Date(), Validators.required],
-    broker: [1, Validators.required] /*  this has to come from database*/
+    purchase_price: [0.00, Validators.required],
+    purchase_date: [new Date(), Validators.required],
+    broker_id: [1, Validators.required] /*  this has to come from database*/
   });
 
   selectedItem: SymbolModel = createNewSymbol();
-
-  stepOneCompleted = false;
+  tickerData = signal(createNewBasicTickerData())
 
   ngOnInit(): void {
     this.symbolFormGroup.get('symbol')?.valueChanges
@@ -62,7 +70,6 @@ export class BuyStockDialog implements OnInit{
 
   searchTerm(event: KeyboardEvent) {
     if (this.term) {
-    this.stepOneCompleted = true;
     this.quichSearch.quickSearch(this.term)
     .pipe()
     .subscribe(
@@ -70,35 +77,58 @@ export class BuyStockDialog implements OnInit{
         this.results.set(response)
       }
     );
-    } else {
-      this.stepOneCompleted = false;
-    }    
+    }     
   }
 
   onSelectionChange(stepper: MatStepper, selectedOptions: MatListOption[]){
     const selectedValue = selectedOptions.map(option => option.value) as unknown as SymbolModel[];
     [this.selectedItem] = selectedValue
-    stepper.next()
-  }
-
-  buyStock() {
-    const data = this.symbolFormGroup.value as PortfolioActivityModel
-    console.log(data)
-    this.portfolioActivityService.insertNewActivity(data)
+    this.liveData.getBasicTickerData([this.selectedItem.symbol])
     .pipe(
       catchError(
         (error) => {
-          console.log(error);
-          throw error;
+          console.log(error)
+          throw error
         }
       )
     )
     .subscribe(
       (response) => {
-        console.log(`Response is: ${response}`);
+        const data = response.find(tck => tck.ticker = this.selectedItem.symbol)
+        if (data) {
+          const tickerData = createNewBasicTickerData();
+          tickerData.symbol = this.selectedItem.symbol;
+          tickerData.symbol_name = this.selectedItem.symbol_name;
+          tickerData.variation = data.data.variation;
+          tickerData.percentage = data.data.percent;
+          this.tickerData.set(tickerData);
+          stepper.next();
+        }
+        
       }
     );
-    console.log("Will by stock for: ");
+  }
+
+  buyStock() {
+    if (this.selectedItem.id){
+      const data = this.symbolDetailFormGroup.value as PortfolioActivityMode
+      data.symbol_id = this.selectedItem.id
+      console.log(data)
+      this.portfolioActivityService.insertNewActivity(data)
+      .pipe(
+        catchError(
+          (error) => {
+            console.log(error);
+            throw error;
+          }
+        )
+      )
+      .subscribe(
+        (response) => {
+          console.log(`Response is: ${response}`);
+        }
+      );
+    }
   }
 
 

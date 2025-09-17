@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { PortfolioActivityModel } from '../../models/portfolio-log-model';
+import { PortfolioActivityMode, PortfolioActivityModel } from '../../models/portfolio-activity-model';
 import { Observable } from 'rxjs';
 import { ReturnMessage } from '../../models/return-message';
 
@@ -14,7 +14,7 @@ export class PortfolioActivityService {
 
   constructor() {}
 
-  insertNewActivity(portfolio_activity_data: PortfolioActivityModel): Observable<ReturnMessage> {
+  insertNewActivity(portfolio_activity_data: PortfolioActivityMode): Observable<ReturnMessage> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const apiMethod = 'create';
     const body = portfolio_activity_data ;
