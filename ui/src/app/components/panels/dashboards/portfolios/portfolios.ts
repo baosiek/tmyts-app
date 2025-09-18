@@ -13,6 +13,7 @@ import { catchError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { PortfolioPerformanceTable } from "./portfolio-tables/portfolio-performance-table/portfolio-performance-table";
+import { PortfolioComponentsDataExchange } from '../../../../interfaces/portfolio-components-data-exchange';
 @Component({
   selector: 'app-portfolios',
   imports: [
@@ -37,6 +38,8 @@ export class Portfolios implements OnInit{
   dialog = inject(MatDialog);
   private _snackBar = inject(MatSnackBar);
   selectedPortfolio!: number;
+
+  dataExchangeToChild = PortfolioComponentsDataExchange.create(0, 0, []);
 
   constructor() {
     this.portfolioService.dialogTypes().find(
@@ -98,5 +101,11 @@ export class Portfolios implements OnInit{
           }
         }
       );
+    }
+
+    receiveMessage(event: PortfolioComponentsDataExchange){
+      console.log(`message receive: ${event}`)
+      this.dataExchangeToChild = event;
+      console.log(`this.exchangeData: ${this.dataExchangeToChild.symbol_list}`)
     }
 }

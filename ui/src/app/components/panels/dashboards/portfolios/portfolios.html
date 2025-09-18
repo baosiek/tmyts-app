@@ -25,10 +25,10 @@
         </div>
         <div class="content-wrapper">
             <div>
-                <app-portfolio-table-rud [userId]="user_id" [portfolioId]="selectedPortfolio"></app-portfolio-table-rud>
+                <app-portfolio-table-rud [userId]="user_id" [portfolioId]="selectedPortfolio" (portfolioExchangeData)="receiveMessage($event)"></app-portfolio-table-rud>
             </div>
             <div>
-                <app-portfolio-performance-table></app-portfolio-performance-table>
+                <app-portfolio-performance-table [dataExchangeFromParent]="dataExchangeToChild"></app-portfolio-performance-table>
             </div>
         </div>
         <!-- <mat-card-footer>

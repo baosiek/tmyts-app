@@ -1,4 +1,4 @@
-import { Component, inject, input, InputSignal, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, input, InputSignal, OnInit, Output } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../../../../material-imports';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
@@ -8,6 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { PortfolioActivityMode, PortfolioActivityModel } from '../../../../../../models/portfolio-activity-model';
 import { PortfolioActivityService } from '../../../../../../services/portfolio-activity/portfolio-activity-service';
 import { catchError } from 'rxjs';
+import { PortfolioComponentsDataExchange } from '../../../../../../interfaces/portfolio-components-data-exchange';
 
 @Component({
   selector: 'app-portfolio-table-rud',
@@ -32,6 +33,10 @@ export class PortfolioTableRud implements OnInit {
   userId: InputSignal<number> = input.required<number>()
   portfolioId: InputSignal<number> = input.required<number>()
 
+  @Output() portfolioExchangeData = new EventEmitter<PortfolioComponentsDataExchange>();
+
+  portfilioSymbols: string[] = []
+
   ngOnInit(): void {
     this.getPortfolioActivityContent(
       this.userId(),
@@ -52,7 +57,20 @@ export class PortfolioTableRud implements OnInit {
       .subscribe(
         (response) => {
           this.dataSource.data = response;
-          console.log(response)
+          const symbols: string[] = []
+          response.forEach(
+            item => {
+              symbols.push(item.symbol)
+            }
+          )
+          console.log(`symbols: ${symbols}`)
+          const dataExchange = PortfolioComponentsDataExchange.create(
+            this.userId(),
+            this.portfolioId(),
+            symbols
+          )
+          this.portfolioExchangeData.emit(dataExchange)
+          console.log(`portfolioExchangeData: ${dataExchange}`)
         }
       )
   }

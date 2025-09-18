@@ -39,5 +39,5 @@ export const MATERIAL_IMPORTS = [
   MatProgressBarModule,
   MatDividerModule,
   MatStepperModule,
-  MatChipsModule
+  MatChipsModule,
 ];

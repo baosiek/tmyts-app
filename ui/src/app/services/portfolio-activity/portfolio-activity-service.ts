@@ -26,6 +26,5 @@ export class PortfolioActivityService {
     const apiMethod = 'get_all';
     console.log(`URL: ${this.apiUrl}/${apiMethod}/?user_id=${user_id}&portfolio_id=${portfolio_id}`)
     return this.http.get<PortfolioActivityModel[]>(`${this.apiUrl}/${apiMethod}/?user_id=${user_id}&portfolio_id=${portfolio_id}`)
-  }
-  
+  }  
 }

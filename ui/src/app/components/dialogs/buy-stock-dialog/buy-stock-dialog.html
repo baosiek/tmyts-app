@@ -24,6 +24,7 @@
                         </mat-selection-list>
                         }
                         <div>
+                            <button type="button" matButton matStepperNext [mat-dialog-close]="true">Cancel</button>
                             <button type="button" matButton matStepperNext>Next</button>
                         </div>
                     </form>
@@ -54,6 +55,7 @@
                         </mat-form-field>
                     </form>
                     <div>
+                        <button matButton type="button" matStepperPrevious [mat-dialog-close]="true">Cancel</button>
                         <button matButton type="button" matStepperPrevious>Back</button>
                         <button matButton type="submit" matStepperNext (click)="buyStock()"
                             [mat-dialog-close]="true">Buy</button>
