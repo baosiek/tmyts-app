@@ -6,7 +6,8 @@ import { LiveDataService } from '../../../../../../services/live-data/live-data-
 import { catchError } from 'rxjs';
 import { PortfolioPerformanceModel } from '../../../../../../models/portfolio-performance-model';
 import { MatTableDataSource } from '@angular/material/table';
-import { CurrencyPipe, PercentPipe } from '@angular/common';
+import { CurrencyPipe, NgStyle, PercentPipe } from '@angular/common';
+import { TmytsChip } from '../../../../../sub-components/tmyts-chip/tmyts-chip';
 
 
 const ELEMENT_DATA: PortfolioPerformanceInterface[] = [
@@ -26,8 +27,10 @@ const ELEMENT_DATA: PortfolioPerformanceInterface[] = [
   imports: [
     ...MATERIAL_IMPORTS,
     CurrencyPipe,
-    PercentPipe
-  ],
+    PercentPipe,
+    TmytsChip,
+    NgStyle
+],
   templateUrl: './portfolio-performance-table.html',
   styleUrl: './portfolio-performance-table.scss'
 })
@@ -95,5 +98,34 @@ export class PortfolioPerformanceTable implements OnChanges{
     response.push(percent)
 
     return response;
+  }
+
+  getStatusColor(value: number): string {
+    console.log("Value: ", value)
+    if (value >= 0) {
+      return '#2b5c33';
+    } else {
+      return '#fc030b';
+    }
+  }
+
+  getTotalInvested() {
+      return this.dataSource.data.reduce((acc, value) => acc + (value.average_price * value.quantity), 0);
+  }
+
+  getTotalBalance() {
+      return this.dataSource.data.reduce((acc, value) => acc + (value.actual_price * value.quantity), 0);
+  }
+
+  getTotalVariation() {
+      const invested = this.getTotalInvested();
+      const balance = this.getTotalBalance();
+      return balance - invested;
+  }
+
+  getTotalPercent() {
+      const invested = this.getTotalInvested();
+      const balance = this.getTotalBalance();
+      return (balance - invested) / invested;
   }
 }

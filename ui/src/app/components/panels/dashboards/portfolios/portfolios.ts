@@ -14,6 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { PortfolioPerformanceTable } from "./portfolio-tables/portfolio-performance-table/portfolio-performance-table";
 import { PortfolioComponentsDataExchange } from '../../../../interfaces/portfolio-components-data-exchange';
+import { TmytsChip } from "../../../sub-components/tmyts-chip/tmyts-chip";
 @Component({
   selector: 'app-portfolios',
   imports: [

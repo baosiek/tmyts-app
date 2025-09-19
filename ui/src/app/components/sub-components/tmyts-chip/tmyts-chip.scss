@@ -1,0 +1,38 @@
+// $chip-background: #f0f0f0; // Background color for the chip
+$chip-border-radius: 8px;  // Border radius for rounded corners
+$chip-padding: 8px 12px;     // Padding for the chip
+$chip-icon-size: 20px;       // Size of the icon
+
+// .chip {
+//     display: flex;
+//     align-items: center;
+//     // background-color: $chip-background;
+//     border-radius: $chip-border-radius;
+//     padding: $chip-padding;
+//     max-width: 100%; // Allow it to adjust to available width
+//     height: auto;     // Adjust height automatically
+//     // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+//     text-align: center;
+    
+//     .chip-icon {
+//         width: $chip-icon-size;
+//         height: $chip-icon-size;
+//         margin-right: 8px; // Space between icon and text
+//     }
+
+//     .chip-text {
+//         font-size: 14px; // Adjust font size as needed
+//         // color: #333;     // Text color
+//     }
+// }
+
+.tmyts-container {
+    display: flex;
+    flex-direction: row;
+    border-radius: 8px;
+    align-items: center;
+    max-width: 100%;
+    height: auto;
+    padding: 8px 8px;
+    justify-content: end;
+}
