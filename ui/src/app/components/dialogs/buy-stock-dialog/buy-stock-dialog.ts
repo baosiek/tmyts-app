@@ -2,7 +2,6 @@ import { AfterViewInit, Component, inject, Input, input, OnInit, signal } from '
 import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { QuickSearchService } from '../../../services/quick-search/quick-search-service';
-import { SymbolModel, createNewSymbol } from '../../../models/symbol-model';
 import { CurrencyPipe, JsonPipe, PercentPipe } from '@angular/common';
 import { DialogData } from '../general-dialog/general-dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -14,6 +13,8 @@ import { MatStepper } from '@angular/material/stepper';
 import { MatListOption, MatSelectionList } from '@angular/material/list';
 import { LiveDataService } from '../../../services/live-data/live-data-service';
 import { createNewBasicTickerData } from '../../../interfaces/basic-ticker-data-interface';
+import { createNewSymbolData, SymbolDataModel } from './buy-stock-model';
+import { SymbolModel, createNewSymbol } from '../../../models/symbol-model';
 
 
 @Component({
@@ -57,7 +58,7 @@ export class BuyStockDialog implements OnInit{
   });
 
   selectedItem: SymbolModel = createNewSymbol();
-  tickerData = signal(createNewBasicTickerData())
+  symbolData = signal(createNewSymbolData())
 
   ngOnInit(): void {
     this.symbolFormGroup.get('symbol')?.valueChanges
@@ -81,9 +82,9 @@ export class BuyStockDialog implements OnInit{
   }
 
   onSelectionChange(stepper: MatStepper, selectedOptions: MatListOption[]){
-    const selectedValue = selectedOptions.map(option => option.value) as unknown as SymbolModel[];
-    [this.selectedItem] = selectedValue
-    this.liveData.getBasicTickerData([this.selectedItem.symbol])
+    const selectedValue = selectedOptions.map(option => option.value).at(0) as SymbolModel;
+    this.selectedItem = selectedValue
+    this.liveData.getSymbolData(this.selectedItem.symbol)
     .pipe(
       catchError(
         (error) => {
@@ -94,14 +95,9 @@ export class BuyStockDialog implements OnInit{
     )
     .subscribe(
       (response) => {
-        const data = response.find(tck => tck.ticker = this.selectedItem.symbol)
+        const data = response;
         if (data) {
-          const tickerData = createNewBasicTickerData();
-          tickerData.symbol = this.selectedItem.symbol;
-          tickerData.symbol_name = this.selectedItem.symbol_name;
-          tickerData.variation = data.data.variation;
-          tickerData.percentage = data.data.percent;
-          this.tickerData.set(tickerData);
+          this.symbolData.set(data);
           stepper.next();
         }
         
@@ -113,7 +109,6 @@ export class BuyStockDialog implements OnInit{
     if (this.selectedItem.id){
       const data = this.symbolDetailFormGroup.value as PortfolioActivityMode
       data.symbol_id = this.selectedItem.id
-      console.log(data)
       this.portfolioActivityService.insertNewActivity(data)
       .pipe(
         catchError(

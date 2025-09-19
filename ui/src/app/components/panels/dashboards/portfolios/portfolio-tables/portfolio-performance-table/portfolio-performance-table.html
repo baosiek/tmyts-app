@@ -1,3 +1,33 @@
+<div class="header-container">
+  <div class="header-cell">
+    <h4>Total Invested</h4>
+    <span>
+      {{getAmountTotals()[1] | currency:'USD':'symbol':'1.2-2'}}
+    </span>
+  </div>
+  <div class="header-cell">
+    <h4>Balance</h4>
+    <span>
+      {{getAmountTotals()[0] | currency:'USD':'symbol':'1.2-2'}}
+    </span>
+  </div>
+  <div class="header-cell">
+     <h4>Variation</h4>
+    <span>
+      {{getAmountVariation()[0] | currency:'USD':'symbol':'1.2-2'}}
+    </span>
+  </div>
+  <div  class="header-cell">
+    <h4>Percent</h4>
+    <span>
+      {{getAmountVariation()[1] | percent: '1.2-2'}}
+    </span>
+  </div>
+
+
+
+
+</div>
 <div class="table-container">
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
@@ -42,21 +72,20 @@
         <mat-chip style="background-color: rgb(129, 243, 129);">
           <div class="icon-with-currency">
             <mat-icon fontSet="material-symbols-outlined">arrow_upward_alt</mat-icon>
-            <span>{{element.percent | percent}}</span>
+            <span>{{element.percent | percent:'1.2-2'}}</span>
           </div>
         </mat-chip>
         } @else {
         <mat-chip style="background-color: rgb(235, 113, 113);">
           <div class="icon-with-currency">
-            <mat-icon fontSet="material-symbols-outlined">arrow_upward_alt</mat-icon>
-            <span>{{element.percent | percent}}</span>
+            <mat-icon fontSet="material-symbols-outlined">arrow_downward_alt</mat-icon>
+            <span>{{element.percent | percent:'1.2-2'}}</span>
           </div>
         </mat-chip>
         }
 
       </td>
     </ng-container>
-
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>

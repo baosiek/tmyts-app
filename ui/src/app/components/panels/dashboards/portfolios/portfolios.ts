@@ -104,8 +104,6 @@ export class Portfolios implements OnInit{
     }
 
     receiveMessage(event: PortfolioComponentsDataExchange){
-      console.log(`message receive: ${event}`)
       this.dataExchangeToChild = event;
-      console.log(`this.exchangeData: ${this.dataExchangeToChild.symbol_list}`)
     }
 }

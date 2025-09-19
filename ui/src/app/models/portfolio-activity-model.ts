@@ -1,5 +1,5 @@
 export type PortfolioActivityMode = {
-    activity_id: number | undefined;
+    id: number;
     user_id: number;
     portfolio_id: number;
     symbol_id: number;
@@ -11,7 +11,7 @@ export type PortfolioActivityMode = {
 
 // Factory function to create a new PortfolioModel object
 export const createPortfolio = (): PortfolioActivityMode => ({
-    activity_id: 0,
+    id: 0,
     user_id: 0,
     portfolio_id: 0,
     symbol_id: 0,
@@ -22,7 +22,7 @@ export const createPortfolio = (): PortfolioActivityMode => ({
 });
 
 export type PortfolioActivityModel = {
-    activity_id: number | undefined;
+    id: number;
     user_id: number;
     user_name: string;
     portfolio_id: number;
@@ -38,7 +38,7 @@ export type PortfolioActivityModel = {
 
 // Factory function to create a new PortfolioModel object
 export const createPortfolio_view = (): PortfolioActivityModel => ({
-    activity_id: 0,
+    id: 0,
     user_id: 0,
     user_name: '',
     portfolio_id: 0,

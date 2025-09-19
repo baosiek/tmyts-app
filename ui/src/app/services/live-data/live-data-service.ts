@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BasicTickerDataModel } from '../../models/basic-ticker-data';
 import { PortfolioPerformanceModel } from '../../models/portfolio-performance-model';
+import { SymbolDataModel } from '../../components/dialogs/buy-stock-dialog/buy-stock-model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +15,13 @@ export class LiveDataService {
 
   constructor() {}
 
-  getBasicTickerData(symbols: string[]): Observable<BasicTickerDataModel[]> {
+  getSymbolData(symbol: string): Observable<SymbolDataModel> {
 
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const apiMethod = 'basic-ticker-data';
-    const body = symbols ;
+    const body = symbol ;
 
-    return this.http.post<BasicTickerDataModel[]>(`${this.apiUrl}/${apiMethod}/`, body, { headers })
+    return this.http.get<SymbolDataModel>(`${this.apiUrl}/${apiMethod}/?symbol=${symbol}`)
   }
 
   getDetailedPortfolioActivity(user_id: number, portfolio_id: number, symbols: string[]): Observable<PortfolioPerformanceModel[]> {

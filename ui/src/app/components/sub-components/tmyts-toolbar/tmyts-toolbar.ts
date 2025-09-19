@@ -18,16 +18,12 @@ export interface IDialog {
   templateUrl: './tmyts-toolbar.html',
   styleUrl: './tmyts-toolbar.scss'
 })
-export class TmytsToolbar implements AfterViewInit{
+export class TmytsToolbar{
 
   dialog = inject(MatDialog);
   data = input.required<ITmytsToolBar>()
 
   constructor() {
-  }
-
-  ngAfterViewInit(): void {
-     console.log(`this.data().dialog: ${this.data()?.dialog}`)
   }
 
   add() {   

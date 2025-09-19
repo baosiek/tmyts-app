@@ -46,22 +46,54 @@ export class PortfolioPerformanceTable implements OnChanges{
       this.dataExchangeFromParent.user_id,
       this.dataExchangeFromParent.portfolio_id,
       this.dataExchangeFromParent.symbol_list
-    )
-    .pipe(
-      catchError(
-        (error) => {
-          console.log(error);
-          throw error;
-        }
       )
-    )
-    .subscribe(
-      (response) => {
-        this.dataSource.data = response;      
-      }
-    );
-    }
-    
+      .pipe(
+        catchError(
+          (error) => {
+            console.log(error);
+            throw error;
+          }
+        )
+      )
+      .subscribe(
+        (response) => {
+          this.dataSource.data = response;      
+        }
+      );
+    }    
   }
 
+  getAmountTotals(): number[] {
+
+    let acc_actual: number = 0;
+    let acc_average: number = 0;
+
+    const response: number[] = []
+    this.dataSource.data.forEach(
+      (d) => {
+        acc_actual += (d.actual_price * d.quantity)
+        acc_average += (d.average_price * d.quantity)
+      }
+    )
+    response.push(acc_actual);
+    response.push(acc_average)
+
+    return response;
+  }
+
+  getAmountVariation(): number[] {
+
+    let variation: number = 0;
+    let percent: number = 0;
+    const response: number[] = []
+
+    const totals: number[] = this.getAmountTotals()
+    variation = totals[0] - totals[1]
+    percent = variation / totals[1]
+
+    response.push(variation);
+    response.push(percent)
+
+    return response;
+  }
 }

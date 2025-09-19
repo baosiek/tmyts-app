@@ -3,15 +3,14 @@
 .table-container {
   border: 1px solid black;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds a subtle drop shadow */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Adds a subtle drop shadow */
   overflow: hidden;
   padding: 16px;
 }
 
 table {
-  @include mat.table-overrides((
-    row-item-outline-color: var(--mat-sys-inverse-primary)
-  ));
+  @include mat.table-overrides((row-item-outline-color: var(--mat-sys-inverse-primary)));
 }
 
 /* In your component's CSS file */
@@ -42,8 +41,27 @@ table {
   }
 
   mat-chips {
-    @include mat.chips-overrides((
-    flat-selected-outline-width: 10px
-  ));
+    @include mat.chips-overrides((flat-selected-outline-width: 10px));
+  }
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; // Vertically aligns the icon and text
+  vertical-align: middle; // Adds some space between the icon and the text
+
+  .header-cell {
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 8px;
+
+    h4 {
+      margin: 3px;
+    }
   }
 }

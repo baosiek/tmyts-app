@@ -31,10 +31,11 @@
                 </mat-step>
                 <mat-step [stepControl]="symbolDetailFormGroup">
                     <div class="stock-card">
-                        <span>{{tickerData().symbol}}</span>
-                        <span>{{tickerData().symbol_name}}</span>
-                        <span>{{tickerData().variation | currency:'USD':'symbol':'1.2-2' }}</span>
-                        <span>{{tickerData().percentage  | percent:'1.2-2'}}</span>
+                        <span>{{selectedItem.symbol}}</span>
+                        <span>{{selectedItem.symbol_name}}</span>
+                        <span>{{symbolData().price_close | currency:'USD':'symbol':'1.2-2'}}</span>
+                        <span>{{symbolData().difference | currency:'USD':'symbol':'1.2-2' }}</span>
+                        <span>{{symbolData().percent  | percent:'1.2-2'}}</span>
                     </div>
                     <form [formGroup]="symbolDetailFormGroup" class="form-container">
                         <ng-template matStepLabel>Fill purchase information</ng-template>

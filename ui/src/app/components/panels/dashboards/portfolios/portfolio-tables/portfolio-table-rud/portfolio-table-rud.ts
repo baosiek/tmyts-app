@@ -63,14 +63,12 @@ export class PortfolioTableRud implements OnInit {
               symbols.push(item.symbol)
             }
           )
-          console.log(`symbols: ${symbols}`)
           const dataExchange = PortfolioComponentsDataExchange.create(
             this.userId(),
             this.portfolioId(),
             symbols
           )
           this.portfolioExchangeData.emit(dataExchange)
-          console.log(`portfolioExchangeData: ${dataExchange}`)
         }
       )
   }
@@ -104,7 +102,23 @@ export class PortfolioTableRud implements OnInit {
     console.log(`editing symbol: ${element.symbol_id}`)
   }
 
-  deleteRow(element: PortfolioActivityMode) {
-    console.log(`deleting symbol: ${element.symbol_id}`)
+  deleteRow(element: PortfolioActivityModel) {
+    this.portfolioActivityService.deleteActivityForPortfolio(element.id)
+    .pipe(
+        catchError(
+          (error) => {
+            console.log(error)
+            throw error
+          }
+        )
+      )
+      .subscribe(
+        (response) => {
+          this.getPortfolioActivityContent(
+            this.userId(),
+            this.portfolioId()
+         );
+        }
+      )
   }
 }
