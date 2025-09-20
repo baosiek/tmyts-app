@@ -6,7 +6,7 @@ import { LiveDataService } from '../../../../../../services/live-data/live-data-
 import { catchError } from 'rxjs';
 import { PortfolioPerformanceModel } from '../../../../../../models/portfolio-performance-model';
 import { MatTableDataSource } from '@angular/material/table';
-import { CurrencyPipe, NgStyle, PercentPipe } from '@angular/common';
+import { CurrencyPipe, NgClass, NgStyle, PercentPipe } from '@angular/common';
 import { TmytsChip } from '../../../../../sub-components/tmyts-chip/tmyts-chip';
 
 
@@ -29,7 +29,8 @@ const ELEMENT_DATA: PortfolioPerformanceInterface[] = [
     CurrencyPipe,
     PercentPipe,
     TmytsChip,
-    NgStyle
+    NgStyle,
+    NgClass
 ],
   templateUrl: './portfolio-performance-table.html',
   styleUrl: './portfolio-performance-table.scss'
@@ -44,7 +45,8 @@ export class PortfolioPerformanceTable implements OnChanges{
   dataSource: MatTableDataSource<PortfolioPerformanceModel> = new MatTableDataSource();
 
   ngOnChanges(): void {
-    if (this.dataExchangeFromParent.user_id !== 0) {
+    
+    if (this.dataExchangeFromParent.symbol_list.length > 0) {
       this.liveDataService.getDetailedPortfolioActivity(
       this.dataExchangeFromParent.user_id,
       this.dataExchangeFromParent.portfolio_id,
@@ -60,10 +62,13 @@ export class PortfolioPerformanceTable implements OnChanges{
       )
       .subscribe(
         (response) => {
+          console.log()
           this.dataSource.data = response;      
         }
       );
-    }    
+    } else {
+      this.dataSource.data = []
+    }   
   }
 
   getAmountTotals(): number[] {

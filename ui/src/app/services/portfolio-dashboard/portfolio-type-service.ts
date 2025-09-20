@@ -11,7 +11,7 @@ export class PortfolioDashboardService {
       [
         {
           id: 'portfolio',
-          title: "Portfolio management",
+          title: "Portfolios",
         },
         {
           id: 'assets_analysis',

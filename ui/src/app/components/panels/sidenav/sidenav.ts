@@ -24,7 +24,7 @@ export class Sidenav {
     [
       {
         icon: "dashboard_customize",
-        label: "Portfolio management",
+        label: "Portfolios",
         route: "/portfolio_management"
       },
       {

@@ -1,9 +1,11 @@
 @use '@angular/material' as mat;
 
 .table-container {
-  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  // border: 1px solid black;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   /* Adds a subtle drop shadow */
   overflow: hidden;
   padding: 16px;
@@ -19,7 +21,7 @@ table {
 }
 
 .mat-column-percent {
-  text-align: end;
+  text-align: start;
 }
 
 .icon-with-currency {
@@ -64,4 +66,15 @@ table {
       margin: 3px;
     }
   }
+}
+
+.green {
+  color: #2b5c33;
+  background-color: #7ff593;
+  font-weight: bold;
+}
+
+.red {
+  color: #732f2f;
+  background-color: #f59f9f;
 }

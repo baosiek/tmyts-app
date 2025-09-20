@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, input, InputSignal, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, input, InputSignal, OnChanges, OnInit, Output } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../../../../material-imports';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
@@ -20,7 +20,7 @@ import { PortfolioComponentsDataExchange } from '../../../../../../interfaces/po
   templateUrl: './portfolio-table-rud.html',
   styleUrl: './portfolio-table-rud.scss'
 })
-export class PortfolioTableRud implements OnInit {
+export class PortfolioTableRud implements OnChanges {
 
   // portfolioId = input.required<string>()
   dialog = inject(MatDialog);
@@ -37,14 +37,14 @@ export class PortfolioTableRud implements OnInit {
 
   portfilioSymbols: string[] = []
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.getPortfolioActivityContent(
-      this.userId(),
       this.portfolioId()
     );
   }
 
-  getPortfolioActivityContent(userId: number, portfolioId: number) {
+  getPortfolioActivityContent(portfolioId: number) {
+    console.log(`portfolio id: ${this.portfolioId}`)
     this.portfolioActivityService.getActivityForPortfolio(this.userId(), portfolioId)
       .pipe(
         catchError(
@@ -75,23 +75,21 @@ export class PortfolioTableRud implements OnInit {
 
   buyStock() {
     // Set the attributes to pass to the actual dialog, not the General one
-    const actualDialogData = new DialogData();
-
-    actualDialogData.addProperty('portfolioId', this.portfolioId);
+    const data: Map<string, any> = new Map<string, any>()
+    data.set('portfolioId', this.portfolioId())
     const dialogRef = this.dialog.open(
       GeneraliDialog,
       {
         data: {
           title: "Buy stock",
           content: BuyStockDialog,
-          actualDialogData: actualDialogData
+          data: data
         }
       }
     )
     dialogRef.afterClosed().subscribe(
       () => {
         this.getPortfolioActivityContent(
-          this.userId(),
           this.portfolioId()
         );
       }
@@ -103,6 +101,8 @@ export class PortfolioTableRud implements OnInit {
   }
 
   deleteRow(element: PortfolioActivityModel) {
+    const temp = element as PortfolioActivityModel
+    console.log(`Element: ${temp.user_name}`)
     this.portfolioActivityService.deleteActivityForPortfolio(element.id)
     .pipe(
         catchError(
@@ -115,7 +115,6 @@ export class PortfolioTableRud implements OnInit {
       .subscribe(
         (response) => {
           this.getPortfolioActivityContent(
-            this.userId(),
             this.portfolioId()
          );
         }

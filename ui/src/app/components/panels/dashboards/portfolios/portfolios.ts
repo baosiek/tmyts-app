@@ -38,7 +38,8 @@ export class Portfolios implements OnInit{
   portfolioList: PortfolioModel[] = []
   dialog = inject(MatDialog);
   private _snackBar = inject(MatSnackBar);
-  selectedPortfolio!: number;
+  // selectedPortfolio!: number;
+  selectedPortfolio = signal(0);
 
   dataExchangeToChild = PortfolioComponentsDataExchange.create(0, 0, []);
 
@@ -91,9 +92,12 @@ export class Portfolios implements OnInit{
             // Handle successful response
             this.portfolioList = [ ...response ]
 
+            console.log("The porfolio: ", this.portfolioList)
+
             // typescript syntax to get the first element
             const [firstPortfolio] = response;
-            this.selectedPortfolio = firstPortfolio.id;
+            // this.selectedPortfolio = firstPortfolio.id;
+            this.selectedPortfolio.set(firstPortfolio.id);
           },
           error: (error) => {
             // Handle error response

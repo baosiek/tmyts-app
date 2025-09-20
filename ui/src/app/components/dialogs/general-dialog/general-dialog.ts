@@ -1,4 +1,4 @@
-import { Component, inject, input, Type } from '@angular/core';
+import { Component, Inject, inject, input, OnInit, Type } from '@angular/core';
 import { MatCardHeader } from "@angular/material/card";
 import { MatCardTitle } from "@angular/material/card";
 import { MATERIAL_IMPORTS } from '../../../material-imports';
@@ -6,18 +6,26 @@ import { NgComponentOutlet } from '@angular/common';
 import { IDialog } from '../../sub-components/tmyts-toolbar/tmyts-toolbar';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-export class DialogData {
-  data: Map<string, any> = new Map();
+// export class DialogData {
+//   title: string = '';
+//   data: Map<string, any> = new Map();
 
-  constructor() {}
+//   constructor() {}
 
-  addProperty(key: string, value: any){
-    this.data.set(key, value)
-  }
+//   addProperty(key: string, value: any){
+//     this.data.set(key, value)
+//   }
 
-  getProperty(key: string): any {
-    return this.data.get(key);
-  }
+//   getProperty(key: string) {
+//     const value = this.data.get(key);
+//     return value
+//   }
+// }
+
+export interface DialogData {
+  title: string;
+  content: Type<unknown>;
+  data: Map<string, any>;
 }
 
 @Component({
@@ -29,15 +37,11 @@ export class DialogData {
   templateUrl: './general-dialog.html',
   styleUrl: './general-dialog.scss'
 })
-export class GeneraliDialog {
+export class GeneraliDialog{
 
-  generalDialogData = inject(MAT_DIALOG_DATA)
-
+  generalDialogData = inject(MAT_DIALOG_DATA)  
 
   dialogInputs = {
-    data: this.generalDialogData.actualDialogData
+    data:  this.generalDialogData
   };
-
-  constructor() {}
-
 }

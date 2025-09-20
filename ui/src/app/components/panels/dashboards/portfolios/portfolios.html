@@ -1,37 +1,37 @@
 <div>
     @if (data) {
     <app-tmyts-toolbar [data]="data"></app-tmyts-toolbar>
-    } 
-    @if (selectedPortfolio) {
-            <div class="borders">
+    }
+    <div class="">
         <div class="custom-card-header">
-            <mat-form-field appearance="outline" style="width: 40cm;">
-                @if (selectedPortfolio) {
-                    <mat-label>Portfolio id</mat-label>
+            <mat-form-field appearance="outline" style="width: 100%; margin-top: 1.5%;">
+                @if (portfolioList.length > 0) {
+                <mat-label>Portfolio id</mat-label>
                 } @else {
-                    <mat-label>You have no saved portfolios. Click on the button to create one ==></mat-label>
+                <mat-label>You have no saved portfolios. Click on the button to create one ==></mat-label>
                 }
                 <mat-select matNativeControl [(ngModel)]="selectedPortfolio">
                     <option value="" selected></option>
                     @for (portfolio of portfolioList; track portfolio.id){
-                        <mat-option [value]="portfolio.id">{{portfolio.portfolio_name}}</mat-option>
+                    <mat-option [value]="portfolio.id">{{portfolio.portfolio_name}}</mat-option>
                     }
                 </mat-select>
             </mat-form-field>
-            <button mat-raised-button class="add-button" (click)="add()">
-                New portfolio
+            <button mat-raised-button class="add-button" (click)="add()" style="max-width: fit-content;">
+                Portfolio
                 <mat-icon>add</mat-icon>
             </button>
         </div>
         <div class="content-wrapper">
             <div>
-                <app-portfolio-table-rud [userId]="user_id" [portfolioId]="selectedPortfolio" (portfolioExchangeData)="receiveMessage($event)"></app-portfolio-table-rud>
+                <app-portfolio-table-rud [userId]="user_id" [portfolioId]="selectedPortfolio()"
+                    (portfolioExchangeData)="receiveMessage($event)"></app-portfolio-table-rud>
             </div>
             <div>
-                <app-portfolio-performance-table [dataExchangeFromParent]="dataExchangeToChild"></app-portfolio-performance-table>
+                <app-portfolio-performance-table
+                    [dataExchangeFromParent]="dataExchangeToChild"></app-portfolio-performance-table>
             </div>
         </div>
     </div>
-    }
 
 </div>

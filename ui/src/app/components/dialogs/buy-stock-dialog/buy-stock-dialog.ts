@@ -1,20 +1,17 @@
-import { AfterViewInit, Component, inject, Input, input, OnInit, signal } from '@angular/core';
+import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { QuickSearchService } from '../../../services/quick-search/quick-search-service';
-import { CurrencyPipe, JsonPipe, PercentPipe } from '@angular/common';
-import { DialogData } from '../general-dialog/general-dialog';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatChip, MatChipSet } from '@angular/material/chips';
+import { CurrencyPipe, PercentPipe } from '@angular/common';
 import { PortfolioActivityMode } from '../../../models/portfolio-activity-model';
 import { PortfolioActivityService } from '../../../services/portfolio-activity/portfolio-activity-service';
 import { catchError } from 'rxjs';
 import { MatStepper } from '@angular/material/stepper';
-import { MatListOption, MatSelectionList } from '@angular/material/list';
+import { MatListOption } from '@angular/material/list';
 import { LiveDataService } from '../../../services/live-data/live-data-service';
-import { createNewBasicTickerData } from '../../../interfaces/basic-ticker-data-interface';
-import { createNewSymbolData, SymbolDataModel } from './buy-stock-model';
+import { createNewSymbolData } from './buy-stock-model';
 import { SymbolModel, createNewSymbol } from '../../../models/symbol-model';
+import { DialogData } from '../general-dialog/general-dialog';
 
 
 @Component({
@@ -49,7 +46,7 @@ export class BuyStockDialog implements OnInit{
 
   symbolDetailFormGroup = this._formBuilder.group({
     user_id: [1],
-    portfolio_id: [1],
+    portfolio_id: [0],
     symbol_id: [0, Validators.required],
     quantity: [0, Validators.required],
     purchase_price: [0.00, Validators.required],
@@ -60,6 +57,8 @@ export class BuyStockDialog implements OnInit{
   selectedItem: SymbolModel = createNewSymbol();
   symbolData = signal(createNewSymbolData())
 
+  constructor() {}
+
   ngOnInit(): void {
     this.symbolFormGroup.get('symbol')?.valueChanges
     .subscribe(
@@ -67,6 +66,19 @@ export class BuyStockDialog implements OnInit{
         this.term = value;
       }
     );
+    
+    const value  = this.data().data.get('portfolioId')
+    const formValues = {
+      'user_id': 1,
+      'portfolio_id': value,
+      'purchase_price': 0,
+      'purchase_date': new Date(),
+      'quantity': 0,
+      'symbol_id': 0,
+      'broker_id': 1
+    }
+
+    this.symbolDetailFormGroup.setValue(formValues)
   }
 
   searchTerm(event: KeyboardEvent) {

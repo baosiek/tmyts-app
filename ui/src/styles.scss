@@ -66,12 +66,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   ));
 }
 
-/* Centers the title and subtitle horizontally within the header */
-// .mat-mdc-card-header .mat-mdc-card-header-text {
-//   text-align: center;
-//   width: 100%;
-// }
-
 /* Override any default margins to prevent misalignment */
 .mat-mdc-card-header .mat-mdc-card-title,
 .mat-mdc-card-header .mat-mdc-card-subtitle {

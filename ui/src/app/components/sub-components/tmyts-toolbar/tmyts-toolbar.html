@@ -1,9 +1,13 @@
-<mat-toolbar class="container-space-between">
-    <span>{{data().title}}</span>
-    @if (data().dialog) {
+<div >
+    <mat-toolbar>
+        <div class="container-space-between">
+            <span>{{data().title}}</span>
+            @if (data().dialog) {
             <button mat-raised-button (click)="add()">
-        New {{data().dialog?.button_text}}
-        <mat-icon>{{data().dialog?.button_icon}}</mat-icon>
-    </button>
-    }
-</mat-toolbar>
+                New {{data().dialog?.button_text}}
+                <mat-icon>{{data().dialog?.button_icon}}</mat-icon>
+            </button>
+            }
+        </div>
+    </mat-toolbar>
+</div>
