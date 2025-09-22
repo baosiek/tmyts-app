@@ -56,7 +56,6 @@ export class PortfolioTableRud implements OnChanges {
       )
       .subscribe(
         (response) => {
-          console.log(response)
           this.dataSource.data = response;
           const symbols: string[] = []
           response.forEach(

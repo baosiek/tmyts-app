@@ -4,6 +4,6 @@ export type PortfolioPerformanceModel = {
     quantity: number;
     average_price: number;
     actual_price: number;
-    variation: number;
+    gain_loss: number;
     percent: number;
 }

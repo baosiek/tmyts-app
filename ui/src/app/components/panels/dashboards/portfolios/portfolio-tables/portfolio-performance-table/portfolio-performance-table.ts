@@ -9,19 +9,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CurrencyPipe, NgClass, NgStyle, PercentPipe } from '@angular/common';
 import { TmytsChip } from '../../../../../sub-components/tmyts-chip/tmyts-chip';
 
-
-const ELEMENT_DATA: PortfolioPerformanceInterface[] = [
-  {symbol_id: "AAPL", symbol_name: "Apple Inc.", price: 231.00, variation: 0.010, percent: 1.76},
-  {symbol_id: "GOOG", symbol_name: "Alphabet Inc.", price: 231.00, variation: 0.010, percent: 1.76},
-  {symbol_id: "NVDA", symbol_name: "Nvidia Inc.", price: 231.00, variation: 0.010, percent: 1.76},
-  {symbol_id: "AMZN", symbol_name: "Amazon Inc.", price: 231.00, variation: 0.010, percent: 1.76},
-  {symbol_id: "META", symbol_name: "Meta Inc.", price: 231.00, variation: 0.010, percent: 1.76},
-  {symbol_id: "MFST", symbol_name: "Microsoft Inc.", price: 231.00, variation: 0.010, percent: 1.76},
-  {symbol_id: "TSLA", symbol_name: "Tesla Inc.", price: 231.00, variation: 0.010, percent: 1.76},
-  {symbol_id: "ORCL", symbol_name: "Oracle Inc.", price: 231.00, variation: 0.010, percent: 1.76},
-  {symbol_id: "AVGO", symbol_name: "Broadcom Inc.", price: 231.00, variation: 0.010, percent: 1.76},
-];
-
 @Component({
   selector: 'app-portfolio-performance-table',
   imports: [
@@ -41,7 +28,7 @@ export class PortfolioPerformanceTable implements OnChanges{
 
   liveDataService = inject(LiveDataService)
 
-  displayedColumns: string[] = ['symbol', 'quantity', 'average_price', 'actual_price', 'variation', 'percent'];
+  displayedColumns: string[] = ['symbol', 'quantity', 'average_price', 'actual_price', 'cash_in', 'fees', 'variation', 'percent'];
   dataSource: MatTableDataSource<PortfolioPerformanceModel> = new MatTableDataSource();
 
   ngOnChanges(): void {
@@ -62,7 +49,7 @@ export class PortfolioPerformanceTable implements OnChanges{
       )
       .subscribe(
         (response) => {
-          console.log()
+          console.log(response)
           this.dataSource.data = response;      
         }
       );
