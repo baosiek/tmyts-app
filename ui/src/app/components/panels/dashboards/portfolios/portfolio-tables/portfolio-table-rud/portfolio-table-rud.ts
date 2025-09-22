@@ -27,7 +27,7 @@ export class PortfolioTableRud implements OnChanges {
 
   portfolioActivityService = inject(PortfolioActivityService)
 
-  displayedColumns: string[] = ['symbol', 'symbol_name', 'purchase_price', 'quantity', 'purchase_date', 'broker_name', 'sell', "delete"];
+  displayedColumns: string[] = ['symbol', 'symbol_name', 'purchase_price', 'quantity', 'purchase_date', 'fees', 'cash_in', 'broker_name', 'sell', "delete"];
   dataSource: MatTableDataSource<PortfolioActivityModel> = new MatTableDataSource();
 
   userId: InputSignal<number> = input.required<number>()
@@ -56,6 +56,7 @@ export class PortfolioTableRud implements OnChanges {
       )
       .subscribe(
         (response) => {
+          console.log(response)
           this.dataSource.data = response;
           const symbols: string[] = []
           response.forEach(

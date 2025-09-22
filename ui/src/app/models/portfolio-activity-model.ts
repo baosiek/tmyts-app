@@ -31,6 +31,8 @@ export type PortfolioActivityModel = {
     symbol: string;
     symbol_name: string;
     quantity: number;
+    cash_in: number;
+    fees: number;
     purchase_price: number;
     purchase_date: Date;
     broker_id: number
@@ -47,6 +49,8 @@ export const createPortfolio_view = (): PortfolioActivityModel => ({
     symbol: '',
     symbol_name: '',
     quantity: 0.0,
+    cash_in: 0.0,
+    fees: 0.0,
     purchase_date: new Date(),
     purchase_price: 0.0,
     broker_id: 0 

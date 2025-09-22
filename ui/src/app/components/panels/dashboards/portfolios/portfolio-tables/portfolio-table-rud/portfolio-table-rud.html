@@ -23,10 +23,22 @@
       <td mat-cell *matCellDef="let element"> {{element.purchase_price | currency }} </td>
     </ng-container>
 
-    <!-- Qantity Column -->
+    <!-- Quantity Column -->
     <ng-container matColumnDef="quantity">
       <th mat-header-cell *matHeaderCellDef> Quantity </th>
       <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+    </ng-container>
+
+    <!-- Cash_in Column -->
+    <ng-container matColumnDef="cash_in">
+      <th mat-header-cell *matHeaderCellDef> Dividends/Interest </th>
+      <td mat-cell *matCellDef="let element"> {{element.cash_in}} </td>
+    </ng-container>
+
+    <!-- Fees Column -->
+    <ng-container matColumnDef="fees">
+      <th mat-header-cell *matHeaderCellDef> Fees </th>
+      <td mat-cell *matCellDef="let element"> {{element.fees}} </td>
     </ng-container>
 
     <!-- Purchase date Column -->
