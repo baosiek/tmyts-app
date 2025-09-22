@@ -58,39 +58,39 @@ export class PortfolioPerformanceTable implements OnChanges{
     }   
   }
 
-  getAmountTotals(): number[] {
+  // getAmountTotals(): number[] {
 
-    let acc_actual: number = 0;
-    let acc_average: number = 0;
+  //   let acc_actual: number = 0;
+  //   let acc_average: number = 0;
 
-    const response: number[] = []
-    this.dataSource.data.forEach(
-      (d) => {
-        acc_actual += (d.actual_price * d.quantity)
-        acc_average += (d.average_price * d.quantity)
-      }
-    )
-    response.push(acc_actual);
-    response.push(acc_average)
+  //   const response: number[] = []
+  //   this.dataSource.data.forEach(
+  //     (d) => {
+  //       acc_actual += (d.actual_price * d.quantity)
+  //       acc_average += (d.average_price * d.quantity)
+  //     }
+  //   )
+  //   response.push(acc_actual);
+  //   response.push(acc_average)
 
-    return response;
-  }
+  //   return response;
+  // }
 
-  getAmountVariation(): number[] {
+  // getAmountVariation(): number[] {
 
-    let variation: number = 0;
-    let percent: number = 0;
-    const response: number[] = []
+  //   let variation: number = 0;
+  //   let percent: number = 0;
+  //   const response: number[] = []
 
-    const totals: number[] = this.getAmountTotals()
-    variation = totals[0] - totals[1]
-    percent = variation / totals[1]
+  //   const totals: number[] = this.getAmountTotals()
+  //   variation = totals[0] - totals[1]
+  //   percent = variation / totals[1]
 
-    response.push(variation);
-    response.push(percent)
+  //   response.push(variation);
+  //   response.push(percent)
 
-    return response;
-  }
+  //   return response;
+  // }
 
   getStatusColor(value: number): string {
     console.log("Value: ", value)
@@ -101,23 +101,19 @@ export class PortfolioPerformanceTable implements OnChanges{
     }
   }
 
-  getTotalInvested() {
+  getInitialValue() {
       return this.dataSource.data.reduce((acc, value) => acc + (value.average_price * value.quantity), 0);
   }
 
-  getTotalBalance() {
+  getCurrentValue() {
       return this.dataSource.data.reduce((acc, value) => acc + (value.actual_price * value.quantity), 0);
   }
 
-  getTotalVariation() {
-      const invested = this.getTotalInvested();
-      const balance = this.getTotalBalance();
-      return balance - invested;
+  getTotalGainAnLoss() {
+       return this.dataSource.data.reduce((acc, value) => acc + (value.gain_loss), 0);
   }
 
   getTotalPercent() {
-      const invested = this.getTotalInvested();
-      const balance = this.getTotalBalance();
-      return (balance - invested) / invested;
+      return this.dataSource.data.reduce((acc, value) => acc + (value.weighted_percent), 0);
   }
 }

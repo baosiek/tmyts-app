@@ -1,31 +1,31 @@
 <div class="header-container">
   <h2>Portfolio Performance</h2>
   <div class="header-cell">
-    <h4>Total Invested</h4>
+    <h4>Initial Value</h4>
     <span>
 
       @if (dataSource.data.length > 0) {
-      {{getTotalInvested() | currency:'USD':'symbol':'1.2-2'}}
+      {{getInitialValue() | currency:'USD':'symbol':'1.2-2'}}
       } @else {
       $0.00
       }
     </span>
   </div>
   <div class="header-cell">
-    <h4>Balance</h4>
+    <h4>Current Value</h4>
     <span>
       @if (dataSource.data.length > 0) {
-      {{getTotalBalance() | currency:'USD':'symbol':'1.2-2'}}
+      {{getCurrentValue() | currency:'USD':'symbol':'1.2-2'}}
       } @else {
       $0.00
       }
     </span>
   </div>
   <div class="header-cell" [ngClass]="{'green': getTotalPercent() >= 0, 'red': getTotalPercent() < 0}">
-    <h4>Variation</h4>
+    <h4>Gain/Loss</h4>
     <span>
       @if (dataSource.data.length > 0) {
-      {{getTotalVariation() | currency:'USD':'symbol':'1.2-2'}}
+      {{getTotalGainAnLoss() | currency:'USD':'symbol':'1.2-2'}}
       } @else {
       $0.00
       }
