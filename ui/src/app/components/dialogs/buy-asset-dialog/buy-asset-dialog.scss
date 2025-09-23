@@ -67,5 +67,6 @@ input.example-right-align::-webkit-inner-spin-button {
 }
 
 input.right-align {
+  appearance: textfield;
   -moz-appearance: textfield;
 }
