@@ -92,8 +92,6 @@ export class Portfolios implements OnInit{
             // Handle successful response
             this.portfolioList = [ ...response ]
 
-            console.log("The porfolio: ", this.portfolioList)
-
             // typescript syntax to get the first element
             const [firstPortfolio] = response;
             // this.selectedPortfolio = firstPortfolio.id;
