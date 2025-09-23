@@ -54,6 +54,14 @@
                                 <span matTextPrefix>$&nbsp;</span>
                             </mat-form-field>
                         </div>
+                        <div>
+                            <mat-form-field appearance="outline" class="form-field" floatLabel="always">
+                                <mat-label>Fees</mat-label>
+                                <input matInput type="number" formControlName="fees" placeholder="0" required
+                                    class="right-align">
+                                <span matTextPrefix>$&nbsp;</span>
+                            </mat-form-field>
+                        </div>
                         <mat-form-field appearance="outline" class="form-field">
                             <mat-label>Purchase date</mat-label>
                             <input matInput formControlName="purchase_date" [matDatepicker]="picker" required>

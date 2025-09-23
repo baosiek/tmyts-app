@@ -54,10 +54,9 @@ export class BuyAssetDialog {
   data = input.required<DialogData>()  
 
   /**
-   * Three steps:
+   * Two steps:
    * 1) Asset selection
-   * 2) Transaction type (buy, sell, add dividends/interest)
-   * 3) Transaction data
+   * 2) Transaction data
    * 
    * Each step on form
    */
@@ -135,7 +134,7 @@ export class BuyAssetDialog {
    */
   onSymbolSelectionChange(stepper: MatStepper, selectedOptions: MatListOption[]){
     const selectedValue = selectedOptions.map(option => option.value).at(0) as SymbolModel;
-    console.log(`Selected symbol is: ${JSON.stringify(selectedValue)}`)
+
     this.selectedSymbol = selectedValue
     this.liveData.getSymbolData(this.selectedSymbol.symbol)
     .pipe(
