@@ -55,10 +55,10 @@
 
     <!-- Edit Column -->
     <ng-container matColumnDef="sell">
-      <th mat-header-cell *matHeaderCellDef> Sell </th>
+      <th mat-header-cell *matHeaderCellDef> Edit </th>
       <td mat-cell *matCellDef="let element">
         <button style="color: blueviolet;" mat-icon-button (click)="editRow(element)">
-          <mat-icon fontSet="material-symbols-outlined">sell</mat-icon>
+          <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
         </button>
       </td>
     </ng-container>
@@ -77,10 +77,23 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
   <div class="actions">
-      <button mat-raised-button (click)="buyStock()">
-      Buy stock
-    <mat-icon>add</mat-icon>
-  </button>
+    <div>
+      <button mat-raised-button (click)="buyAsset()">
+        Buy asset
+          <mat-icon fontSet="material-symbols-outlined">add_shopping_cart</mat-icon>
+      </button>
+    </div>
+    <div>
+        <button mat-raised-button (click)="sellAsset()">
+        Sell asset
+          <mat-icon fontSet="material-symbols-outlined">sell</mat-icon>
+      </button>
+    </div>
+    <div>
+        <button mat-raised-button (click)="addIncome()">
+        Add income
+          <mat-icon fontSet="material-symbols-outlined">attach_money</mat-icon>
+      </button>
+    </div>
   </div>
-
 </div>

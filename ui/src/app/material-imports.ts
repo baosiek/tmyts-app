@@ -18,6 +18,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 export const MATERIAL_IMPORTS = [
   MatButtonModule,
@@ -40,4 +41,5 @@ export const MATERIAL_IMPORTS = [
   MatDividerModule,
   MatStepperModule,
   MatChipsModule,
+  MatDatepickerModule,
 ];

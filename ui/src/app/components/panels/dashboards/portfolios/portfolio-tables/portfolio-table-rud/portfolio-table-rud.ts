@@ -9,6 +9,9 @@ import { PortfolioActivityMode, PortfolioActivityModel } from '../../../../../..
 import { PortfolioActivityService } from '../../../../../../services/portfolio-activity/portfolio-activity-service';
 import { catchError } from 'rxjs';
 import { PortfolioComponentsDataExchange } from '../../../../../../interfaces/portfolio-components-data-exchange';
+import { BuyAssetDialog } from '../../../../../dialogs/buy-asset-dialog/buy-asset-dialog';
+import { AddIncomeDialog } from '../../../../../dialogs/add-income-dialog/add-income-dialog';
+import { SellAssetDialog } from '../../../../../dialogs/sell-asset-dialog/sell-asset-dialog';
 
 @Component({
   selector: 'app-portfolio-table-rud',
@@ -73,7 +76,7 @@ export class PortfolioTableRud implements OnChanges {
       )
   }
 
-  buyStock() {
+  buyAsset() {
     // Set the attributes to pass to the actual dialog, not the General one
     const data: Map<string, any> = new Map<string, any>()
     data.set('portfolioId', this.portfolioId())
@@ -81,8 +84,54 @@ export class PortfolioTableRud implements OnChanges {
       GeneraliDialog,
       {
         data: {
-          title: "Buy stock",
-          content: BuyStockDialog,
+          title: "Buy asset",
+          content: BuyAssetDialog,
+          data: data
+        }
+      }
+    )
+    dialogRef.afterClosed().subscribe(
+      () => {
+        this.getPortfolioActivityContent(
+          this.portfolioId()
+        );
+      }
+    )
+  }
+
+  sellAsset() {
+    // Set the attributes to pass to the actual dialog, not the General one
+    const data: Map<string, any> = new Map<string, any>()
+    data.set('portfolioId', this.portfolioId())
+    const dialogRef = this.dialog.open(
+      GeneraliDialog,
+      {
+        data: {
+          title: "Sell asset",
+          content: SellAssetDialog,
+          data: data
+        }
+      }
+    )
+    dialogRef.afterClosed().subscribe(
+      () => {
+        this.getPortfolioActivityContent(
+          this.portfolioId()
+        );
+      }
+    )
+  }
+
+  addIncome() {
+    // Set the attributes to pass to the actual dialog, not the General one
+    const data: Map<string, any> = new Map<string, any>()
+    data.set('portfolioId', this.portfolioId())
+    const dialogRef = this.dialog.open(
+      GeneraliDialog,
+      {
+        data: {
+          title: "Add income",
+          content: AddIncomeDialog,
           data: data
         }
       }
