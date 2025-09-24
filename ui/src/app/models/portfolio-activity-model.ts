@@ -56,5 +56,19 @@ export const createPortfolio_view = (): PortfolioActivityModel => ({
     broker_id: 0 
 });
 
+export type SymbolByPortfolioTotalsModel = {
+    user_id: number;
+    portfolio_id: number;
+    symbol_id: number;
+    symbol: string;
+    symbol_name: string;
+    broker_id: number;
+    broker_name: string;
+    total_quantity: number;
+    total_cash_in: number;
+    total_fees: number;
+    average_purchase_price: number;
+}
+
 
 
