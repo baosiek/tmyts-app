@@ -47,7 +47,6 @@ export class PortfolioTableRud implements OnChanges {
   }
 
   getPortfolioActivityContent(portfolioId: number) {
-    console.log(`portfolio id: ${this.portfolioId}`)
     this.portfolioActivityService.getActivityForPortfolio(this.userId(), portfolioId)
       .pipe(
         catchError(
@@ -79,6 +78,7 @@ export class PortfolioTableRud implements OnChanges {
   buyAsset() {
     // Set the attributes to pass to the actual dialog, not the General one
     const data: Map<string, any> = new Map<string, any>()
+    data.set('userId', this.userId())
     data.set('portfolioId', this.portfolioId())
     const dialogRef = this.dialog.open(
       GeneraliDialog,
@@ -102,6 +102,7 @@ export class PortfolioTableRud implements OnChanges {
   sellAsset() {
     // Set the attributes to pass to the actual dialog, not the General one
     const data: Map<string, any> = new Map<string, any>()
+    data.set('userId', this.userId())
     data.set('portfolioId', this.portfolioId())
     const dialogRef = this.dialog.open(
       GeneraliDialog,
@@ -151,7 +152,6 @@ export class PortfolioTableRud implements OnChanges {
 
   deleteRow(element: PortfolioActivityModel) {
     const temp = element as PortfolioActivityModel
-    console.log(`Element: ${temp.user_name}`)
     this.portfolioActivityService.deleteActivityForPortfolio(element.id)
     .pipe(
         catchError(
