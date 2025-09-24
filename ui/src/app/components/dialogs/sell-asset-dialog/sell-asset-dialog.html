@@ -24,10 +24,20 @@
 
         <!-- Quantity Column -->
         <ng-container matColumnDef="total_quantity">
-            <th mat-header-cell *matHeaderCellDef> Quantity </th>
+            <th mat-header-cell *matHeaderCellDef> Quantity to Sell </th>
             <td mat-cell *matCellDef="let element">
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" style="padding-top: 5%;">
                     <input matInput [disabled]="element !== selectedSymbol" placeholder="{{element.total_quantity}}" [(ngModel)]="element.total_quantity">
+                </mat-form-field>
+            </td>
+        </ng-container>
+
+        <!-- Total fees Column -->
+        <ng-container matColumnDef="total_fees">
+            <th mat-header-cell *matHeaderCellDef> Fee </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-form-field appearance="outline" style="padding-top: 5%;">
+                    <input matInput [disabled]="element !== selectedSymbol" placeholder="{{element.total_fees}}" [(ngModel)]="element.total_fees">
                 </mat-form-field>
             </td>
         </ng-container>
@@ -36,6 +46,12 @@
         <ng-container matColumnDef="average_purchase_price">
             <th mat-header-cell *matHeaderCellDef> Average Price </th>
             <td mat-cell *matCellDef="let element"> {{element.average_purchase_price | currency}} </td>
+        </ng-container>
+
+        <!-- Current Price Column -->
+        <ng-container matColumnDef="current_price">
+            <th mat-header-cell *matHeaderCellDef> Current Price </th>
+            <td mat-cell *matCellDef="let element"> {{element.current_price | currency}} </td>
         </ng-container>
 
         <!-- Sell button -->

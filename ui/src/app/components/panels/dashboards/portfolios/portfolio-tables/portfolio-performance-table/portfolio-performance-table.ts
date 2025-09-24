@@ -42,7 +42,6 @@ export class PortfolioPerformanceTable implements OnChanges{
       .pipe(
         catchError(
           (error) => {
-            console.log(error);
             throw error;
           }
         )

@@ -20,7 +20,15 @@ export class PortfolioActivityService {
     const body = portfolio_activity_data ;
 
     return this.http.post<ReturnMessage>(`${this.apiUrl}/${apiMethod}/`, body, { headers })
-  }  
+  }
+
+  addSellTransaction(portfolio_activity_data: Partial<PortfolioActivityModel>): Observable<ReturnMessage> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const apiMethod = 'create';
+    const body = portfolio_activity_data ;
+
+    return this.http.post<ReturnMessage>(`${this.apiUrl}/${apiMethod}/`, body, { headers })
+  } 
 
   getActivityForPortfolio(user_id: number, portfolio_id: number): Observable<PortfolioActivityModel[]> {
     const apiMethod = 'get_all';

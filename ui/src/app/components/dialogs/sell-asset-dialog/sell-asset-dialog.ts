@@ -1,12 +1,12 @@
 import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
-import { FormBuilder, FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogData } from '../general-dialog/general-dialog';
 import { PortfolioActivityService } from '../../../services/portfolio-activity/portfolio-activity-service';
 import { catchError } from 'rxjs';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { SymbolByPortfolioTotalsModel } from '../../../models/portfolio-activity-model';
-import { CurrencyPipe, JsonPipe, NgClass } from '@angular/common';
+import { MatTableDataSource } from '@angular/material/table';
+import { PortfolioActivityMode, PortfolioActivityModel, SymbolByPortfolioTotalsModel } from '../../../models/portfolio-activity-model';
+import { CurrencyPipe, NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-sell-asset-dialog',
@@ -42,7 +42,7 @@ export class SellAssetDialog implements OnInit{
   data = input.required<DialogData>()
 
   // Initializes the table datasource
-  displayedColumns: string[] = ['symbol', 'symbol_name', 'broker_name', 'total_quantity', 'average_purchase_price', 'sell'];
+  displayedColumns: string[] = ['symbol', 'symbol_name', 'broker_name', 'total_quantity', 'total_fees', 'average_purchase_price', 'current_price', 'sell'];
   dataSource: MatTableDataSource<SymbolByPortfolioTotalsModel> = new MatTableDataSource();
   
   constructor() {}
@@ -50,7 +50,6 @@ export class SellAssetDialog implements OnInit{
   ngOnInit(): void {
     this.userId = this.data().data.get('userId')
     this.portfolioId = this.data().data.get('portfolioId')
-    // console.log(`UserId: ${this.userId}, PortfolioId: ${this.portfolioId}`)
     this.portfolioActivityService.getSymbolsTotalsByPortfolio(this.userId, this.portfolioId)
     .pipe(
       catchError(
@@ -69,13 +68,37 @@ export class SellAssetDialog implements OnInit{
 
   selectRow(row: SymbolByPortfolioTotalsModel) {
     this.selectedSymbol = row;
-    console.log(`selected symbol: ${JSON.stringify(this.selectedSymbol)}`)
   }
 
   sell(element: SymbolByPortfolioTotalsModel) {
-    const chosen = this.dataSource.data.find(el => el.symbol_id === element.symbol_id)
-    if (chosen) {
-      console.log(`sold! ${JSON.stringify(element.symbol_name)} -> quantity: ${chosen.total_quantity}`)
+    const selected = this.dataSource.data.find(el => el.symbol_id === element.symbol_id)
+    if (selected) {
+      const activity: Partial<PortfolioActivityModel> = {
+        id: 0,
+        user_id: selected.user_id,
+        portfolio_id: selected.portfolio_id,
+        symbol_id: selected.symbol_id,
+        quantity: selected.total_quantity * -1,
+        purchase_price: selected.current_price,
+        purchase_date: new Date(),
+        broker_id: selected.broker_id,
+        cash_in: 0,
+        fees: selected.total_fees
+      }
+
+      this.portfolioActivityService.addSellTransaction(activity)
+      .pipe(
+        catchError(
+          (error) => {
+            throw error;
+          }
+        )
+      )
+      .subscribe(
+        (response) => {
+          console.log(`Response is: ${response}`);
+        }
+      );
     }
     
   }

@@ -119,7 +119,6 @@ export class BuyAssetDialog {
     .subscribe(
       (response) => {
         this.brokers = response;
-        console.log(`Broker list: ${JSON.stringify(this.brokers)}`)
       }
     );
   }
@@ -134,7 +133,6 @@ export class BuyAssetDialog {
       .pipe(
         catchError(
           (error) => {
-            console.log(error);
             throw error;
           }
         )
@@ -161,7 +159,6 @@ export class BuyAssetDialog {
     .pipe(
       catchError(
         (error) => {
-          console.log(error)
           throw error
         }
       )
@@ -189,7 +186,6 @@ export class BuyAssetDialog {
         .pipe(
           catchError(
             (error) => {
-              console.log(error);
               throw error;
             }
           )
