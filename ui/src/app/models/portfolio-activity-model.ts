@@ -68,6 +68,7 @@ export type SymbolByPortfolioTotalsModel = {
     total_cash_in: number;
     total_fees: number;
     average_purchase_price: number;
+    current_price: number;
 }
 
 
