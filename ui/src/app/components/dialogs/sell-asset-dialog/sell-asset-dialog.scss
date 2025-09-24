@@ -1,0 +1,14 @@
+@use '@angular/material' as mat;
+
+.mat-mdc-row.selected {
+  background-color: #e0e0e0; /* A light grey color for highlighting */
+    mat-icon {
+        @include mat.icon-overrides((
+            color: rgb(234, 0, 255),
+        ));
+    }
+}
+
+.mat-mdc-row:hover {
+  background-color: #f5f5f5;
+}

@@ -1,43 +1,83 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DialogData } from '../general-dialog/general-dialog';
+import { PortfolioActivityService } from '../../../services/portfolio-activity/portfolio-activity-service';
+import { catchError } from 'rxjs';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { SymbolByPortfolioTotalsModel } from '../../../models/portfolio-activity-model';
+import { CurrencyPipe, JsonPipe, NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-sell-asset-dialog',
   imports: [
     ...MATERIAL_IMPORTS,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
+    NgClass,
+    CurrencyPipe
   ],
   templateUrl: './sell-asset-dialog.html',
   styleUrl: './sell-asset-dialog.scss'
 })
-export class SellAssetDialog {
+export class SellAssetDialog implements OnInit{
 
   // Injects the formbuilder to create the forms
   private _formBuilder = inject(FormBuilder);
 
-  /*
-  This form contains the selected symbol to be
-  sold.
-  */
-  stepOneForm = this._formBuilder.group({
-    symbol: ['', Validators.required],
-  });
+  // Injects services
+  portfolioActivityService = inject(PortfolioActivityService)
+
+  // Initializes valiables
+  // Term to perform quick search
+  term: string | null | undefined = ''
+  userId: number = 0;
+  portfolioId: number = 0;
+  selectedSymbol: SymbolByPortfolioTotalsModel | null = null;
+  quantityToSell: number | null = 0;
 
 
-  /*
-  This form contains the selling data.
-  */
-  stepTwoForm = this._formBuilder.group({
-    user_id: [1],
-    portfolio_id: [0],
-    symbol_id: [0, Validators.required],
-    purchase_date: [new Date(), Validators.required],
-    purchase_price: [0, Validators.required],
-    quantity: [0, Validators.required],
-    fees: [0, Validators.required],
-    cash_in: [0],
-    broker_id: [1, Validators.required],
-  });
+  // Initializes signals
+  // Holds data passed from PortfolioTableRud component
+  data = input.required<DialogData>()
+
+  // Initializes the table datasource
+  displayedColumns: string[] = ['symbol', 'symbol_name', 'broker_name', 'total_quantity', 'average_purchase_price', 'sell'];
+  dataSource: MatTableDataSource<SymbolByPortfolioTotalsModel> = new MatTableDataSource();
+  
+  constructor() {}
+
+  ngOnInit(): void {
+    this.userId = this.data().data.get('userId')
+    this.portfolioId = this.data().data.get('portfolioId')
+    // console.log(`UserId: ${this.userId}, PortfolioId: ${this.portfolioId}`)
+    this.portfolioActivityService.getSymbolsTotalsByPortfolio(this.userId, this.portfolioId)
+    .pipe(
+      catchError(
+        (error) => {
+          console.log(error);
+          throw error;
+        }
+      )
+    )
+    .subscribe(
+      (response) => {
+        this.dataSource.data = response;
+      }
+    )
+  }
+
+  selectRow(row: SymbolByPortfolioTotalsModel) {
+    this.selectedSymbol = row;
+    console.log(`selected symbol: ${JSON.stringify(this.selectedSymbol)}`)
+  }
+
+  sell(element: SymbolByPortfolioTotalsModel) {
+    const chosen = this.dataSource.data.find(el => el.symbol_id === element.symbol_id)
+    if (chosen) {
+      console.log(`sold! ${JSON.stringify(element.symbol_name)} -> quantity: ${chosen.total_quantity}`)
+    }
+    
+  }
 
 }
