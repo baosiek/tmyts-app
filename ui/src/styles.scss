@@ -57,7 +57,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   ));
   @include mat.dialog-overrides((
     container-shape: 16px,
-    container-min-width: 1400px
+    container-min-width: 1600px
 
   ));
   @include mat.form-field-overrides((
