@@ -87,10 +87,12 @@ export class BuyAssetDialog {
       }
     );
     
-    const value  = this.data().data.get('portfolioId')
+    const userId  = this.data().data.get('userId')
+    const portfolioId  = this.data().data.get('portfolioId')
+
     const formValues = {
       'user_id': 1,
-      'portfolio_id': value,
+      'portfolio_id': portfolioId,
       'purchase_price': 0,
       'purchase_date': new Date(),
       'quantity': 0,
