@@ -13,14 +13,16 @@ import { CurrencyPipe, PercentPipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { PortfolioActivityMode } from '../../../models/portfolio-activity-model';
 import { PortfolioActivityService } from '../../../services/portfolio-activity/portfolio-activity-service';
+import { BrokerService } from '../../../services/broker/broker-service';
+import { BrokerModel, createBroker } from '../../../models/broker_model';
 
 @Component({
   selector: 'app-buy-asset-dialog',
   imports: [
     ...MATERIAL_IMPORTS,
     ReactiveFormsModule,
-    MatDatepickerModule,
     FormsModule,
+    MatDatepickerModule,
     CurrencyPipe,
     PercentPipe
   ],
@@ -37,6 +39,7 @@ export class BuyAssetDialog {
   quickSearch = inject(QuickSearchService)
   liveData = inject(LiveDataService)
   portfolioActivityService = inject(PortfolioActivityService);
+  brokerService = inject(BrokerService)
 
   
   // Initializes valiables
@@ -44,6 +47,7 @@ export class BuyAssetDialog {
   term: string | null | undefined = ''
   // Holds the selected symbol by the user
   selectedSymbol: SymbolModel = createNewSymbol();
+  brokers: BrokerModel[] = [];
 
   // Initializes signals
   // Holds quickSearch results
@@ -74,7 +78,7 @@ export class BuyAssetDialog {
     quantity: [0, Validators.required],
     fees: [0, Validators.required],
     cash_in: [0],
-    broker_id: [1, Validators.required],
+    broker_id: [0, Validators.required],
   });
 
   constructor(){}
@@ -97,12 +101,27 @@ export class BuyAssetDialog {
       'purchase_date': new Date(),
       'quantity': 0,
       'symbol_id': 0,
-      'broker_id': 1,
+      'broker_id': 0,
       'fees': 0,
       'cash_in': 0
     }
 
     this.stepTwoForm.setValue(formValues)
+
+    this.brokerService.getAll()
+    .pipe(
+      catchError(
+        (error) => {
+          throw error;
+        }
+      )
+    )
+    .subscribe(
+      (response) => {
+        this.brokers = response;
+        console.log(`Broker list: ${JSON.stringify(this.brokers)}`)
+      }
+    );
   }
 
   /*

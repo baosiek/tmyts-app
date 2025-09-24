@@ -62,14 +62,25 @@
                                 <span matTextPrefix>$&nbsp;</span>
                             </mat-form-field>
                         </div>
-                        <mat-form-field appearance="outline" class="form-field">
-                            <mat-label>Purchase date</mat-label>
-                            <input matInput formControlName="purchase_date" [matDatepicker]="picker" required>
-                            <mat-hint>MM/DD/YYYY</mat-hint>
-                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
-                        </mat-form-field>
-
+                        <div>
+                            <mat-form-field appearance="outline" class="form-field">
+                                <mat-label>Purchase date</mat-label>
+                                <input matInput formControlName="purchase_date" [matDatepicker]="picker" required>
+                                <mat-hint>MM/DD/YYYY</mat-hint>
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field appearance="outline" class="form-field">
+                                <mat-label>Broker</mat-label>
+                                <mat-select formControlName="broker_id">
+                                    @for(broker of brokers; track broker.id){
+                                    <mat-option [value]="broker.id">{{broker.broker_name}}</mat-option>
+                                    }
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                     </form>
                     <div>
                         <button type="button" matButton matStepperNext [mat-dialog-close]="true">Cancel</button>
