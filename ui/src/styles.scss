@@ -72,3 +72,30 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin: 0 auto;
 }
 
+.success-snackbar-theme {
+  @include mat.snack-bar-overrides((
+    supporting-text-color: black,
+    container-color: rgb(0, 255, 4),
+    supporting-text-size: 24px
+  ));
+  // width: 2500px !important;
+}
+
+.success-snackbar-theme .mdc-snackbar__surface {
+  max-width: 1000px !important; /* Set your desired max-width */
+  width: 100%; /* Ensures it is responsive up to the max-width */
+}
+
+.error-snackbar-theme {
+  @include mat.snack-bar-overrides((
+    supporting-text-color: rgb(255, 253, 253),
+    container-color: rgb(255, 47, 0),
+    supporting-text-size: 24px
+  ));
+}
+
+.error-snackbar-theme .mdc-snackbar__surface {
+  max-width: 1000px !important; /* Set your desired max-width */
+  width: 100%; /* Ensures it is responsive up to the max-width */
+}
+
