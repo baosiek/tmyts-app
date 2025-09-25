@@ -8,7 +8,7 @@
                 @if (portfolioList.length > 0) {
                 <mat-label>Portfolio id</mat-label>
                 } @else {
-                <mat-label>You have no saved portfolios. Click on the button to create one ==></mat-label>
+                <mat-label>You have no saved portfolios. Click on the button to create one</mat-label>
                 }
                 <mat-select matNativeControl [(ngModel)]="selectedPortfolio">
                     <option value="" selected></option>
@@ -24,7 +24,7 @@
         </div>
         <div class="content-wrapper">
             <div>
-                <app-portfolio-table-rud [userId]="user_id" [portfolioId]="selectedPortfolio()"
+                <app-portfolio-table-rud [userId]="user_id" [portfolioId]="selectedPortfolio"
                     (portfolioExchangeData)="receiveMessage($event)"></app-portfolio-table-rud>
             </div>
             <div>

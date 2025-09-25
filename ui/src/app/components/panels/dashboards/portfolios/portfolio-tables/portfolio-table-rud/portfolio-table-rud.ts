@@ -37,7 +37,7 @@ export class PortfolioTableRud implements OnChanges,  AfterViewInit {
   dataSource: MatTableDataSource<PortfolioActivityModel> = new MatTableDataSource();
 
   userId: InputSignal<number> = input.required<number>()
-  portfolioId: InputSignal<number> = input.required<number>()
+  portfolioId: InputSignal<number | null> = input.required<number | null>()
 
   @Output() portfolioExchangeData = new EventEmitter<PortfolioComponentsDataExchange>();
 
@@ -57,8 +57,9 @@ export class PortfolioTableRud implements OnChanges,  AfterViewInit {
     );
   }
 
-  getPortfolioActivityContent(portfolioId: number) {
-    this.portfolioActivityService.getActivityForPortfolio(this.userId(), portfolioId)
+  getPortfolioActivityContent(portfolioId: number | null) {
+    if(portfolioId) {
+      this.portfolioActivityService.getActivityForPortfolio(this.userId(), portfolioId)
       .pipe(
         catchError(
           (error) => {
@@ -83,6 +84,8 @@ export class PortfolioTableRud implements OnChanges,  AfterViewInit {
           this.portfolioExchangeData.emit(dataExchange)
         }
       )
+    }
+    
   }
 
   buyAsset() {

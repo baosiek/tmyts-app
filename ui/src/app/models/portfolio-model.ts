@@ -6,8 +6,7 @@ export type PortfolioModel = {
 }
 
 // Factory function to create a new PortfolioModel object
-export const createPortfolio = (): PortfolioModel => ({
-  id: 0,
+export const createPortfolio = (): Partial<PortfolioModel> => ({
   user_id: 0,
   portfolio_name: '',
   description: ''

@@ -39,7 +39,7 @@ export class Portfolios implements OnInit{
   dialog = inject(MatDialog);
   private _snackBar = inject(MatSnackBar);
   // selectedPortfolio!: number;
-  selectedPortfolio = signal(0);
+  selectedPortfolio: number = 0;
 
   dataExchangeToChild = PortfolioComponentsDataExchange.create(0, 0, []);
 
@@ -60,18 +60,23 @@ export class Portfolios implements OnInit{
   }
 
   add() {
+    // Set the attributes to pass to the actual dialog, not the General one
+    const data: Map<string, any> = new Map<string, any>()
+    data.set('userId', this.user_id)
     const dialogRef = this.dialog.open(
       GeneraliDialog,
       {
         data: {
           title: "Add new portfolio",
-          user_id: this.user_id,
+          data: data,
           content: AddPortfolioDialog
         }
       }
     )
     dialogRef.afterClosed().subscribe(
-      () => {
+      (response) => {
+        const createdPortfolio: PortfolioModel = response as PortfolioModel
+        this.selectedPortfolio = createdPortfolio.id
         this.updatePortfolioList();
       }
     )
@@ -89,13 +94,18 @@ export class Portfolios implements OnInit{
       .subscribe(
         {
           next: (response: PortfolioModel[]) => {
-            // Handle successful response
+            // Handle successful response updating portfolio list
             this.portfolioList = [ ...response ]
 
             // typescript syntax to get the first element
-            const [firstPortfolio] = response;
-            // this.selectedPortfolio = firstPortfolio.id;
-            this.selectedPortfolio.set(firstPortfolio.id);
+            const [firstPortfolio] = this.portfolioList;
+
+            /* upon this component init selectedPortfolio is zero, 
+            thus it selects automatically the first portfolio in portfolioList*/
+            if (this.selectedPortfolio == 0) {
+              this.selectedPortfolio = firstPortfolio.id;
+            }
+            
           },
           error: (error) => {
             // Handle error response

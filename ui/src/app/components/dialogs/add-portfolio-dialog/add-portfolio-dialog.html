@@ -3,7 +3,7 @@
         <div>
             <mat-form-field appearance="outline" style="width: 300px">
                 <mat-label>Portfolio name</mat-label>
-                <input matInput placeholder="Type in the portfolio name" name="portfolio-name" [(ngModel)]="portfolio_model.id">
+                <input matInput placeholder="Type in the portfolio name" name="portfolio-name" [(ngModel)]="portfolio_model.portfolio_name">
             </mat-form-field>
         </div>
         <div>
@@ -17,7 +17,7 @@
                 <mat-icon>cancel_presentation</mat-icon>
                 Cancel
             </button>
-            <button mat-raised-button (click)="save()" [mat-dialog-close]="portfolio_model">
+            <button mat-raised-button (click)="save()">
                 <mat-icon fontSet="material-symbols-outlined">save_as</mat-icon>
                 Save
             </button>

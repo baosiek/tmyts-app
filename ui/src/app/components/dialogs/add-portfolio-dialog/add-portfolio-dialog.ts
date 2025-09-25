@@ -7,6 +7,8 @@ import { PortfolioDatabaseService } from '../../../services/portfolio-database/p
 import { catchError } from 'rxjs';
 import { ReturnMessage } from '../../../models/return-message';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DialogData } from '../general-dialog/general-dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-portfolio-dialog',
@@ -20,13 +22,21 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class AddPortfolioDialog implements OnInit {
 
-  portfolio_model: PortfolioModel = createPortfolio();
+  portfolio_model: Partial<PortfolioModel> = createPortfolio();
   portfilioDbService = inject(PortfolioDatabaseService)
   private _snackBar = inject(MatSnackBar);
-  @Input() user_id!: number;
+
+  // Initializes signals
+  // Holds data passed from PortfolioTableRud component
+  data = input.required<DialogData>()
+  user_id!: number;
+
+  constructor(public dialogRef: MatDialogRef<AddPortfolioDialog>) {}
 
   ngOnInit() {
+    this.user_id = this.data().data.get('userId')
     this.portfolio_model.user_id = this.user_id;
+    console.log(`user id: ${this.portfolio_model.user_id}`)
   }
 
   save() {
@@ -40,9 +50,10 @@ export class AddPortfolioDialog implements OnInit {
       )
       .subscribe(
         {
-          next: (response: ReturnMessage) => {
-            // Handle successful response
-            this._snackBar.open(`HTTP:${response.status_code} - ${response.message}`, 'Close');
+          next: (response: PortfolioModel) => {
+            // Handle successful response by sending the created portfolio back to portfolios component
+            this.dialogRef.close(response)
+            this._snackBar.open(`Portfolio [${response.portfolio_name} - ${response.description}] was created`, 'Close');
           },
           error: (error) => {
             // Handle error response

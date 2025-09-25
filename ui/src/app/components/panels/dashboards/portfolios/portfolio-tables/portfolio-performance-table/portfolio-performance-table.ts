@@ -34,7 +34,8 @@ export class PortfolioPerformanceTable implements OnChanges{
   ngOnChanges(): void {
     
     if (this.dataExchangeFromParent.symbol_list.length > 0) {
-      this.liveDataService.getDetailedPortfolioActivity(
+      if (this.dataExchangeFromParent.portfolio_id) {
+        this.liveDataService.getDetailedPortfolioActivity(
       this.dataExchangeFromParent.user_id,
       this.dataExchangeFromParent.portfolio_id,
       this.dataExchangeFromParent.symbol_list
@@ -51,6 +52,8 @@ export class PortfolioPerformanceTable implements OnChanges{
           this.dataSource.data = response;      
         }
       );
+      }
+      
     } else {
       this.dataSource.data = []
     }   
