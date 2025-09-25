@@ -9,6 +9,7 @@ import { ReturnMessage } from '../../../models/return-message';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DialogData } from '../general-dialog/general-dialog';
 import { MatDialogRef } from '@angular/material/dialog';
+import { TmytsSnackbar } from '../../sub-components/tmyts-snackbar/tmyts-snackbar';
 
 @Component({
   selector: 'app-add-portfolio-dialog',
@@ -24,14 +25,13 @@ export class AddPortfolioDialog implements OnInit {
 
   portfolio_model: Partial<PortfolioModel> = createPortfolio();
   portfilioDbService = inject(PortfolioDatabaseService)
-  private _snackBar = inject(MatSnackBar);
 
   // Initializes signals
   // Holds data passed from PortfolioTableRud component
   data = input.required<DialogData>()
   user_id!: number;
 
-  constructor(public dialogRef: MatDialogRef<AddPortfolioDialog>) {}
+  constructor(public dialogRef: MatDialogRef<AddPortfolioDialog>, private _snackBar: MatSnackBar) {}
 
   ngOnInit() {
     this.user_id = this.data().data.get('userId')
@@ -53,7 +53,13 @@ export class AddPortfolioDialog implements OnInit {
           next: (response: PortfolioModel) => {
             // Handle successful response by sending the created portfolio back to portfolios component
             this.dialogRef.close(response)
-            this._snackBar.open(`Portfolio [${response.portfolio_name} - ${response.description}] was created`, 'Close');
+            const message: string = `Portfolio [${response.portfolio_name} - ${response.description}] was created`;
+            this._snackBar.openFromComponent(
+              TmytsSnackbar, {
+                data: {'message': message, 'action': 'dismiss'},
+                panelClass: ['error-snackbar-theme']
+              }
+            );
           },
           error: (error) => {
             // Handle error response
