@@ -12,3 +12,18 @@
 .mat-mdc-row:hover {
   background-color: #cdf2c4;
 }
+
+.spinner-container {
+  display: flex;
+  justify-content: center; /* Horizontally centers the content */
+  align-items: center; /* Vertically centers the content */
+  height: 20vh; /* Example: Occupy full viewport height for centering on the page */
+  width: 100%; /* Example: Occupy full width */
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 0;
+  gap: 8px;
+}

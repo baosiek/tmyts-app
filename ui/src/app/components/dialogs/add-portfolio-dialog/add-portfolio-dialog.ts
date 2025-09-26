@@ -51,19 +51,30 @@ export class AddPortfolioDialog implements OnInit {
       .subscribe(
         {
           next: (response: PortfolioModel) => {
-            // Handle successful response by sending the created portfolio back to portfolios component
+            // Handle successful response
+            // Sends the response obtained from the service to [portfolios] component
             this.dialogRef.close(response)
-            const message: string = `Portfolio [${response.portfolio_name} - ${response.description}] was created`;
+
+            // Renders success snack-bar
+            const message: string = `Portfolio id:[${response.portfolio_name}] was created`;
             this._snackBar.openFromComponent(
               TmytsSnackbar, {
                 data: {'message': message, 'action': 'dismiss'},
-                panelClass: ['error-snackbar-theme']
+                panelClass: ['success-snackbar-theme']
               }
             );
           },
           error: (error) => {
             // Handle error response
-            this._snackBar.open(`HTTPError:${error.status}: Portfolio ${this.portfolio_model.id} already exists.`, 'Close');
+            const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
+
+            // Renders error snack-bar
+            this._snackBar.openFromComponent(
+              TmytsSnackbar, {
+                data: {'message': message, 'action': 'Close'},
+                panelClass: ['error-snackbar-theme']
+              }
+            );
           }
         }
       )
