@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, input, OnChanges, OnInit, Renderer2, signal, ViewChild } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
-import { NgStyle } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 
 export type ColorSet = {
   color: string;
@@ -11,7 +11,7 @@ export type ColorSet = {
   selector: 'app-tmyts-chip',
   imports: [
     ...MATERIAL_IMPORTS,
-    NgStyle
+    NgClass
 ],
   templateUrl: './tmyts-chip.html',
   styleUrl: './tmyts-chip.scss',
@@ -32,19 +32,10 @@ export type ColorSet = {
 export class TmytsChip {
 
   @Input() iconName: string = ""
-  // iconName = input();
-
-  @Input() textColor: string = '#000'
-  // textColor = input();
-
-  @Input() backgroundColorColor: string = '#fff'
-  // backgroundColor = input();
+  @Input() classType: string = 'error-container'
 
   getStyleObject() {
-    return {
-      "color": this.textColor,
-      "background-color": this.backgroundColorColor
-    }
+    return this.classType
   }
 
 }

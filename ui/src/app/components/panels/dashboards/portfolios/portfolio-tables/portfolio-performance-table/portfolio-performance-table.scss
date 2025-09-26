@@ -69,14 +69,15 @@ table {
 }
 
 .green {
-  color: #2b5c33;
-  background-color: #7ff593;
+  color: var(--mat-sys-on-primary);
+  background-color: var(--mat-sys-primary);
   font-weight: bold;
 }
 
 .red {
-  color: #732f2f;
-  background-color: #f59f9f;
+  color: var(--mat-sys-on-error-container);
+  background-color: var(--mat-sys-error-container);
+  font-weight: bold;
 }
 
 .spinner-container {

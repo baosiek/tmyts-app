@@ -102,12 +102,11 @@
       <th mat-header-cell *matHeaderCellDef> ROI </th>
       <td mat-cell style="padding: 0;" *matCellDef="let element">
         @if (element.percent >= 0) {
-        <app-tmyts-chip iconName="arrow_upward_alt" textColor="#2b5c33" backgroundColorColor="#7ff593">{{element.percent
+        <app-tmyts-chip iconName="arrow_upward_alt" classType="success-container" backgroundColorColor="#7ff593">{{element.percent
           | percent:'1.2-2'}}
         </app-tmyts-chip>
         } @else {
-        <app-tmyts-chip iconName="arrow_downward_alt" textColor="#732f2f"
-          backgroundColorColor="#f59f9f">{{element.percent | percent:'1.2-2'}}
+        <app-tmyts-chip iconName="arrow_downward_alt" classType="error-container">{{element.percent | percent:'1.2-2'}}
         </app-tmyts-chip>
         }
       </td>

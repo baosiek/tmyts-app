@@ -36,3 +36,13 @@ $chip-icon-size: 20px;       // Size of the icon
     padding: 8px 8px;
     justify-content: end;
 }
+
+.success-container {
+  color: var(--mat-sys-on-primary);
+  background-color: var(--mat-sys-primary);
+}
+
+.error-container {
+    color: var(--mat-sys-on-error-container);
+    background-color: var(--mat-sys-error-container);
+}
