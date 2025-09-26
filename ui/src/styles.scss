@@ -8,6 +8,7 @@
 @use '../src/app/themes/main_theme.scss' as main-theme;
 @use '../src/app/themes/light_theme.scss' as green-theme;
 
+
 html {
   @include mat.theme((
     color: (
@@ -75,7 +76,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .success-snackbar-theme {
   @include mat.snack-bar-overrides((
     supporting-text-color: black,
-    container-color: rgb(0, 255, 4),
+    container-color: var(--mat-sys-inverse-primary),
     supporting-text-size: 24px
   ));
   // width: 2500px !important;
@@ -89,7 +90,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .error-snackbar-theme {
   @include mat.snack-bar-overrides((
     supporting-text-color: rgb(255, 253, 253),
-    container-color: rgb(255, 47, 0),
+    container-color: var(--mat-sys-error),
     supporting-text-size: 24px
   ));
 }
@@ -98,4 +99,5 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   max-width: 1000px !important; /* Set your desired max-width */
   width: 100%; /* Ensures it is responsive up to the max-width */
 }
+
 
