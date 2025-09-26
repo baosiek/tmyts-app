@@ -8,6 +8,10 @@ import { PortfolioActivityService } from '../../../services/portfolio-activity/p
 import { catchError } from 'rxjs';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { FormsModule, NgModel } from '@angular/forms';
+import { ReturnMessage } from '../../../models/return-message';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TmytsSnackbar } from '../../sub-components/tmyts-snackbar/tmyts-snackbar';
 
 @Component({
   selector: 'app-add-income-dialog',
@@ -19,14 +23,14 @@ import { FormsModule, NgModel } from '@angular/forms';
   templateUrl: './add-income-dialog.html',
   styleUrl: './add-income-dialog.scss'
 })
-export class AddIncomeDialog implements OnInit{
+export class AddIncomeDialog implements OnInit {
 
   // Initializes valiables
   // Term to perform quick search
   userId: number = 0;
   portfolioId: number = 0;
   selectedSymbol: SymbolByPortfolioTotalsModel | null = null;
-  pickedDate = {value: new Date()}
+  pickedDate = { value: new Date() }
   cash_in: number = 0
 
   // Initializes signals
@@ -40,22 +44,27 @@ export class AddIncomeDialog implements OnInit{
   displayedColumns: string[] = ['symbol', 'symbol_name', 'broker_name', 'cash_in', 'purchase_date', 'add'];
   dataSource: MatTableDataSource<SymbolByPortfolioTotalsModel> = new MatTableDataSource();
 
+  constructor(
+    public dialogRef: MatDialogRef<AddIncomeDialog>,
+    private _snackBar: MatSnackBar
+  ) { }
+
   ngOnInit(): void {
     this.userId = this.data().data.get('userId')
     this.portfolioId = this.data().data.get('portfolioId')
     this.portfolioActivityService.getSymbolsTotalsByPortfolio(this.userId, this.portfolioId)
-    .pipe(
-      catchError(
-        (error) => {
-          throw error;
-        }
+      .pipe(
+        catchError(
+          (error) => {
+            throw error;
+          }
+        )
       )
-    )
-    .subscribe(
-      (response) => {
-        this.dataSource.data = response;
-      }
-    );
+      .subscribe(
+        (response) => {
+          this.dataSource.data = response;
+        }
+      );
   }
 
   selectRow(row: SymbolByPortfolioTotalsModel) {
@@ -76,19 +85,35 @@ export class AddIncomeDialog implements OnInit{
       fees: 0
     }
 
-      this.portfolioActivityService.addSellTransaction(activity)
-      .pipe(
-        catchError(
-          (error) => {
-            throw error;
-          }
-        )
-      )
-      .subscribe(
-        (response) => {
-          console.log(`Response is: ${response}`);
-        }
-      ); 
-  }  
+    this.portfolioActivityService.addSellTransaction(activity)
+    .subscribe(
+      {
+        next: (response: ReturnMessage) => {
+          // sends back to this dialog caller the response
+          this.dialogRef.close(response)
 
+          // informs the user
+          const message: string = `Income:[${response.message}] was added to the portfolio.`;
+          this._snackBar.openFromComponent(
+            TmytsSnackbar, {
+              data: { 'message': message, 'action': 'dismiss' },
+              panelClass: ['success-snackbar-theme']
+            }
+          );
+        },
+        error: (error) => {
+          // Handle error response
+          const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
+
+          // Renders error snack-bar
+          this._snackBar.openFromComponent(
+            TmytsSnackbar, {
+              data: {'message': message, 'action': 'Close'},
+              panelClass: ['error-snackbar-theme']
+            }
+          );
+        }
+      },
+    );
+  }
 }

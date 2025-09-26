@@ -41,13 +41,6 @@ export class AddPortfolioDialog implements OnInit {
 
   save() {
     this.portfilioDbService.createPortfolio(this.portfolio_model)
-      .pipe(
-        catchError(
-          (error) => {
-            throw error
-          }
-        )
-      )
       .subscribe(
         {
           next: (response: PortfolioModel) => {
