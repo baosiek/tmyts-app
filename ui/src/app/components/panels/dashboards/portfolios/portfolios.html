@@ -2,7 +2,10 @@
     @if (data) {
     <app-tmyts-toolbar [data]="data"></app-tmyts-toolbar>
     }
-    <div class="">
+    <div>
+        <div class="custom-card-header">
+            <app-indexes-cards class="indexes-container"></app-indexes-cards>
+        </div>
         <div class="custom-card-header">
             <mat-form-field appearance="outline" style="width: 100%; margin-top: 1.5%;">
                 @if (portfolioList.length > 0) {

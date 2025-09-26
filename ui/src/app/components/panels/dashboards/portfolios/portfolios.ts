@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { PortfolioPerformanceTable } from "./portfolio-tables/portfolio-performance-table/portfolio-performance-table";
 import { PortfolioComponentsDataExchange } from '../../../../interfaces/portfolio-components-data-exchange';
 import { TmytsChip } from "../../../sub-components/tmyts-chip/tmyts-chip";
+import { IndexesCards } from "../../indexes-cards/indexes-cards";
 @Component({
   selector: 'app-portfolios',
   imports: [
@@ -22,7 +23,8 @@ import { TmytsChip } from "../../../sub-components/tmyts-chip/tmyts-chip";
     TmytsToolbar,
     PortfolioTableRud,
     FormsModule,
-    PortfolioPerformanceTable
+    PortfolioPerformanceTable,
+    IndexesCards
 ],
   templateUrl: './portfolios.html',
   styleUrl: './portfolios.scss'
