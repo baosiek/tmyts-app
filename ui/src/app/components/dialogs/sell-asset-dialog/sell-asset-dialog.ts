@@ -7,6 +7,7 @@ import { catchError } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { PortfolioActivityMode, PortfolioActivityModel, SymbolByPortfolioTotalsModel } from '../../../models/portfolio-activity-model';
 import { CurrencyPipe, NgClass } from '@angular/common';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-sell-asset-dialog',
@@ -45,7 +46,7 @@ export class SellAssetDialog implements OnInit{
   displayedColumns: string[] = ['symbol', 'symbol_name', 'broker_name', 'total_quantity', 'total_fees', 'average_purchase_price', 'current_price', 'sell'];
   dataSource: MatTableDataSource<SymbolByPortfolioTotalsModel> = new MatTableDataSource();
   
-  constructor() {}
+  constructor(public dialogRef: MatDialogRef<SellAssetDialog>) {}
 
   ngOnInit(): void {
     this.userId = this.data().data.get('userId')
