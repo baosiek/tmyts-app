@@ -38,8 +38,8 @@ $chip-icon-size: 20px;       // Size of the icon
 }
 
 .success-container {
-  color: var(--mat-sys-on-primary);
-  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary-container);
+  background-color: var(--mat-sys-primary-container);
 }
 
 .error-container {
