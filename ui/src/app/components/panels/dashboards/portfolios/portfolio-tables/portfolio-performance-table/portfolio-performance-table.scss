@@ -78,3 +78,11 @@ table {
   color: #732f2f;
   background-color: #f59f9f;
 }
+
+.spinner-container {
+  display: flex;
+  justify-content: center; /* Horizontally centers the content */
+  align-items: center; /* Vertically centers the content */
+  height: 20vh; /* Example: Occupy full viewport height for centering on the page */
+  width: 100%; /* Example: Occupy full width */
+}
