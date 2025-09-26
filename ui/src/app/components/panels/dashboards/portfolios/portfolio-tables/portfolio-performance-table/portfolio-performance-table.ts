@@ -8,6 +8,8 @@ import { PortfolioPerformanceModel } from '../../../../../../models/portfolio-pe
 import { MatTableDataSource } from '@angular/material/table';
 import { CurrencyPipe, NgClass, NgStyle, PercentPipe } from '@angular/common';
 import { TmytsChip } from '../../../../../sub-components/tmyts-chip/tmyts-chip';
+import { TmytsSnackbar } from '../../../../../sub-components/tmyts-snackbar/tmyts-snackbar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-portfolio-performance-table',
@@ -31,40 +33,40 @@ export class PortfolioPerformanceTable implements OnChanges{
   displayedColumns: string[] = ['symbol', 'quantity', 'average_price', 'actual_price', 'cash_in', 'fees', 'variation', 'percent'];
   dataSource: MatTableDataSource<PortfolioPerformanceModel> = new MatTableDataSource();
 
+  constructor(private _snackBar: MatSnackBar){}
+
   ngOnChanges(): void {
     
     if (this.dataExchangeFromParent.symbol_list.length > 0) {
       if (this.dataExchangeFromParent.portfolio_id) {
         this.liveDataService.getDetailedPortfolioActivity(
-      this.dataExchangeFromParent.user_id,
-      this.dataExchangeFromParent.portfolio_id,
-      this.dataExchangeFromParent.symbol_list
-      )
-      .pipe(
-        catchError(
-          (error) => {
-            throw error;
-          }
+        this.dataExchangeFromParent.user_id,
+        this.dataExchangeFromParent.portfolio_id,
+        this.dataExchangeFromParent.symbol_list
         )
-      )
-      .subscribe(
-        (response) => {
-          this.dataSource.data = response;      
-        }
-      );
-      }
-      
+        .subscribe(
+          {
+            next: (response: PortfolioPerformanceModel[]) => {
+              this.dataSource.data = response;
+            },
+            error: (error) => {
+              // Handle error response
+              const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
+
+              // Renders error snack-bar
+              this._snackBar.openFromComponent(
+                TmytsSnackbar, {
+                  data: {'message': message, 'action': 'Close'},
+                  panelClass: ['error-snackbar-theme']
+                }
+              );
+            }
+          }
+        );
+      }      
     } else {
       this.dataSource.data = []
     }   
-  }
-
-  getStatusColor(value: number): string {
-    if (value >= 0) {
-      return '#2b5c33';
-    } else {
-      return '#fc030b';
-    }
   }
 
   getInitialValue() {
