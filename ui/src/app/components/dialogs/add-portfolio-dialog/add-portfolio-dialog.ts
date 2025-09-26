@@ -41,35 +41,35 @@ export class AddPortfolioDialog implements OnInit {
 
   save() {
     this.portfilioDbService.createPortfolio(this.portfolio_model)
-      .subscribe(
-        {
-          next: (response: PortfolioModel) => {
-            // Handle successful response
-            // Sends the response obtained from the service to [portfolios] component
-            this.dialogRef.close(response)
+    .subscribe(
+      {
+        next: (response: PortfolioModel) => {
+          // Handle successful response
+          // Sends the response obtained from the service to [portfolios] component
+          this.dialogRef.close(response)
 
-            // Renders success snack-bar
-            const message: string = `Portfolio id:[${response.portfolio_name}] was created`;
-            this._snackBar.openFromComponent(
-              TmytsSnackbar, {
-                data: {'message': message, 'action': 'dismiss'},
-                panelClass: ['success-snackbar-theme']
-              }
-            );
-          },
-          error: (error) => {
-            // Handle error response
-            const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
+          // Renders success snack-bar
+          const message: string = `Portfolio id:[${response.portfolio_name}] was created`;
+          this._snackBar.openFromComponent(
+            TmytsSnackbar, {
+              data: {'message': message, 'action': 'dismiss'},
+              panelClass: ['success-snackbar-theme']
+            }
+          );
+        },
+        error: (error) => {
+          // Handle error response
+          const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
 
-            // Renders error snack-bar
-            this._snackBar.openFromComponent(
-              TmytsSnackbar, {
-                data: {'message': message, 'action': 'Close'},
-                panelClass: ['error-snackbar-theme']
-              }
-            );
-          }
+          // Renders error snack-bar
+          this._snackBar.openFromComponent(
+            TmytsSnackbar, {
+              data: {'message': message, 'action': 'Close'},
+              panelClass: ['error-snackbar-theme']
+            }
+          );
         }
-      )
+      }
+    );
   }
 }

@@ -1,13 +1,16 @@
-import { Component, inject, input, OnInit, signal } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogData } from '../general-dialog/general-dialog';
 import { PortfolioActivityService } from '../../../services/portfolio-activity/portfolio-activity-service';
 import { catchError } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
-import { PortfolioActivityMode, PortfolioActivityModel, SymbolByPortfolioTotalsModel } from '../../../models/portfolio-activity-model';
+import { PortfolioActivityModel, SymbolByPortfolioTotalsModel } from '../../../models/portfolio-activity-model';
 import { CurrencyPipe, NgClass } from '@angular/common';
 import { MatDialogRef } from '@angular/material/dialog';
+import { ReturnMessage } from '../../../models/return-message';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TmytsSnackbar } from '../../sub-components/tmyts-snackbar/tmyts-snackbar';
 
 @Component({
   selector: 'app-sell-asset-dialog',
@@ -46,7 +49,7 @@ export class SellAssetDialog implements OnInit{
   displayedColumns: string[] = ['symbol', 'symbol_name', 'broker_name', 'total_quantity', 'total_fees', 'average_purchase_price', 'current_price', 'sell'];
   dataSource: MatTableDataSource<SymbolByPortfolioTotalsModel> = new MatTableDataSource();
   
-  constructor(public dialogRef: MatDialogRef<SellAssetDialog>) {}
+  constructor(public dialogRef: MatDialogRef<SellAssetDialog>, private _snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.userId = this.data().data.get('userId')
@@ -96,12 +99,35 @@ export class SellAssetDialog implements OnInit{
         )
       )
       .subscribe(
-        (response) => {
-          console.log(`Response is: ${response}`);
+        {
+          next: (response: ReturnMessage) => {
+            // Handle successful response
+            // Sends the response obtained from the service to [portfolios] component
+            this.dialogRef.close(response)
+  
+            // Renders success snack-bar
+            const message: string = `Asset[${response.message}] was sold`;
+            this._snackBar.openFromComponent(
+              TmytsSnackbar, {
+                data: {'message': message, 'action': 'dismiss'},
+                panelClass: ['success-snackbar-theme']
+              }
+            );
+          },
+          error: (error) => {
+            // Handle error response
+            const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
+  
+            // Renders error snack-bar
+            this._snackBar.openFromComponent(
+              TmytsSnackbar, {
+                data: {'message': message, 'action': 'Close'},
+                panelClass: ['error-snackbar-theme']
+              }
+            );
+          }
         }
       );
-    }
-    
+    }    
   }
-
 }

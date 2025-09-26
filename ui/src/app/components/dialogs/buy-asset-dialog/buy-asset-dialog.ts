@@ -15,6 +15,11 @@ import { PortfolioActivityMode } from '../../../models/portfolio-activity-model'
 import { PortfolioActivityService } from '../../../services/portfolio-activity/portfolio-activity-service';
 import { BrokerService } from '../../../services/broker/broker-service';
 import { BrokerModel, createBroker } from '../../../models/broker_model';
+import { PortfolioModel } from '../../../models/portfolio-model';
+import { TmytsSnackbar } from '../../sub-components/tmyts-snackbar/tmyts-snackbar';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ReturnMessage } from '../../../models/return-message';
 
 @Component({
   selector: 'app-buy-asset-dialog',
@@ -81,7 +86,7 @@ export class BuyAssetDialog {
     broker_id: [0, Validators.required],
   });
 
-  constructor(){}
+  constructor(public dialogRef: MatDialogRef<BuyAssetDialog>, private _snackBar: MatSnackBar){}
 
   ngOnInit(): void {
     this.stepOneForm.get('symbol')?.valueChanges
@@ -179,22 +184,40 @@ export class BuyAssetDialog {
    * this method is executed
    */
   buyAsset() {
-      if (this.selectedSymbol.id){
-        const data = this.stepTwoForm.value as PortfolioActivityMode
-        data.symbol_id = this.selectedSymbol.id
-        this.portfolioActivityService.insertNewActivity(data)
-        .pipe(
-          catchError(
-            (error) => {
-              throw error;
-            }
-          )
-        )
-        .subscribe(
-          (response) => {
-            console.log(`Response is: ${response}`);
+    if (this.selectedSymbol.id){
+      const data = this.stepTwoForm.value as PortfolioActivityMode
+      data.symbol_id = this.selectedSymbol.id
+      this.portfolioActivityService.insertNewActivity(data)
+      .subscribe(
+        {
+          next: (response: ReturnMessage) => {
+            // Handle successful response
+            // Sends the response obtained from the service to [portfolios] component
+            this.dialogRef.close(response)
+
+            // Renders success snack-bar
+            const message: string = `Asset [${response.message}] inserted into portfolio`;
+            this._snackBar.openFromComponent(
+              TmytsSnackbar, {
+                data: {'message': message, 'action': 'dismiss'},
+                panelClass: ['success-snackbar-theme']
+              }
+            );
+          },
+          error: (error) => {
+            // Handle error response
+            const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
+
+            // Renders error snack-bar
+            this._snackBar.openFromComponent(
+              TmytsSnackbar, {
+                data: {'message': message, 'action': 'Close'},
+                panelClass: ['error-snackbar-theme']
+              }
+            );
           }
-        );
-      }
+        }
+      );
     }
+  }
 }
