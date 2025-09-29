@@ -14,15 +14,15 @@ import { TmytsToolbar } from '../../../sub-components/tmyts-toolbar/tmyts-toolba
 export class AssetsAnalysis {
 
   protected id: string = 'assets_analysis'
-  portfolioService = inject(PortfolioDashboardService);
+  dashboardService = inject(PortfolioDashboardService);
   data: ITmytsToolBar | undefined;
 
   constructor() {
-    this.portfolioService.dialogTypes().find(
-      (portfolio) => {
-        if (portfolio) {
-          if (portfolio.id === this.id){
-            this.data = portfolio;
+    this.dashboardService.dialogTypes().find(
+      (dashboard) => {
+        if (dashboard) {
+          if (dashboard.id === this.id){
+            this.data = dashboard;
           }          
         }        
       }

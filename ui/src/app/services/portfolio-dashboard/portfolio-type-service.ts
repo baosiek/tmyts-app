@@ -15,7 +15,7 @@ export class PortfolioDashboardService {
         },
         {
           id: 'assets_analysis',
-          title: "Assets analysis"
+          title: "Asset analysis"
         }
       ]
   ); 

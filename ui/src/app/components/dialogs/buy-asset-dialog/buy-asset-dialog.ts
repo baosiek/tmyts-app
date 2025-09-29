@@ -7,7 +7,6 @@ import { MatStepper } from '@angular/material/stepper';
 import { MatListOption } from '@angular/material/list';
 import { LiveDataService } from '../../../services/live-data/live-data-service';
 import { catchError } from 'rxjs';
-import { createNewSymbolData } from '../buy-stock-dialog/buy-stock-model';
 import { DialogData } from '../general-dialog/general-dialog';
 import { CurrencyPipe, PercentPipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -20,6 +19,7 @@ import { TmytsSnackbar } from '../../sub-components/tmyts-snackbar/tmyts-snackba
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ReturnMessage } from '../../../models/return-message';
+import { createNewSymbolData } from './buy-asset-model';
 
 @Component({
   selector: 'app-buy-asset-dialog',
