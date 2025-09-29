@@ -4,7 +4,7 @@
             <mat-stepper linear #stepper>
                 <mat-step [stepControl]="symbolFormGroup">
                     <form [formGroup]="symbolFormGroup">
-                        <ng-template matStepLabel>Type an investament name or symbol</ng-template>
+                        <ng-template matStepLabel>Type an investment name or symbol</ng-template>
                         <mat-form-field appearance="outline" style="margin-top: 12px; width: 500px">
                             <mat-label>Symbol or investment</mat-label>
                             <input matInput formControlName="symbol" placeholder="Select a symbol"
@@ -64,6 +64,5 @@
                 </mat-step>
             </mat-stepper>
         </div>
-
     </div>
 </div>

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { BasicTickerDataModel } from '../../models/basic-ticker-data';
 import { PortfolioPerformanceModel } from '../../models/portfolio-performance-model';
 import { SymbolDataModel } from '../../components/dialogs/buy-stock-dialog/buy-stock-model';
+import { IndexCardInterface } from '../../components/panels/indexes-cards/indexes-cards';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,14 @@ export class LiveDataService {
     const body = symbols ;
 
     return this.http.post<PortfolioPerformanceModel[]>(`${this.apiUrl}/${apiMethod}/?user_id=${user_id}&portfolio_id=${portfolio_id}`, body, { headers })
+  }
+
+  getIndexesData(indexIds: string[]): Observable<IndexCardInterface[]> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const apiMethod = 'indexes-data';
+    const body = indexIds ;
+
+    return this.http.post<IndexCardInterface[]>(`${this.apiUrl}/${apiMethod}`, body, { headers })
   }
   
 }

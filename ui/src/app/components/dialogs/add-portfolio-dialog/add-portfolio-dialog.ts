@@ -7,6 +7,9 @@ import { PortfolioDatabaseService } from '../../../services/portfolio-database/p
 import { catchError } from 'rxjs';
 import { ReturnMessage } from '../../../models/return-message';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DialogData } from '../general-dialog/general-dialog';
+import { MatDialogRef } from '@angular/material/dialog';
+import { TmytsSnackbar } from '../../sub-components/tmyts-snackbar/tmyts-snackbar';
 
 @Component({
   selector: 'app-add-portfolio-dialog',
@@ -20,35 +23,53 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class AddPortfolioDialog implements OnInit {
 
-  portfolio_model: PortfolioModel = createPortfolio();
+  portfolio_model: Partial<PortfolioModel> = createPortfolio();
   portfilioDbService = inject(PortfolioDatabaseService)
-  private _snackBar = inject(MatSnackBar);
-  @Input() user_id!: number;
+
+  // Initializes signals
+  // Holds data passed from PortfolioTableRud component
+  data = input.required<DialogData>()
+  user_id!: number;
+
+  constructor(public dialogRef: MatDialogRef<AddPortfolioDialog>, private _snackBar: MatSnackBar) {}
 
   ngOnInit() {
+    this.user_id = this.data().data.get('userId')
     this.portfolio_model.user_id = this.user_id;
+    console.log(`user id: ${this.portfolio_model.user_id}`)
   }
 
   save() {
     this.portfilioDbService.createPortfolio(this.portfolio_model)
-      .pipe(
-        catchError(
-          (error) => {
-            throw error
-          }
-        )
-      )
-      .subscribe(
-        {
-          next: (response: ReturnMessage) => {
-            // Handle successful response
-            this._snackBar.open(`HTTP:${response.status_code} - ${response.message}`, 'Close');
-          },
-          error: (error) => {
-            // Handle error response
-            this._snackBar.open(`HTTPError:${error.status}: Portfolio ${this.portfolio_model.id} already exists.`, 'Close');
-          }
+    .subscribe(
+      {
+        next: (response: PortfolioModel) => {
+          // Handle successful response
+          // Sends the response obtained from the service to [portfolios] component
+          this.dialogRef.close(response)
+
+          // Renders success snack-bar
+          const message: string = `Portfolio id:[${response.portfolio_name}] was created`;
+          this._snackBar.openFromComponent(
+            TmytsSnackbar, {
+              data: {'message': message, 'action': 'dismiss'},
+              panelClass: ['success-snackbar-theme']
+            }
+          );
+        },
+        error: (error) => {
+          // Handle error response
+          const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
+
+          // Renders error snack-bar
+          this._snackBar.openFromComponent(
+            TmytsSnackbar, {
+              data: {'message': message, 'action': 'Close'},
+              panelClass: ['error-snackbar-theme']
+            }
+          );
         }
-      )
+      }
+    );
   }
 }

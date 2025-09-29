@@ -69,12 +69,21 @@ table {
 }
 
 .green {
-  color: #2b5c33;
-  background-color: #7ff593;
+  color: var(--mat-sys-on-primary-container);
+  background-color: var(--mat-sys-primary-container);
   font-weight: bold;
 }
 
 .red {
-  color: #732f2f;
-  background-color: #f59f9f;
+  color: var(--mat-sys-on-error-container);
+  background-color: var(--mat-sys-error-container);
+  font-weight: bold;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center; /* Horizontally centers the content */
+  align-items: center; /* Vertically centers the content */
+  height: 20vh; /* Example: Occupy full viewport height for centering on the page */
+  width: 100%; /* Example: Occupy full width */
 }

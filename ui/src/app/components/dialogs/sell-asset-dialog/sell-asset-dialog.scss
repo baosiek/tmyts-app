@@ -1,0 +1,40 @@
+@use '@angular/material' as mat;
+
+.mat-mdc-row.selected {
+  background-color: #e4f0e1;
+
+  /* A light grey color for highlighting */
+  mat-icon {
+    @include mat.icon-overrides((color: rgb(234, 0, 255),
+      ));
+  }
+}
+
+.mat-mdc-row:hover {
+  background-color: #cdf2c4;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 0;
+  gap: 8px;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  /* Horizontally centers the content */
+  align-items: center;
+  /* Vertically centers the content */
+  height: 20vh;
+  /* Example: Occupy full viewport height for centering on the page */
+  width: 100%;
+  /* Example: Occupy full width */
+}
+
+.empty-portfolio {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+}

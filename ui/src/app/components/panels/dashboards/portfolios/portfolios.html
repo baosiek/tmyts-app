@@ -2,13 +2,16 @@
     @if (data) {
     <app-tmyts-toolbar [data]="data"></app-tmyts-toolbar>
     }
-    <div class="">
+    <div>
+        <div class="custom-card-header">
+            <app-indexes-cards class="indexes-container"></app-indexes-cards>
+        </div>
         <div class="custom-card-header">
             <mat-form-field appearance="outline" style="width: 100%; margin-top: 1.5%;">
                 @if (portfolioList.length > 0) {
                 <mat-label>Portfolio id</mat-label>
                 } @else {
-                <mat-label>You have no saved portfolios. Click on the button to create one ==></mat-label>
+                <mat-label>You have no saved portfolios. Click on the button to create one</mat-label>
                 }
                 <mat-select matNativeControl [(ngModel)]="selectedPortfolio">
                     <option value="" selected></option>
@@ -24,7 +27,7 @@
         </div>
         <div class="content-wrapper">
             <div>
-                <app-portfolio-table-rud [userId]="user_id" [portfolioId]="selectedPortfolio()"
+                <app-portfolio-table-rud [userId]="user_id" [portfolioId]="selectedPortfolio"
                     (portfolioExchangeData)="receiveMessage($event)"></app-portfolio-table-rud>
             </div>
             <div>

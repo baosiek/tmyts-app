@@ -15,7 +15,7 @@ mat-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px; /* Example padding */
+  padding: 6px; /* Example padding */
   gap: 8px;
 }
 
@@ -36,6 +36,10 @@ mat-toolbar {
 
 .center-h1 {
   text-align: center;
+}
+
+.indexes-container {
+  width: 100%;
 }
 
 

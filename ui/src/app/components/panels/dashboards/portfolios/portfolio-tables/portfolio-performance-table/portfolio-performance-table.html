@@ -3,7 +3,6 @@
   <div class="header-cell">
     <h4>Initial Value</h4>
     <span>
-
       @if (dataSource.data.length > 0) {
       {{getInitialValue() | currency:'USD':'symbol':'1.2-2'}}
       } @else {
@@ -42,9 +41,13 @@
 
     </span>
   </div>
-
 </div>
 <div class="table-container">
+  @if (spinnerFlagIsSet) {
+    <div class="spinner-container">
+      <mat-spinner></mat-spinner>
+    </div>  
+  } @else {
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
     <!--- Note that these columns can be defined in any order.
@@ -68,7 +71,7 @@
       <td mat-cell *matCellDef="let element"> {{element.cash_in}} </td>
     </ng-container>
 
-        <!-- Quantity Column -->
+    <!-- Quantity Column -->
     <ng-container matColumnDef="fees">
       <th mat-header-cell *matHeaderCellDef> Total Fees </th>
       <td mat-cell *matCellDef="let element"> {{element.fees}} </td>
@@ -82,7 +85,7 @@
 
     <!-- Average Price Column -->
     <ng-container matColumnDef="actual_price">
-      <th mat-header-cell *matHeaderCellDef> Price </th>
+      <th mat-header-cell *matHeaderCellDef> Current Price </th>
       <td mat-cell *matCellDef="let element"> {{element.actual_price | currency}} </td>
     </ng-container>
 
@@ -99,12 +102,11 @@
       <th mat-header-cell *matHeaderCellDef> ROI </th>
       <td mat-cell style="padding: 0;" *matCellDef="let element">
         @if (element.percent >= 0) {
-        <app-tmyts-chip iconName="arrow_upward_alt" textColor="#2b5c33" backgroundColorColor="#7ff593">{{element.percent
+        <app-tmyts-chip iconName="arrow_upward_alt" classType="success-container" backgroundColorColor="#7ff593">{{element.percent
           | percent:'1.2-2'}}
         </app-tmyts-chip>
         } @else {
-        <app-tmyts-chip iconName="arrow_downward_alt" textColor="#732f2f"
-          backgroundColorColor="#f59f9f">{{element.percent | percent:'1.2-2'}}
+        <app-tmyts-chip iconName="arrow_downward_alt" classType="error-container">{{element.percent | percent:'1.2-2'}}
         </app-tmyts-chip>
         }
       </td>
@@ -112,4 +114,6 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+  }
+
 </div>

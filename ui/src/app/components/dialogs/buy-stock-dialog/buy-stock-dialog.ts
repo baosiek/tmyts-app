@@ -100,7 +100,6 @@ export class BuyStockDialog implements OnInit{
     .pipe(
       catchError(
         (error) => {
-          console.log(error)
           throw error
         }
       )
@@ -125,7 +124,6 @@ export class BuyStockDialog implements OnInit{
       .pipe(
         catchError(
           (error) => {
-            console.log(error);
             throw error;
           }
         )

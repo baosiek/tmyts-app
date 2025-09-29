@@ -1,0 +1,32 @@
+<div class="index-card-container">
+    @if (index().variation >= 0){
+    <div class="icon-container arrow-up">
+        <mat-icon fontSet="material-symbols-outlined">arrow_upward</mat-icon>
+    </div>
+    } @else {
+    <div class="icon-container arrow-down">
+        <mat-icon fontSet="material-symbols-outlined">arrow_downward</mat-icon>
+    </div>
+    }
+    <div>
+        <div class="name-container">
+            <span>{{index().name | slice:0:9}}</span>
+            <span>{{index().points | number : '1.2-2'}}</span>
+        </div>
+    </div>
+    @if (index().variation >= 0) {
+    <div>
+        <div class="variation-container variation-up">
+            <span>{{index().percent | percent: '1.2-2' }}</span>
+            <span>{{index().variation | number : '1.2-2'}}</span>
+        </div>
+    </div>
+    } @else {
+            <div>
+        <div class="variation-container variation-down">
+            <span>{{index().percent | percent: '1.2-2' }}</span>
+            <span>{{index().variation | number : '1.2-2'}}</span>
+        </div>
+    </div>
+    }
+</div>

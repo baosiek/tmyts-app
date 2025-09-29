@@ -14,12 +14,12 @@ export class PortfolioDatabaseService {
 
   constructor() {}
 
-  createPortfolio(portfolio_data: PortfolioModel): Observable<ReturnMessage> {
+  createPortfolio(portfolio_data: Partial<PortfolioModel>): Observable<PortfolioModel> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const apiMethod = 'create';
     const body = portfolio_data ;
 
-    return this.http.post<ReturnMessage>(`${this.apiUrl}/${apiMethod}/`, body, { headers })
+    return this.http.post<PortfolioModel>(`${this.apiUrl}/${apiMethod}/`, body, { headers })
   }  
 
   readAllPortfolios(portfolio_id: number): Observable<PortfolioModel[]> {

@@ -8,6 +8,8 @@ import { PortfolioPerformanceModel } from '../../../../../../models/portfolio-pe
 import { MatTableDataSource } from '@angular/material/table';
 import { CurrencyPipe, NgClass, NgStyle, PercentPipe } from '@angular/common';
 import { TmytsChip } from '../../../../../sub-components/tmyts-chip/tmyts-chip';
+import { TmytsSnackbar } from '../../../../../sub-components/tmyts-snackbar/tmyts-snackbar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-portfolio-performance-table',
@@ -30,75 +32,46 @@ export class PortfolioPerformanceTable implements OnChanges{
 
   displayedColumns: string[] = ['symbol', 'quantity', 'average_price', 'actual_price', 'cash_in', 'fees', 'variation', 'percent'];
   dataSource: MatTableDataSource<PortfolioPerformanceModel> = new MatTableDataSource();
+  spinnerFlagIsSet: boolean = false;
+
+  constructor(private _snackBar: MatSnackBar){}
 
   ngOnChanges(): void {
     
     if (this.dataExchangeFromParent.symbol_list.length > 0) {
-      this.liveDataService.getDetailedPortfolioActivity(
-      this.dataExchangeFromParent.user_id,
-      this.dataExchangeFromParent.portfolio_id,
-      this.dataExchangeFromParent.symbol_list
-      )
-      .pipe(
-        catchError(
-          (error) => {
-            console.log(error);
-            throw error;
-          }
+      if (this.dataExchangeFromParent.portfolio_id) {
+        this.spinnerFlagIsSet = true;
+        this.liveDataService.getDetailedPortfolioActivity(
+          this.dataExchangeFromParent.user_id,
+          this.dataExchangeFromParent.portfolio_id,
+          this.dataExchangeFromParent.symbol_list
         )
-      )
-      .subscribe(
-        (response) => {
-          console.log(response)
-          this.dataSource.data = response;      
-        }
-      );
+        .subscribe(
+          {
+            next: (response: PortfolioPerformanceModel[]) => {
+              this.dataSource.data = response;
+            },
+            error: (error) => {
+              // Handle error response
+              const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
+
+              // Renders error snack-bar
+              this._snackBar.openFromComponent(
+                TmytsSnackbar, {
+                  data: {'message': message, 'action': 'Close'},
+                  panelClass: ['error-snackbar-theme']
+                }
+              );
+            },
+            complete: () => {
+              this.spinnerFlagIsSet = false;
+            }
+          }
+        );
+      }      
     } else {
       this.dataSource.data = []
     }   
-  }
-
-  // getAmountTotals(): number[] {
-
-  //   let acc_actual: number = 0;
-  //   let acc_average: number = 0;
-
-  //   const response: number[] = []
-  //   this.dataSource.data.forEach(
-  //     (d) => {
-  //       acc_actual += (d.actual_price * d.quantity)
-  //       acc_average += (d.average_price * d.quantity)
-  //     }
-  //   )
-  //   response.push(acc_actual);
-  //   response.push(acc_average)
-
-  //   return response;
-  // }
-
-  // getAmountVariation(): number[] {
-
-  //   let variation: number = 0;
-  //   let percent: number = 0;
-  //   const response: number[] = []
-
-  //   const totals: number[] = this.getAmountTotals()
-  //   variation = totals[0] - totals[1]
-  //   percent = variation / totals[1]
-
-  //   response.push(variation);
-  //   response.push(percent)
-
-  //   return response;
-  // }
-
-  getStatusColor(value: number): string {
-    console.log("Value: ", value)
-    if (value >= 0) {
-      return '#2b5c33';
-    } else {
-      return '#fc030b';
-    }
   }
 
   getInitialValue() {
