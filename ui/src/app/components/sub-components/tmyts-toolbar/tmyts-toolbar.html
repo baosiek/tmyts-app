@@ -4,7 +4,7 @@
             <span>{{data().title}}</span>
             @if (data().dialog) {
             <button mat-raised-button (click)="add()">
-                New {{data().dialog?.button_text}}
+                {{data().dialog?.button_text}}
                 <mat-icon>{{data().dialog?.button_icon}}</mat-icon>
             </button>
             }
