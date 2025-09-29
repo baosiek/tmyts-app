@@ -97,9 +97,10 @@ export class SelectAssetDialog implements OnInit {
 
   onSelectionChange(selectedOptions: MatListOption[]) {
     const selectedValue = selectedOptions.map(option => option.value).at(0) as SymbolModel;
-    console.log(`Selected symbol: ${JSON.stringify(selectedValue)}`)
+    
     const result: Map<String, SymbolModel> = new Map();
     result.set("symbol", selectedValue)
+    
     this.dialogRef.close(result)
   }
 }
