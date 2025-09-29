@@ -32,6 +32,7 @@ export class PortfolioPerformanceTable implements OnChanges{
 
   displayedColumns: string[] = ['symbol', 'quantity', 'average_price', 'actual_price', 'cash_in', 'fees', 'variation', 'percent'];
   dataSource: MatTableDataSource<PortfolioPerformanceModel> = new MatTableDataSource();
+  spinnerFlagIsSet: boolean = false;
 
   constructor(private _snackBar: MatSnackBar){}
 
@@ -39,10 +40,11 @@ export class PortfolioPerformanceTable implements OnChanges{
     
     if (this.dataExchangeFromParent.symbol_list.length > 0) {
       if (this.dataExchangeFromParent.portfolio_id) {
+        this.spinnerFlagIsSet = true;
         this.liveDataService.getDetailedPortfolioActivity(
-        this.dataExchangeFromParent.user_id,
-        this.dataExchangeFromParent.portfolio_id,
-        this.dataExchangeFromParent.symbol_list
+          this.dataExchangeFromParent.user_id,
+          this.dataExchangeFromParent.portfolio_id,
+          this.dataExchangeFromParent.symbol_list
         )
         .subscribe(
           {
@@ -60,6 +62,9 @@ export class PortfolioPerformanceTable implements OnChanges{
                   panelClass: ['error-snackbar-theme']
                 }
               );
+            },
+            complete: () => {
+              this.spinnerFlagIsSet = false;
             }
           }
         );

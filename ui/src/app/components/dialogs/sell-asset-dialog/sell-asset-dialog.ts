@@ -3,7 +3,7 @@ import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogData } from '../general-dialog/general-dialog';
 import { PortfolioActivityService } from '../../../services/portfolio-activity/portfolio-activity-service';
-import { catchError } from 'rxjs';
+import { catchError, of } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { PortfolioActivityModel, SymbolByPortfolioTotalsModel } from '../../../models/portfolio-activity-model';
 import { CurrencyPipe, NgClass } from '@angular/common';
@@ -39,6 +39,7 @@ export class SellAssetDialog implements OnInit{
   portfolioId: number = 0;
   selectedSymbol: SymbolByPortfolioTotalsModel | null = null;
   quantityToSell: number | null = 0;
+  spinnerFlagIsSet: boolean = false;
 
 
   // Initializes signals
@@ -52,20 +53,32 @@ export class SellAssetDialog implements OnInit{
   constructor(public dialogRef: MatDialogRef<SellAssetDialog>, private _snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
-    this.userId = this.data().data.get('userId')
-    this.portfolioId = this.data().data.get('portfolioId')
+    this.userId = this.data().data.get('userId');
+    this.portfolioId = this.data().data.get('portfolioId');
+    this.spinnerFlagIsSet = true;
     this.portfolioActivityService.getSymbolsTotalsByPortfolio(this.userId, this.portfolioId)
     .pipe(
       catchError(
         (error) => {
-          console.log(error);
-          throw error;
+          // Renders error snack-bar
+          this._snackBar.openFromComponent(
+            TmytsSnackbar, {
+              data: {'message': JSON.stringify(error), 'action': 'Close'},
+              panelClass: ['error-snackbar-theme']
+            }
+          );
+          return of([]);
         }
       )
     )
     .subscribe(
-      (response) => {
-        this.dataSource.data = response;
+      { 
+        next: (response: SymbolByPortfolioTotalsModel[]) => {
+          this.dataSource.data = response;
+        },
+        complete: () => {
+           this.spinnerFlagIsSet = false;
+        }
       }
     )
   }

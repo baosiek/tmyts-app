@@ -5,7 +5,7 @@ import { PortfolioActivityModel, SymbolByPortfolioTotalsModel } from '../../../m
 import { DatePipe, NgClass } from '@angular/common';
 import { DialogData } from '../general-dialog/general-dialog';
 import { PortfolioActivityService } from '../../../services/portfolio-activity/portfolio-activity-service';
-import { catchError } from 'rxjs';
+import { catchError, of } from 'rxjs';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { FormsModule, NgModel } from '@angular/forms';
 import { ReturnMessage } from '../../../models/return-message';
@@ -31,7 +31,9 @@ export class AddIncomeDialog implements OnInit {
   portfolioId: number = 0;
   selectedSymbol: SymbolByPortfolioTotalsModel | null = null;
   pickedDate = { value: new Date() }
-  cash_in: number = 0
+  cash_in: number = 0;
+  spinnerFlagIsEmpty: boolean = false;
+
 
   // Initializes signals
   // Holds data passed from PortfolioTableRud component
@@ -50,19 +52,32 @@ export class AddIncomeDialog implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.userId = this.data().data.get('userId')
-    this.portfolioId = this.data().data.get('portfolioId')
+    this.userId = this.data().data.get('userId');
+    this.portfolioId = this.data().data.get('portfolioId');
+    this.spinnerFlagIsEmpty = true;
     this.portfolioActivityService.getSymbolsTotalsByPortfolio(this.userId, this.portfolioId)
       .pipe(
         catchError(
           (error) => {
-            throw error;
+            this._snackBar.openFromComponent(
+              TmytsSnackbar, {
+                data: {'message': JSON.stringify(error), 'action': 'Close'},
+                panelClass: ['error-snackbar-theme']
+              }
+            );
+            return of([]);
           }
         )
       )
       .subscribe(
-        (response) => {
-          this.dataSource.data = response;
+        {
+          next: (response: SymbolByPortfolioTotalsModel[]) => {
+            this.dataSource.data = response;
+          },
+          complete: () => {
+            this.spinnerFlagIsEmpty = false;
+          }
+          
         }
       );
   }

@@ -29,7 +29,6 @@ import { TmytsSnackbar } from '../../../../../sub-components/tmyts-snackbar/tmyt
 })
 export class PortfolioTableRud implements OnChanges,  AfterViewInit {
 
-  // portfolioId = input.required<string>()
   dialog = inject(MatDialog);
 
   portfolioActivityService = inject(PortfolioActivityService)
@@ -37,13 +36,12 @@ export class PortfolioTableRud implements OnChanges,  AfterViewInit {
   displayedColumns: string[] = ['symbol', 'symbol_name', 'purchase_price', 'quantity', 'purchase_date', 'fees', 'cash_in', 'broker_name', "delete"];
   dataSource: MatTableDataSource<PortfolioActivityModel> = new MatTableDataSource();
 
-  userId: InputSignal<number> = input.required<number>()
-  portfolioId: InputSignal<number | null> = input.required<number | null>()
+  userId: InputSignal<number> = input.required<number>();
+  portfolioId: InputSignal<number | null> = input.required<number | null>();
+  portfilioSymbols: string[] = [];
+  spinnerFlagIsSet: boolean = false;
 
   @Output() portfolioExchangeData = new EventEmitter<PortfolioComponentsDataExchange>();
-
-  portfilioSymbols: string[] = []
-
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort: MatSort | undefined;
 
@@ -64,6 +62,7 @@ export class PortfolioTableRud implements OnChanges,  AfterViewInit {
 
   getPortfolioActivityContent(portfolioId: number | null) {
     if(portfolioId) {
+      this.spinnerFlagIsSet = true;
       this.portfolioActivityService.getActivityForPortfolio(this.userId(), portfolioId)
       .subscribe(
         {
@@ -77,13 +76,13 @@ export class PortfolioTableRud implements OnChanges,  AfterViewInit {
               item => {
                 symbols.push(item.symbol)
               }
-            )
+            );
             const dataExchange = PortfolioComponentsDataExchange.create(
               this.userId(),
               this.portfolioId(),
               symbols
-            )
-            this.portfolioExchangeData.emit(dataExchange)
+            );
+            this.portfolioExchangeData.emit(dataExchange);
           },
           error: (error) => {
             // Handle error response
@@ -96,7 +95,10 @@ export class PortfolioTableRud implements OnChanges,  AfterViewInit {
                 panelClass: ['error-snackbar-theme']
               }
             );
-          } 
+          },
+          complete: () => {
+            this.spinnerFlagIsSet = false;
+          }
         }
       );
     }    
