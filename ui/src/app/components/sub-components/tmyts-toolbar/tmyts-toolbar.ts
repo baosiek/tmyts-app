@@ -45,9 +45,7 @@ export class TmytsToolbar{
         {
           next: (result: Map<String, any>) => {
             this.notifyParent.emit(result)
-            console.log(`Result emitted: ${JSON.stringify(result.get('symbol'))}`)
-          }
-          
+          }          
         }
       );
     }

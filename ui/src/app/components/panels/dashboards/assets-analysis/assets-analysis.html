@@ -4,7 +4,10 @@
         <app-tmyts-toolbar [data]="data" (notifyParent)="parentNotified($event)"></app-tmyts-toolbar>
     </div>
     }
-    <div>
-        <h1>The indicators go here</h1>
+    <div class="assets-analysis-container">
+        @for (widget of widgetConfigService.widgetConfigs(); track widget.id) {
+            <app-tmyts-widget [widgetConfig]="widget"></app-tmyts-widget>
+        }
+        
     </div>
 </div>

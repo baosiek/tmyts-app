@@ -1,0 +1,16 @@
+:host {
+    display: block;
+    border-radius: 16px;
+}
+
+.widget-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: 16px;
+    box-sizing: border-box;
+    border-radius: inherit;
+    overflow: hidden; // content that surpasses widget size will be hidden
+    background-color: var(--mat-sys-on-primary);
+    cursor: move;
+}
