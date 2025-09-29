@@ -1,5 +1,10 @@
 <div>
     @if (data){
-        <app-tmyts-toolbar [data]="data"></app-tmyts-toolbar>
-    }    
+    <div>
+        <app-tmyts-toolbar [data]="data" (notifyParent)="parentNotified($event)"></app-tmyts-toolbar>
+    </div>
+    }
+    <div>
+        <h1>The indicators go here</h1>
+    </div>
 </div>

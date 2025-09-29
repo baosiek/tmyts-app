@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, input, signal, Type } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, inject, input, output, Output, signal, Type } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { MatDialog } from '@angular/material/dialog';
 import { GeneraliDialog } from '../../dialogs/general-dialog/general-dialog';
@@ -21,7 +21,8 @@ export interface IDialog {
 export class TmytsToolbar{
 
   dialog = inject(MatDialog);
-  data = input.required<ITmytsToolBar>()
+  data = input.required<ITmytsToolBar>()  
+  notifyParent = output<Map<String, any>>();
 
   constructor() {
   }
@@ -34,12 +35,21 @@ export class TmytsToolbar{
           data: {
             title: this.data()?.dialog?.dialog_title,
             content: this.data()?.dialog?.dialog_content,
+            data: this.data()          
           }
         }
-      )
+      );
 
-      dialogRef.afterClosed().subscribe(result => {
-    });
+      dialogRef.afterClosed()
+      .subscribe(
+        {
+          next: (result: Map<String, any>) => {
+            this.notifyParent.emit(result)
+            console.log(`Result emitted: ${JSON.stringify(result.get('symbol'))}`)
+          }
+          
+        }
+      );
     }
   }
 }

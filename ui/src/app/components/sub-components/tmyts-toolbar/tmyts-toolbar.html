@@ -1,7 +1,9 @@
 <div >
     <mat-toolbar>
-        <div class="container-space-between">
+        <div>
             <span>{{data().title}}</span>
+        </div>
+        <div >
             @if (data().dialog) {
             <button mat-raised-button (click)="add()">
                 {{data().dialog?.button_text}}
