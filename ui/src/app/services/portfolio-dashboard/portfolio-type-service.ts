@@ -18,8 +18,8 @@ export class PortfolioDashboardService {
           id: 'assets_analysis',
           title: "Asset analysis",
           dialog: {
-            dialog_title: 'Search asset',
-            button_text: 'Search asset',
+            dialog_title: 'Select asset',
+            button_text: 'Select',
             button_icon: 'search_insights',
             dialog_content: SelectAssetDialog
           }
