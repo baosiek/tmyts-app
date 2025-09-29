@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { AddPortfolioDialog } from '../../components/dialogs/add-portfolio-dialog/add-portfolio-dialog';
 import { ITmytsToolBar } from '../../interfaces/tmyts-toolbar-interface';
+import { SelectAssetDialog } from '../../components/dialogs/select-asset-dialog/select-asset-dialog';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,13 @@ export class PortfolioDashboardService {
         },
         {
           id: 'assets_analysis',
-          title: "Asset analysis"
+          title: "Asset analysis",
+          dialog: {
+            dialog_title: 'Search asset',
+            button_text: 'Search asset',
+            button_icon: 'search_insights',
+            dialog_content: SelectAssetDialog
+          }
         }
       ]
   ); 
