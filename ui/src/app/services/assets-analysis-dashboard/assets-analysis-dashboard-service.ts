@@ -23,7 +23,7 @@ export class AssetsAnalysisDashboardService {
         subtitle: 'AAPL',
         content: ObvWidget,
         rows: 2,
-        columns: 2
+        columns: 2,
       },
       {
         id: 2,
@@ -32,7 +32,7 @@ export class AssetsAnalysisDashboardService {
         subtitle: 'AAPL',
         content: AdlineWidget,
         rows: 1,
-        columns: 1
+        columns: 1,
       },
       {
         id: 3,
@@ -41,7 +41,7 @@ export class AssetsAnalysisDashboardService {
         subtitle: 'AAPL',
         content: AdxWidget,
         rows: 1,
-        columns: 1
+        columns: 1,
       }
     ]
   );

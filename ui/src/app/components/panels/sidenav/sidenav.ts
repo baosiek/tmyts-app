@@ -30,6 +30,11 @@ export class Sidenav {
       {
         icon: "finance_mode",
         label: "Asset analysis",
+        route: "/asset_analysis"
+      },
+      {
+        icon: "finance_mode",
+        label: "Assets analysis",
         route: "/assets_analysis"
       },
     ]

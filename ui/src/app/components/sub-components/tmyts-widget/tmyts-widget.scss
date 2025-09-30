@@ -9,12 +9,11 @@
     position: relative;
     height: 100%;
     width: 100%;
-    padding: 8px;
+    padding: 4px;
     box-sizing: border-box;
     overflow: hidden; // content that surpasses widget size will be hidden
     cursor: move;
 }
-
 
 mat-icon {
   @include mat.icon-overrides((
@@ -22,11 +21,13 @@ mat-icon {
   ));
 }
 
-.widget-card{
+.widget-card {
   @include mat.card-overrides((
     outlined-container-color: var(--mat-sys-surface),
-    outlined-outline-color: var(--mat-sys-tertiary),
-    outlined-outline-width: 1px,
+    outlined-outline-color: var(--mat-sys-secondary),
+    outlined-outline-width: 2px,
     outlined-container-shape: 16px
   ));
+  height: 100%;
+  width: 100%;
 }

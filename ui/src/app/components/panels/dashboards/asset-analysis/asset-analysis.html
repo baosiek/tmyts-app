@@ -1,4 +1,4 @@
-<div class="assets-analysis-container">
+<div>
     @if (data){
     <div>
         <app-tmyts-toolbar [data]="data" (notifyParent)="parentNotified($event)"></app-tmyts-toolbar>
@@ -27,10 +27,15 @@
             }
         </mat-menu>
     </div>
-    <div class="assets-analysis-content">
-        @for (widget of widgetConfigService.widgetsInDashboard(); track widget.id) {
-        <app-tmyts-widget [widgetConfig]="widget" style="height: 100%;"></app-tmyts-widget>
-        }
+    <div>
+        <mat-grid-list cols="4" rowHeight="2:1">
+            @for (widget of  widgetConfigService.widgetsInDashboard(); track widget.id) {
+            <mat-grid-tile [colspan]="widget.columns" [rowspan]="widget.rows"
+                [style.background]="widget.backgroundColor">
+                 <app-tmyts-widget [widgetConfig]="widget"></app-tmyts-widget>
+            </mat-grid-tile>
+            }
+        </mat-grid-list>
     </div>
     }
 </div>
