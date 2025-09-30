@@ -1,13 +1,19 @@
 <div class="widget-container">
-    <mat-card>
+    <mat-card style="width: 100%; height: 100%;">
         <mat-card-header>
             <mat-card-title-group>
                 <mat-card-title>{{widgetConfig().title}}</mat-card-title>
                 <mat-card-subtitle>{{widgetConfig().subtitle}}</mat-card-subtitle>
             </mat-card-title-group>
+            <button mat-icon-button (click)="showWidgetSettings.set(true)">
+                <mat-icon fontSet="material-symbols-outlined">settings_applications</mat-icon>
+            </button>
         </mat-card-header>
         <mat-card-content>
             <ng-component [ngComponentOutlet]="widgetConfig().content"></ng-component>
+            @if (showWidgetSettings()) {
+                <app-tmyts-widgets-settings [configWidget]="widgetConfig()" [(showWidgetSettings)]="showWidgetSettings"></app-tmyts-widgets-settings>
+            }
         </mat-card-content>
     </mat-card>
 </div>

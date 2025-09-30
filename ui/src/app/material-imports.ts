@@ -19,6 +19,8 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 export const MATERIAL_IMPORTS = [
   MatButtonModule,
@@ -42,4 +44,6 @@ export const MATERIAL_IMPORTS = [
   MatStepperModule,
   MatChipsModule,
   MatDatepickerModule,
+  MatMenuModule,
+  MatButtonToggleModule
 ];

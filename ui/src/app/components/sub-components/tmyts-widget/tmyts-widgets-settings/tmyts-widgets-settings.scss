@@ -1,0 +1,36 @@
+@use '@angular/material' as mat;
+
+:host {
+    @include mat.button-toggle-overrides((
+  ));
+    position: absolute;
+    z-index: 2;
+    background: whitesmoke;
+    color: black;
+    top: 0;
+    left: 0;
+    border-radius: inherit;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+
+    > div {
+        display: flex;
+        gap: 16px;
+        justify-content: space-between;
+        align-items: center;        
+        margin-bottom: 8px;
+        --mat-button-toggle-height: 16px;
+    }    
+}
+
+.close-button {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}

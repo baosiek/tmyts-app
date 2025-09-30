@@ -1,0 +1,27 @@
+<div>
+    <button mat-icon-button class="close-button" (click)="showWidgetSettings.set(false)" class="close-button">
+        <mat-icon fontSet="material-symbols-outlined">tab_close</mat-icon>
+    </button>
+</div>
+<div>
+    <span>Width</span>
+    <mat-button-toggle-group
+    [value]="configWidget().columns ?? 1"
+    (change)="widgetConfigService.updateWidget(configWidget().id, {columns: +$event.value})">
+       <mat-button-toggle [value]="1">1</mat-button-toggle>
+        <mat-button-toggle [value]="2">2</mat-button-toggle>
+        <mat-button-toggle [value]="3">3</mat-button-toggle>
+        <mat-button-toggle [value]="4">4</mat-button-toggle>
+    </mat-button-toggle-group>
+</div>
+<div>
+    <span>Height</span>
+    <mat-button-toggle-group
+    [value]="configWidget().rows ?? 1"
+    (change)="widgetConfigService.updateWidget(configWidget().id, {rows: +$event.value})">
+       <mat-button-toggle [value]="1">1</mat-button-toggle>
+        <mat-button-toggle [value]="2">2</mat-button-toggle>
+        <mat-button-toggle [value]="3">3</mat-button-toggle>
+        <mat-button-toggle [value]="4">4</mat-button-toggle>
+    </mat-button-toggle-group>
+</div>

@@ -15,7 +15,8 @@ import { AssetsAnalysisDashboardService } from '../../../../services/assets-anal
     ...MATERIAL_IMPORTS,
     TmytsToolbar,
     TmytsWidget,
-    TmytsWidget
+    TmytsWidget,
+    // JsonPipe
 ],
 providers: [
   AssetsAnalysisDashboardService // this service is required only here
@@ -29,6 +30,7 @@ export class AssetsAnalysis {
   dashboardService = inject(PortfolioDashboardService);
   data: ITmytsToolBar | undefined;
   result = signal<Map<String, any>>(new Map())
+  symbol: string | null = null;
 
   widgetConfigService = inject(AssetsAnalysisDashboardService);
 
@@ -46,6 +48,7 @@ export class AssetsAnalysis {
 
   parentNotified(value: Map<String, any>){
     this.result.set(value)
+    this.symbol = this.result().get('symbol').symbol
   }
 }
 
