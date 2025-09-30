@@ -66,6 +66,7 @@ export class AssetsAnalysisDashboardService {
   }
 
   updateWidget(id: number, widget: Partial<IWidgetConfig>) {
+    console.log(`widget to update: ${JSON.stringify(widget)}`)
     const widgetIndex = this.widgetsInDashboard().findIndex(w => w.id === id)
     if (widgetIndex != -1){
       const tempWidgets = [...this.widgetsInDashboard()];

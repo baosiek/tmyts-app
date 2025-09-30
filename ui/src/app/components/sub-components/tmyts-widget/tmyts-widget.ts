@@ -14,7 +14,7 @@ import { TmytsWidgetsSettings } from "./tmyts-widgets-settings/tmyts-widgets-set
   templateUrl: './tmyts-widget.html',
   styleUrl: './tmyts-widget.scss',
   host: {
-    '[style.grid-area]': "'span ' + (widgetConfig().rows ?? 1) + ' / span ' + (widgetConfig().columns ?? 1)",
+    '[style.grid-area]': "'span ' + (widgetConfig().rows ?? 2) + ' / span ' + (widgetConfig().columns ?? 2)",
   }
 })
 export class TmytsWidget {

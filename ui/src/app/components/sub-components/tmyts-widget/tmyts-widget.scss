@@ -11,7 +11,6 @@
     width: 100%;
     padding: 8px;
     box-sizing: border-box;
-    border-radius: inherit;
     overflow: hidden; // content that surpasses widget size will be hidden
     cursor: move;
 }
@@ -20,5 +19,14 @@
 mat-icon {
   @include mat.icon-overrides((
     color: var(--mat-sys-primary),
+  ));
+}
+
+.widget-card{
+  @include mat.card-overrides((
+    outlined-container-color: var(--mat-sys-surface),
+    outlined-outline-color: var(--mat-sys-tertiary),
+    outlined-outline-width: 1px,
+    outlined-container-shape: 16px
   ));
 }
