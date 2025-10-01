@@ -1,0 +1,15 @@
+<div #colorTarget>
+  <h3>Styling</h3>
+  <form [formGroup]="colorForm" class="form-container">
+    <mat-form-field appearance="outline">
+      <mat-label>Choose a color</mat-label>
+      <input matInput type="color" [formControl]="colorCtr" (change)="changeColor()">
+      <mat-icon matSuffix fontSet="material-symbols-outlined">palette</mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Choose a background color</mat-label>
+      <input matInput type="color" [formControl]="backgroundColorCtr" (change)="changeBackgroundColor()">
+      <mat-icon matSuffix fontSet="material-symbols-outlined">palette</mat-icon>
+    </mat-form-field>
+  </form>
+</div>

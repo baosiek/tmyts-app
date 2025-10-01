@@ -31,3 +31,7 @@ mat-icon {
   height: 100%;
   width: 100%;
 }
+
+.custom-dialog-container .mat-mdc-dialog-surface {
+  border-radius: 8px; /* Optional: adds rounded corners to the overlay */
+}

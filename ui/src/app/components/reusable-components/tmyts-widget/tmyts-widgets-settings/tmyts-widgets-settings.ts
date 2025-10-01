@@ -11,15 +11,20 @@ import {
   NGX_MAT_COLOR_FORMATS
 } from '@ngxmc/color-picker';
 import { ThemePalette } from '@angular/material/core';
+import { ColorSetting } from '../../tmyts-settings/color-setting/color-setting';
+import { TmytsSizeSetting } from '../../tmyts-settings/tmyts-size-setting/tmyts-size-setting';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-tmyts-widgets-settings',
   imports: [
     ...MATERIAL_IMPORTS,
-    NgxMatColorPickerComponent,
-    NgxMatColorToggleComponent,
-    NgxMatColorPickerInput,
-    ReactiveFormsModule
+    // NgxMatColorPickerComponent,
+    // NgxMatColorToggleComponent,
+    // NgxMatColorPickerInput,
+    ReactiveFormsModule,
+    ColorSetting,
+    TmytsSizeSetting
   ],
   providers: [
     { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS } // Provide color formats
@@ -31,7 +36,7 @@ export class TmytsWidgetsSettings implements OnInit{
 
   showWidgetSettings = model<boolean>(false);
   configWidget = input.required<IWidgetConfig>()
-  widgetConfigService = inject(AssetsAnalysisDashboardService);
+  // widgetConfigService = inject(AssetsAnalysisDashboardService);
 
   colorCtr = new FormControl('#FF0000'); // Initialize with a default color
   disabled = false;
@@ -58,7 +63,7 @@ export class TmytsWidgetsSettings implements OnInit{
   }
 
   changeColor(color: MouseEvent) {
-    console.log(`color selected: ${JSON.stringify(color)}`)
+    console.log(`color selected: ${JSON.stringify(color)}`);
   }
 
 }

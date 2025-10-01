@@ -1,0 +1,20 @@
+@use '@angular/material' as mat;
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.direction-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+:host {
+  @include mat.button-toggle-overrides((
+    height: 32px
+  ));
+}

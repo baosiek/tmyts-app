@@ -1,0 +1,5 @@
+.form-container {
+  display: flex;
+  flex-direction: column; /* Stacks the items vertically */
+  gap: 2px; /* Adds space between the form fields */
+}

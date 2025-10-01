@@ -1,9 +1,11 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, ElementRef, input, signal, ViewChild } from '@angular/core';
 import { IWidgetConfig } from '../../../interfaces/widget-config-interface';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { NgComponentOutlet } from '@angular/common';
 import { TmytsWidgetsSettings } from "./tmyts-widgets-settings/tmyts-widgets-settings";
 import { CommonModule } from '@angular/common';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ConnectedPosition, Overlay } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-tmyts-widget',
@@ -30,4 +32,8 @@ export class TmytsWidget {
   widgetConfig = input.required<IWidgetConfig>();
   showWidgetSettings = signal<boolean>(false);
   symbol = input.required<string>();
+
+  constructor() {}
+
+  
 }

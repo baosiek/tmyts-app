@@ -24,6 +24,8 @@ export class AssetsAnalysisDashboardService {
         content: ObvWidget,
         rows: 2,
         columns: 2,
+        color: '#000000',
+        backgroundColor: '#fafaf4'
       },
       {
         id: 2,
@@ -33,6 +35,8 @@ export class AssetsAnalysisDashboardService {
         content: AdlineWidget,
         rows: 1,
         columns: 1,
+        color: '#000000',
+        backgroundColor: '#fafaf4'
       },
       {
         id: 3,
@@ -42,6 +46,8 @@ export class AssetsAnalysisDashboardService {
         content: AdxWidget,
         rows: 1,
         columns: 1,
+        color: '#000000',
+        backgroundColor: '#fafaf4'
       }
     ]
   );
