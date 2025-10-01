@@ -32,7 +32,7 @@
             @for (widget of  widgetConfigService.widgetsInDashboard(); track widget.id) {
             <mat-grid-tile [colspan]="widget.columns" [rowspan]="widget.rows"
                 [style.background]="widget.backgroundColor">
-                 <app-tmyts-widget [widgetConfig]="widget"></app-tmyts-widget>
+                 <app-tmyts-widget [widgetConfig]="widget" [symbol]="symbol"></app-tmyts-widget>
             </mat-grid-tile>
             }
         </mat-grid-list>

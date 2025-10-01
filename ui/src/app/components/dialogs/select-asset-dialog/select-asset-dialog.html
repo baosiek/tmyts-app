@@ -3,19 +3,21 @@
         <form [formGroup]="assetDelectionForm">
             <mat-form-field appearance="outline" style="margin-top: 12px; width: 500px">
                 <mat-label>Symbol or investment</mat-label>
-                <input matInput formControlName="symbol" placeholder="TMYTS" (keyup)="searchTerm($event)">
+                <input matInput formControlName="symbol" placeholder="TMYTS" (keyup)="searchTerm($event)" (keydown.enter)="onEnterKey()">
                 <mat-icon matSuffix>search_insights</mat-icon>
             </mat-form-field>
             @if (searchResults().length > 0){
-                <mat-selection-list [multiple]="false" hideSingleSelectionIndicator #selectedSymbol (selectionChange)="onSelectionChange(selectedSymbol.selectedOptions.selected)">
-                    @for (result of searchResults(); track result.id) {
-                    <mat-list-option [value]="result">
-                        <div matListItemTitle>{{result.symbol}}</div>
-                        <div matListItemLine>{{result.symbol_name}}</div>
-                    </mat-list-option>
-                    <mat-divider></mat-divider>
-                    }
-                </mat-selection-list>
+            <mat-selection-list [multiple]="false" hideSingleSelectionIndicator #selectedSymbol
+                (selectionChange)="onSelectionChange(selectedSymbol.selectedOptions.selected)"
+                >
+                @for (result of searchResults(); track result.id) {
+                <mat-list-option [value]="result">
+                    <div matListItemTitle>{{result.symbol}}</div>
+                    <div matListItemLine>{{result.symbol_name}}</div>
+                </mat-list-option>
+                <mat-divider></mat-divider>
+                }
+            </mat-selection-list>
             }
         </form>
     </div>

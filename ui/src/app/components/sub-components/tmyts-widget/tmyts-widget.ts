@@ -3,13 +3,15 @@ import { IWidgetConfig } from '../../../interfaces/widget-config-interface';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { NgComponentOutlet } from '@angular/common';
 import { TmytsWidgetsSettings } from "./tmyts-widgets-settings/tmyts-widgets-settings";
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-tmyts-widget',
   imports: [
     ...MATERIAL_IMPORTS,
     NgComponentOutlet,
-    TmytsWidgetsSettings
+    TmytsWidgetsSettings,
+    CommonModule
 ],
   templateUrl: './tmyts-widget.html',
   styleUrl: './tmyts-widget.scss',
@@ -27,4 +29,5 @@ export class TmytsWidget {
    */
   widgetConfig = input.required<IWidgetConfig>();
   showWidgetSettings = signal<boolean>(false);
+  symbol = input.required<string>();
 }

@@ -52,7 +52,7 @@ export class SelectAssetDialog implements OnInit {
   constructor(
     private _snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<SelectAssetDialog>,
-  ){}
+  ) { }
 
   ngOnInit(): void {
     this.assetDelectionForm.get('symbol')?.valueChanges
@@ -70,37 +70,61 @@ export class SelectAssetDialog implements OnInit {
   searchTerm(event: KeyboardEvent) {
     if (this.term) {
       this.quickSearch.quickSearch(this.term)
-      .pipe(
-        catchError(
-          (error) => {
-            // Handle error response
-            const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
+        .pipe(
+          catchError(
+            (error) => {
+              // Handle error response
+              const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
 
-            // Renders error snack-bar
-            this._snackBar.openFromComponent(
-              TmytsSnackbar, {
+              // Renders error snack-bar
+              this._snackBar.openFromComponent(
+                TmytsSnackbar, {
                 data: { 'message': message, 'action': 'Close' },
                 panelClass: ['error-snackbar-theme']
               }
-            );
-            return of([]);
-          }
+              );
+              return of([]);
+            }
+          )
         )
-      )
-      .subscribe(
-        (response) => {
-          this.searchResults.set(response)
-        }
-      );
+        .subscribe(
+          (response) => {
+            this.searchResults.set(response)
+          }
+        );
     }
   }
 
   onSelectionChange(selectedOptions: MatListOption[]) {
     const selectedValue = selectedOptions.map(option => option.value).at(0) as SymbolModel;
-    
+
     const result: Map<String, SymbolModel> = new Map();
     result.set("symbol", selectedValue)
-    
+
     this.dialogRef.close(result)
+  }
+
+  onEnterKey() {
+    // holds the form field value
+    const symbolValue = this.assetDelectionForm.get('symbol')?.value;
+
+    // as symbol value can be null it checks if it is null
+    const typedSymbol = this.searchResults().find(v => v.symbol.toLowerCase() === (symbolValue ? symbolValue.toLowerCase() : ''))
+    
+    // if typed symbol was found, ends the dialog returning the symbol 
+    if (typedSymbol) {
+      const result: Map<String, SymbolModel> = new Map();
+      result.set("symbol", typedSymbol)
+      this.dialogRef.close(result)
+    } else {
+      // Renders error snack-bar
+      const message: string = `Could not find symbol [ ${this.assetDelectionForm.get('symbol')?.value} ]`
+      this._snackBar.openFromComponent(
+        TmytsSnackbar, {
+          data: {'message': message, 'action': 'Close'},
+          panelClass: ['error-snackbar-theme']
+        }
+      );
+    }
   }
 }

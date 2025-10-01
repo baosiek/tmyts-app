@@ -1,9 +1,11 @@
 <div class="widget-container">
-    <mat-card appearance="outlined" class="widget-card">
+    <mat-card appearance="outlined" class="widget-card"
+    [style.background-color]="widgetConfig().backgroundColor"
+    [style.color]="widgetConfig().color">
         <mat-card-header>
             <mat-card-title-group>
                 <mat-card-title>{{widgetConfig().title}}</mat-card-title>
-                <mat-card-subtitle>{{widgetConfig().subtitle}}</mat-card-subtitle>
+                <mat-card-subtitle>{{symbol()}}</mat-card-subtitle>
             </mat-card-title-group>
             <button mat-icon-button (click)="showWidgetSettings.set(true)">
                 <mat-icon fontSet="material-symbols-outlined">settings</mat-icon>
@@ -12,7 +14,8 @@
         <mat-card-content>
             <ng-component [ngComponentOutlet]="widgetConfig().content"></ng-component>
             @if (showWidgetSettings()) {
-                <app-tmyts-widgets-settings [configWidget]="widgetConfig()" [(showWidgetSettings)]="showWidgetSettings"></app-tmyts-widgets-settings>
+            <app-tmyts-widgets-settings [configWidget]="widgetConfig()"
+                [(showWidgetSettings)]="showWidgetSettings"></app-tmyts-widgets-settings>
             }
         </mat-card-content>
     </mat-card>
