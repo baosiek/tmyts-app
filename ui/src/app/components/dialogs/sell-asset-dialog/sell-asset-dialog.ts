@@ -10,7 +10,7 @@ import { CurrencyPipe, NgClass } from '@angular/common';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ReturnMessage } from '../../../models/return-message';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TmytsSnackbar } from '../../sub-components/tmyts-snackbar/tmyts-snackbar';
+import { TmytsSnackbar } from '../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 
 @Component({
   selector: 'app-sell-asset-dialog',

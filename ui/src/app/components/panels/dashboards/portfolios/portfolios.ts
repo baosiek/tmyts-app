@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../../material-imports';
-import { TmytsToolbar } from '../../../sub-components/tmyts-toolbar/tmyts-toolbar';
+import { TmytsToolbar } from '../../../reusable-components/tmyts-toolbar/tmyts-toolbar';
 import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
 import { PortfolioDashboardService } from '../../../../services/portfolio-dashboard/portfolio-type-service';
 import { PortfolioModel } from '../../../../models/portfolio-model';
@@ -14,7 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { PortfolioPerformanceTable } from "./portfolio-tables/portfolio-performance-table/portfolio-performance-table";
 import { PortfolioComponentsDataExchange } from '../../../../interfaces/portfolio-components-data-exchange';
-import { TmytsChip } from "../../../sub-components/tmyts-chip/tmyts-chip";
+import { TmytsChip } from "../../../reusable-components/tmyts-chip/tmyts-chip";
 import { IndexesCards } from "../../indexes-cards/indexes-cards";
 @Component({
   selector: 'app-portfolios',

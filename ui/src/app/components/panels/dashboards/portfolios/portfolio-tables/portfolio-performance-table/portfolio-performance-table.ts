@@ -7,8 +7,8 @@ import { catchError } from 'rxjs';
 import { PortfolioPerformanceModel } from '../../../../../../models/portfolio-performance-model';
 import { MatTableDataSource } from '@angular/material/table';
 import { CurrencyPipe, NgClass, NgStyle, PercentPipe } from '@angular/common';
-import { TmytsChip } from '../../../../../sub-components/tmyts-chip/tmyts-chip';
-import { TmytsSnackbar } from '../../../../../sub-components/tmyts-snackbar/tmyts-snackbar';
+import { TmytsChip } from '../../../../../reusable-components/tmyts-chip/tmyts-chip';
+import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({

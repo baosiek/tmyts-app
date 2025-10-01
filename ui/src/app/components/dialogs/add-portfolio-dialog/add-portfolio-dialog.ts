@@ -9,7 +9,7 @@ import { ReturnMessage } from '../../../models/return-message';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DialogData } from '../general-dialog/general-dialog';
 import { MatDialogRef } from '@angular/material/dialog';
-import { TmytsSnackbar } from '../../sub-components/tmyts-snackbar/tmyts-snackbar';
+import { TmytsSnackbar } from '../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 
 @Component({
   selector: 'app-add-portfolio-dialog',

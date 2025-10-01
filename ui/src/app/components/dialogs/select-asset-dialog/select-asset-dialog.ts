@@ -6,7 +6,7 @@ import { QuickSearchService } from '../../../services/quick-search/quick-search-
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DialogData } from '../general-dialog/general-dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TmytsSnackbar } from '../../sub-components/tmyts-snackbar/tmyts-snackbar';
+import { TmytsSnackbar } from '../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 import { MatListOption, MatSelectionList } from '@angular/material/list';
 import { MatDialogRef } from '@angular/material/dialog';
 

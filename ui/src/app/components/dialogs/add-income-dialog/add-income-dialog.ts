@@ -11,7 +11,7 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { ReturnMessage } from '../../../models/return-message';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TmytsSnackbar } from '../../sub-components/tmyts-snackbar/tmyts-snackbar';
+import { TmytsSnackbar } from '../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 
 @Component({
   selector: 'app-add-income-dialog',

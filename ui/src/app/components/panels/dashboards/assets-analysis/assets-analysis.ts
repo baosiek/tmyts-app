@@ -1,10 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
 import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
 import { PortfolioDashboardService } from '../../../../services/portfolio-dashboard/portfolio-type-service';
-import { TmytsToolbar } from '../../../sub-components/tmyts-toolbar/tmyts-toolbar';
+import { TmytsToolbar } from '../../../reusable-components/tmyts-toolbar/tmyts-toolbar';
 import { MATERIAL_IMPORTS } from '../../../../material-imports';
 import { JsonPipe } from '@angular/common';
-import { TmytsWidget } from "../../../sub-components/tmyts-widget/tmyts-widget";
+import { TmytsWidget } from "../../../reusable-components/tmyts-widget/tmyts-widget";
 import { IWidgetConfig } from '../../../../interfaces/widget-config-interface';
 import { ObvWidget } from './asset-analysis-widgets/obv-widget/obv-widget';
 import { AssetsAnalysisDashboardService } from '../../../../services/assets-analysis-dashboard/assets-analysis-dashboard-service';

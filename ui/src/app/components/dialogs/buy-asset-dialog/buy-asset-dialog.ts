@@ -15,7 +15,7 @@ import { PortfolioActivityService } from '../../../services/portfolio-activity/p
 import { BrokerService } from '../../../services/broker/broker-service';
 import { BrokerModel, createBroker } from '../../../models/broker_model';
 import { PortfolioModel } from '../../../models/portfolio-model';
-import { TmytsSnackbar } from '../../sub-components/tmyts-snackbar/tmyts-snackbar';
+import { TmytsSnackbar } from '../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ReturnMessage } from '../../../models/return-message';

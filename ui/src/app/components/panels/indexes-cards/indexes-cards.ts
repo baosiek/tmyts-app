@@ -4,7 +4,7 @@ import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { LiveDataService } from '../../../services/live-data/live-data-service';
 import { catchError, of, retry } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TmytsSnackbar } from '../../sub-components/tmyts-snackbar/tmyts-snackbar';
+import { TmytsSnackbar } from '../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 
 export type IndexCardInterface = {
   id: string;

@@ -14,7 +14,7 @@ import { SellAssetDialog } from '../../../../../dialogs/sell-asset-dialog/sell-a
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TmytsSnackbar } from '../../../../../sub-components/tmyts-snackbar/tmyts-snackbar';
+import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 
 @Component({
   selector: 'app-portfolio-table-rud',
