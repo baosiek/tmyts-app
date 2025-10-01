@@ -24,8 +24,6 @@ export class AssetsAnalysisDashboardService {
         content: ObvWidget,
         rows: 2,
         columns: 2,
-        backgroundColor: 'lightgreen',
-        color: 'blue'
       },
       {
         id: 2,

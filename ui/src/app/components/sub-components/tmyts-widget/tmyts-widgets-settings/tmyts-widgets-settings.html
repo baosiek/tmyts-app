@@ -4,6 +4,27 @@
     </button>
 </div>
 <div>
+    <form [formGroup]="colorForm">
+    <mat-form-field>
+      <mat-label>Choose a color</mat-label>
+      <input
+        matInput
+        [ngxMatColorPicker]="picker"
+        formControlName="selectedColor"
+        (colorChange)="onColorChange($event)"
+      />
+      
+      <!-- The button to toggle the color picker dialog -->
+      <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
+      
+      <!-- The color picker instance (without touchUi or color) -->
+      <ngx-mat-color-picker #picker></ngx-mat-color-picker>
+    </mat-form-field>
+  </form>
+
+  <p>Selected color: {{ colorForm.get('selectedColor')?.value }}</p>
+</div>
+<div>
     <span>Width</span>
     <mat-button-toggle-group [value]="configWidget().columns ?? 1"
         (change)="widgetConfigService.updateWidget(configWidget().id, {columns: +$event.value})">
