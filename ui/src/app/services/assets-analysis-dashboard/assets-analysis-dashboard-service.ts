@@ -3,6 +3,7 @@ import { IWidgetConfig } from '../../interfaces/widget-config-interface';
 import { ObvWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/obv-widget/obv-widget';
 import { AdlineWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/adline-widget/adline-widget';
 import { AdxWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/adx-widget/adx-widget';
+import { AroonWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/aroon-widget/aroon-widget';
 
 
 /*
@@ -18,18 +19,19 @@ export class AssetsAnalysisDashboardService {
     [
       {
         id: 1,
+        dashboard_id: 'assets_analysis',
         label: 'obv',
         title: 'On-Balance Volume (OBV) indicator',
         subtitle: 'AAPL',
         content: ObvWidget,
         rows: 2,
         columns: 2,
-        // color: '#000000',
-        color: '#f01707',
+        color: '#000000',
         backgroundColor: '#fafaf4'
       },
       {
         id: 2,
+        dashboard_id: 'assets_analysis',
         label: 'ad-line',
         title: 'Accumulation/Distribution Line (A/D Line)',
         subtitle: 'AAPL',
@@ -41,10 +43,23 @@ export class AssetsAnalysisDashboardService {
       },
       {
         id: 3,
+        dashboard_id: 'assets_analysis',
         label: 'adx',
         title: 'Average Directional Index (ADX)',
         subtitle: 'AAPL',
         content: AdxWidget,
+        rows: 1,
+        columns: 1,
+        color: '#000000',
+        backgroundColor: '#fafaf4'
+      },
+      {
+        id: 4,
+        dashboard_id: 'assets_analysis',
+        label: 'aroon',
+        title: 'Aroon Indicator',
+        subtitle: 'AAPL',
+        content: AroonWidget,
         rows: 1,
         columns: 1,
         color: '#000000',
@@ -76,7 +91,10 @@ export class AssetsAnalysisDashboardService {
       const tempWidgets = [...this.widgetsInDashboard()];
       tempWidgets[widgetIndex] = {...tempWidgets[widgetIndex], ...widget};
       this.widgetsInDashboard.set(tempWidgets);
-    }
-   
+    }   
+  }
+
+  deleteWidgetFromDashboard(id: number){
+    this.widgetsInDashboard.set(this.widgetsInDashboard().filter(w => w.id !== id));
   }
 }
