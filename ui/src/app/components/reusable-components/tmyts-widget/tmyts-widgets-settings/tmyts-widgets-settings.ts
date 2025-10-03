@@ -36,6 +36,7 @@ export class TmytsWidgetsSettings{
 
   showWidgetSettings = model<boolean>(false);
   configWidget = model.required<IWidgetConfig>()
+  widgetSerive = inject(AssetsAnalysisDashboardService)
 
   colorCtr = new FormControl('#FF0000'); // Initialize with a default color
   disabled = false;
