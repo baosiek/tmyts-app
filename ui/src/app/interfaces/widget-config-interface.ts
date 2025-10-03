@@ -2,6 +2,7 @@ import { Type } from "@angular/core";
 
 export interface IWidgetConfig {
     id: number;
+    dashboard_id: string;
     label: string;
     content: Type<unknown>;
     title?: string,
