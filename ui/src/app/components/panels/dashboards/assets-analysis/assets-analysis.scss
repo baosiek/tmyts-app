@@ -4,8 +4,8 @@
 
 .assets-analysis-content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    grid-auto-rows: 250px;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    grid-auto-rows: 300px;
     gap: 4px;
     padding: 4px 8px;
 }
