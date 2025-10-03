@@ -1,11 +1,9 @@
-import { AfterViewInit, Component, ElementRef, input, model, OnChanges, signal, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, input, signal} from '@angular/core';
 import { IWidgetConfig } from '../../../interfaces/widget-config-interface';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { NgComponentOutlet } from '@angular/common';
 import { TmytsWidgetsSettings } from "./tmyts-widgets-settings/tmyts-widgets-settings";
 import { CommonModule } from '@angular/common';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ConnectedPosition, Overlay } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-tmyts-widget',
@@ -18,7 +16,7 @@ import { ConnectedPosition, Overlay } from '@angular/cdk/overlay';
   templateUrl: './tmyts-widget.html',
   styleUrl: './tmyts-widget.scss',
   host: {
-    '[style.grid-area]': "'span ' + (widgetConfig().rows ?? 2) + ' / span ' + (widgetConfig().columns ?? 2)",
+    '[style.grid-area]': "'span ' + (widgetConfig().rows ?? 1) + ' / span ' + (widgetConfig().columns ?? 1)",
   }
 })
 export class TmytsWidget{

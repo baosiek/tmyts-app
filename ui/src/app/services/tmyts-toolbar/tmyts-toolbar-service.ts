@@ -24,16 +24,6 @@ export class ToolbarService {
             dialog_content: SelectAssetDialog
           }
         },
-        {
-          id: 'asset_analysis',
-          title: "Asset analysis",
-          dialog: {
-            dialog_title: 'Select asset',
-            button_text: 'Select',
-            button_icon: 'search_insights',
-            dialog_content: SelectAssetDialog
-          }
-        }
       ]
   ); 
   
