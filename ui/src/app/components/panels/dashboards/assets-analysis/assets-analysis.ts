@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
-import { PortfolioDashboardService } from '../../../../services/portfolio-dashboard/portfolio-type-service';
+import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar-service';
 import { TmytsToolbar } from '../../../reusable-components/tmyts-toolbar/tmyts-toolbar';
 import { MATERIAL_IMPORTS } from '../../../../material-imports';
 import { JsonPipe } from '@angular/common';
@@ -27,7 +27,7 @@ providers: [
 export class AssetsAnalysis {
 
   protected id: string = 'assets_analysis'
-  dashboardService = inject(PortfolioDashboardService);
+  dashboardService = inject(ToolbarService);
   data: ITmytsToolBar | undefined;
   result = signal<Map<String, any>>(new Map())
   symbol: string | null = null;

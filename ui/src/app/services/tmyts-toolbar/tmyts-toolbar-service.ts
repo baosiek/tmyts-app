@@ -6,7 +6,7 @@ import { SelectAssetDialog } from '../../components/dialogs/select-asset-dialog/
 @Injectable({
   providedIn: 'root'
 })
-export class PortfolioDashboardService {
+export class ToolbarService {
 
     dialogTypes = signal<ITmytsToolBar[]>(
       [

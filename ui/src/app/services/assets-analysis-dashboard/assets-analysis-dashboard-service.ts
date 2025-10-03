@@ -24,7 +24,8 @@ export class AssetsAnalysisDashboardService {
         content: ObvWidget,
         rows: 2,
         columns: 2,
-        color: '#000000',
+        // color: '#000000',
+        color: '#f01707',
         backgroundColor: '#fafaf4'
       },
       {
@@ -60,9 +61,7 @@ export class AssetsAnalysisDashboardService {
   widgetsToBeAdded  = computed(
     () => {
       const idsInDashboard = this.widgetsInDashboard().map((w) => w.id);
-      console.log(`idsInDashboard: ${idsInDashboard}`)
       const idsToAdd = this.widgetsStore().filter((w) => !idsInDashboard.includes(w.id));
-      console.log(`idsToAdd: ${idsToAdd}`);
       return idsToAdd;
     }
   );
@@ -72,7 +71,6 @@ export class AssetsAnalysisDashboardService {
   }
 
   updateWidget(id: number, widget: Partial<IWidgetConfig>) {
-    console.log(`widget to update: ${JSON.stringify(widget)}`)
     const widgetIndex = this.widgetsInDashboard().findIndex(w => w.id === id)
     if (widgetIndex != -1){
       const tempWidgets = [...this.widgetsInDashboard()];

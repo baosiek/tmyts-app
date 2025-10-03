@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../../material-imports';
 import { TmytsToolbar } from '../../../reusable-components/tmyts-toolbar/tmyts-toolbar';
 import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
-import { PortfolioDashboardService } from '../../../../services/portfolio-dashboard/portfolio-type-service';
+import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar-service';
 import { PortfolioModel } from '../../../../models/portfolio-model';
 import { PortfolioTableRud } from "./portfolio-tables/portfolio-table-rud/portfolio-table-rud";
 import { MatDialog } from '@angular/material/dialog';
@@ -34,7 +34,7 @@ export class Portfolios implements OnInit{
 
   protected id: string = 'portfolio'
   user_id: number = 1
-  portfolioService = inject(PortfolioDashboardService);
+  portfolioService = inject(ToolbarService);
   portfilioDbService = inject(PortfolioDatabaseService)
   data: ITmytsToolBar | undefined;
   portfolioList: PortfolioModel[] = []

@@ -1,13 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-
-import { PortfolioDashboardService } from './portfolio-dashboard-service';
+import { ToolbarService } from './tmyts-toolbar-service';
 
 describe('PortfolioTypeService', () => {
-  let service: PortfolioDashboardService;
+  let service: ToolbarService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(PortfolioDashboardService);
+    service = TestBed.inject(ToolbarService);
   });
 
   it('should be created', () => {

@@ -85,7 +85,6 @@ export class IndexesCards implements OnInit {
               return item1;
             });
 
-            // console.log(updatedArray)
             response.forEach(row => this.INDEXES.push(row))
           }
         }

@@ -36,7 +36,6 @@ export class AddPortfolioDialog implements OnInit {
   ngOnInit() {
     this.user_id = this.data().data.get('userId')
     this.portfolio_model.user_id = this.user_id;
-    console.log(`user id: ${this.portfolio_model.user_id}`)
   }
 
   save() {

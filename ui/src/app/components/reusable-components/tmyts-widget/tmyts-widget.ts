@@ -1,4 +1,4 @@
-import { Component, ElementRef, input, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, input, model, OnChanges, signal, SimpleChanges, ViewChild } from '@angular/core';
 import { IWidgetConfig } from '../../../interfaces/widget-config-interface';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { NgComponentOutlet } from '@angular/common';
@@ -21,7 +21,7 @@ import { ConnectedPosition, Overlay } from '@angular/cdk/overlay';
     '[style.grid-area]': "'span ' + (widgetConfig().rows ?? 2) + ' / span ' + (widgetConfig().columns ?? 2)",
   }
 })
-export class TmytsWidget {
+export class TmytsWidget{
 
   /**
    * Initializes a series of variables where:
@@ -33,7 +33,5 @@ export class TmytsWidget {
   showWidgetSettings = signal<boolean>(false);
   symbol = input.required<string>();
 
-  constructor() {}
-
-  
+  constructor() {}  
 }

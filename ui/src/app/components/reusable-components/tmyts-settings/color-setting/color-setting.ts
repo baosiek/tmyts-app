@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, ElementRef, input, model, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, input, model, OnInit, ViewChild } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../../material-imports';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IWidgetConfig } from '../../../../interfaces/widget-config-interface';
+import { AssetsAnalysisDashboardService } from '../../../../services/assets-analysis-dashboard/assets-analysis-dashboard-service';
 
 @Component({
   selector: 'app-color-setting',
@@ -15,6 +16,8 @@ import { IWidgetConfig } from '../../../../interfaces/widget-config-interface';
 export class ColorSetting implements OnInit {
 
   configWidget = model.required<IWidgetConfig>()
+
+  widgetConfigService = inject(AssetsAnalysisDashboardService);
 
   // Use ViewChild to get a reference to the element with the #colorTarget template variable
   @ViewChild('colorTarget', { static: false }) colorTarget!: ElementRef;
@@ -36,13 +39,7 @@ export class ColorSetting implements OnInit {
     });
   }
 
-  // Handle color change
-  onColorChange(event: any): void {
-    console.log('New color selected:', event);
-  }
-
   changeColor(){
-    console.log("change color ", this.colorCtr.value)
     this.configWidget.update(
       currentConfig => (
         {
@@ -50,12 +47,11 @@ export class ColorSetting implements OnInit {
           color: this.colorCtr.value,
         }
       )
-    ); 
-    console.log("changed color ", this.configWidget())   
+    );
+    this.widgetConfigService.updateWidget(this.configWidget().id, this.configWidget())   
   }
 
   changeBackgroundColor(){
-    console.log("change background color ", this.backgroundColorCtr.value)
     this.configWidget.update(
       currentConfig => (
         {
@@ -64,6 +60,6 @@ export class ColorSetting implements OnInit {
         }
       )
     ); 
-     console.log("changed background color ", this.configWidget())   
+     this.widgetConfigService.updateWidget(this.configWidget().id, this.configWidget()) 
   }
 }

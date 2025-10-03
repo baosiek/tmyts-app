@@ -1,4 +1,4 @@
-import { Component, inject, input, model, OnInit, signal } from '@angular/core';
+import { Component, inject, input, model, OnChanges, OnInit, signal, SimpleChanges } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../../material-imports';
 import { IWidgetConfig } from '../../../../interfaces/widget-config-interface';
 import { AssetsAnalysisDashboardService } from '../../../../services/assets-analysis-dashboard/assets-analysis-dashboard-service';
@@ -32,11 +32,10 @@ import { MatDialogRef } from '@angular/material/dialog';
   templateUrl: './tmyts-widgets-settings.html',
   styleUrl: './tmyts-widgets-settings.scss'
 })
-export class TmytsWidgetsSettings implements OnInit{
+export class TmytsWidgetsSettings{
 
   showWidgetSettings = model<boolean>(false);
-  configWidget = input.required<IWidgetConfig>()
-  // widgetConfigService = inject(AssetsAnalysisDashboardService);
+  configWidget = model.required<IWidgetConfig>()
 
   colorCtr = new FormControl('#FF0000'); // Initialize with a default color
   disabled = false;
@@ -49,21 +48,5 @@ export class TmytsWidgetsSettings implements OnInit{
   public color: ThemePalette = 'primary';
 
   constructor(private fb: FormBuilder) {}
-
-  ngOnInit(): void {
-    this.colorForm = this.fb.group({
-      // Initialize the color with a default value
-      selectedColor: '#FF5722',
-    });
-  }
-
-  // Handle color change (optional)
-  onColorChange(event: any): void {
-    console.log('New color selected:', event);
-  }
-
-  changeColor(color: MouseEvent) {
-    console.log(`color selected: ${JSON.stringify(color)}`);
-  }
 
 }
