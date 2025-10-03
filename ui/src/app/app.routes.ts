@@ -28,13 +28,4 @@ export const routes: Routes = [
             );
         },
     },
-        {
-        path: 'asset_analysis',
-        pathMatch: 'full',
-        loadComponent: () => {
-            return import('./components/panels/dashboards/asset-analysis/asset-analysis').then(
-                (m) => m.AssetAnalysis
-            );
-        },
-    },
 ];
