@@ -97,4 +97,6 @@ export class AssetsAnalysisDashboardService {
   deleteWidgetFromDashboard(id: number){
     this.widgetsInDashboard.set(this.widgetsInDashboard().filter(w => w.id !== id));
   }
+
+  
 }

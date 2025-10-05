@@ -27,6 +27,7 @@ providers: [
 export class AssetsAnalysis {
 
   protected id: string = 'assets_analysis'
+  user_id: number = 1
   dashboardService = inject(ToolbarService);
   data: ITmytsToolBar | undefined;
   result = signal<Map<String, any>>(new Map())

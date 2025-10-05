@@ -15,7 +15,7 @@
         <mat-card-content>
             <ng-component [ngComponentOutlet]="widgetConfig().content"></ng-component>
             @if (showWidgetSettings()) {
-            <app-tmyts-widgets-settings [configWidget]="widgetConfig()"
+            <app-tmyts-widgets-settings [configWidget]="widgetConfig()" [user_id]="user_id()"
                 [(showWidgetSettings)]="showWidgetSettings"></app-tmyts-widgets-settings>
             }
         </mat-card-content>

@@ -29,7 +29,7 @@
     </div>
     <div class="assets-analysis-content">
         @for (widget of widgetConfigService.widgetsInDashboard(); track widget.id) {
-        <app-tmyts-widget [widgetConfig]="widget" [symbol]="symbol"></app-tmyts-widget>
+        <app-tmyts-widget [widgetConfig]="widget" [user_id]="user_id" [symbol]="symbol"></app-tmyts-widget>
         }
     </div>
     }

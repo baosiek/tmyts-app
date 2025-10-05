@@ -30,6 +30,7 @@ export class TmytsWidget{
   widgetConfig = input.required<IWidgetConfig>();
   showWidgetSettings = signal<boolean>(false);
   symbol = input.required<string>();
+  user_id = input.required<number>();
 
   constructor() {}  
 }

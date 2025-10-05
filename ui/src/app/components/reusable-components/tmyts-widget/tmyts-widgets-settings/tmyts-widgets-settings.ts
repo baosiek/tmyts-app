@@ -35,7 +35,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class TmytsWidgetsSettings{
 
   showWidgetSettings = model<boolean>(false);
-  configWidget = model.required<IWidgetConfig>()
+  configWidget = model.required<IWidgetConfig>();
+  user_id = input.required<number>();
   widgetSerive = inject(AssetsAnalysisDashboardService)
 
   colorCtr = new FormControl('#FF0000'); // Initialize with a default color
