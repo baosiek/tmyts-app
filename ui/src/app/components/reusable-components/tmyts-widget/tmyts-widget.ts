@@ -32,5 +32,11 @@ export class TmytsWidget{
   symbol = input.required<string | undefined>();
   user_id = input.required<number>();
 
+  isCardExpanded = false;
+
+  toggleFullscreen(): void {
+    this.isCardExpanded = !this.isCardExpanded;
+  }
+
   constructor() {}  
 }
