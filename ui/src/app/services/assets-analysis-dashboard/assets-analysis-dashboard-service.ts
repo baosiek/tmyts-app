@@ -52,66 +52,7 @@ export class AssetsAnalysisDashboardService {
 
     // holds all existing types of widgets for this dashboard service
   widgetsStore = signal<IWidgetConfig[]>([]);
-    
-
-  // // holds all existing types of widgets for this dashboard service
-  // widgetsStore = signal<IWidgetConfig[]>(
-  //   [
-  //     {
-  //       id: 1,
-  //       user_id: 1,
-  //       dashboard_id: 'assets_analysis',
-  //       label: 'obv',
-  //       title: 'On-Balance Volume (OBV) indicator',
-  //       subtitle: 'AAPL',
-  //       content: ObvWidget,
-  //       rows: 2,
-  //       columns: 2,
-  //       color: '#000000',
-  //       background_color: '#fafaf4'
-  //     },
-  //     {
-  //       id: 2,
-  //       user_id: 1,
-  //       dashboard_id: 'assets_analysis',
-  //       label: 'ad-line',
-  //       title: 'Accumulation/Distribution Line (A/D Line)',
-  //       subtitle: 'AAPL',
-  //       content: AdlineWidget,
-  //       rows: 1,
-  //       columns: 1,
-  //       color: '#000000',
-  //       background_color: '#fafaf4'
-  //     },
-  //     {
-  //       id: 3,
-  //       user_id: 1,
-  //       dashboard_id: 'assets_analysis',
-  //       label: 'adx',
-  //       title: 'Average Directional Index (ADX)',
-  //       subtitle: 'AAPL',
-  //       content: AdxWidget,
-  //       rows: 1,
-  //       columns: 1,
-  //       color: '#000000',
-  //       background_color: '#fafaf4'
-  //     },
-  //     {
-  //       id: 4,
-  //       user_id: 1,
-  //       dashboard_id: 'assets_analysis',
-  //       label: 'aroon',
-  //       title: 'Aroon Indicator',
-  //       subtitle: 'AAPL',
-  //       content: AroonWidget,
-  //       rows: 1,
-  //       columns: 1,
-  //       color: '#000000',
-  //       background_color: '#fafaf4'
-  //     }
-  //   ]
-  // );
-
+  
   // user preference storing service
   userPreferenceService = inject(UserPreferencesService)
 
@@ -133,7 +74,19 @@ export class AssetsAnalysisDashboardService {
   addWidgetToDashboard(user_id: number, symbol: string, widget: IWidgetType) {
 
     console.log(`widget to be updated into possql: ${JSON.stringify(widget)}`)
-    const theWidget = new WidgetConfig(widget.id, user_id, widget.dashboard_id, widget.label, widget.title, symbol, widget.content, 1, 1, '#ffffff', '#000000')
+    const theWidget = new WidgetConfig(
+      widget.id,
+      user_id,
+      widget.dashboard_id,
+      widget.label,
+      widget.title,
+      symbol,
+      widget.content,
+      1,
+      1,
+      'var(--mat-sys-surface)',
+      'var(--mat-sys-on-surface)'
+    )
 
     // 1) Updates this.widgetsInDashboard
     this.widgetsInDashboard.set([...this.widgetsInDashboard(), {...theWidget}]);
