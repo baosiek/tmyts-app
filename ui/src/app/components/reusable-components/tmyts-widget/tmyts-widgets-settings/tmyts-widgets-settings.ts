@@ -19,9 +19,6 @@ import { MatDialogRef } from '@angular/material/dialog';
   selector: 'app-tmyts-widgets-settings',
   imports: [
     ...MATERIAL_IMPORTS,
-    // NgxMatColorPickerComponent,
-    // NgxMatColorToggleComponent,
-    // NgxMatColorPickerInput,
     ReactiveFormsModule,
     ColorSetting,
     TmytsSizeSetting

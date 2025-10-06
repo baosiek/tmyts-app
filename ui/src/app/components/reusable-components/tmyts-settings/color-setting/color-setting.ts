@@ -3,6 +3,10 @@ import { MATERIAL_IMPORTS } from '../../../../material-imports';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IWidgetConfig } from '../../../../interfaces/widget-config-interface';
 import { AssetsAnalysisDashboardService } from '../../../../services/assets-analysis-dashboard/assets-analysis-dashboard-service';
+import { UserPreferencesService } from '../../../../services/user-preferences/user-preferences-service';
+import { catchError } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TmytsSnackbar } from '../../tmyts-snackbar/tmyts-snackbar';
 
 @Component({
   selector: 'app-color-setting',
@@ -17,7 +21,7 @@ export class ColorSetting implements OnInit {
 
   configWidget = model.required<IWidgetConfig>()
 
-  widgetConfigService = inject(AssetsAnalysisDashboardService);
+  assetsAnalysisDashboardService = inject(AssetsAnalysisDashboardService);
 
   // Use ViewChild to get a reference to the element with the #colorTarget template variable
   @ViewChild('colorTarget', { static: false }) colorTarget!: ElementRef;
@@ -29,7 +33,7 @@ export class ColorSetting implements OnInit {
   backgroundColorCtr: FormControl = new FormControl('red');
   colorCtr: FormControl = new FormControl('black');
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private _snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.colorForm = this.fb.group({
@@ -48,7 +52,7 @@ export class ColorSetting implements OnInit {
         }
       )
     );
-    this.widgetConfigService.updateWidget(this.configWidget().id, this.configWidget())   
+    this.assetsAnalysisDashboardService.updateWidget(this.configWidget())
   }
 
   changeBackgroundColor(){
@@ -60,6 +64,6 @@ export class ColorSetting implements OnInit {
         }
       )
     ); 
-     this.widgetConfigService.updateWidget(this.configWidget().id, this.configWidget()) 
+     this.assetsAnalysisDashboardService.updateWidget(this.configWidget()) 
   }
 }

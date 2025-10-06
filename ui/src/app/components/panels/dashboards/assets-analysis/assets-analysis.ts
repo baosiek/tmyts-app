@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
 import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar-service';
 import { TmytsToolbar } from '../../../reusable-components/tmyts-toolbar/tmyts-toolbar';
@@ -8,6 +8,10 @@ import { TmytsWidget } from "../../../reusable-components/tmyts-widget/tmyts-wid
 import { IWidgetConfig } from '../../../../interfaces/widget-config-interface';
 import { ObvWidget } from './asset-analysis-widgets/obv-widget/obv-widget';
 import { AssetsAnalysisDashboardService } from '../../../../services/assets-analysis-dashboard/assets-analysis-dashboard-service';
+import { UserPreferencesService } from '../../../../services/user-preferences/user-preferences-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { catchError } from 'rxjs';
+import { TmytsSnackbar } from '../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 
 @Component({
   selector: 'app-assets-analysis',
@@ -31,11 +35,13 @@ export class AssetsAnalysis {
   dashboardService = inject(ToolbarService);
   data: ITmytsToolBar | undefined;
   result = signal<Map<String, any>>(new Map())
-  symbol: string | null = null;
+  symbol: string = '';
 
   widgetConfigService = inject(AssetsAnalysisDashboardService);
+  userPreferenceService = inject(UserPreferencesService)
 
-  constructor() {
+  constructor(private _snackBar: MatSnackBar) {
+
     this.dashboardService.dialogTypes().find(
       (dashboard) => {
         if (dashboard) {
@@ -43,6 +49,49 @@ export class AssetsAnalysis {
             this.data = dashboard;
           }          
         }        
+      }
+    );
+
+    this.userPreferenceService.getAllWidgets(this.user_id, this.id)
+    .pipe(
+      catchError(
+        (error) => {
+          // Handle error response
+          const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
+
+          // Renders error snack-bar
+          this._snackBar.openFromComponent(
+            TmytsSnackbar, {
+              data: {'message': message, 'action': 'Close'},
+              panelClass: ['error-snackbar-theme']
+            }
+          );
+          throw error;
+        }
+      )
+    )
+    .subscribe(
+      {
+        next: (response: IWidgetConfig[]) => {
+          response.forEach(
+            (r) => {
+              const content = this.widgetConfigService.widgetTypes().find(w => w.id === r.id)?.content;
+              if (content) {
+                r.content = content;
+              }
+            }
+          );
+          this.widgetConfigService.widgetsInDashboard.set(response);
+          if (this.widgetConfigService.widgetsInDashboard().length > 0){
+            const w: IWidgetConfig | undefined = this.widgetConfigService.widgetsInDashboard().at(0)
+            if (w) {
+              this.symbol = w.symbol;
+              console.log(`set symbol is: ${this.symbol}`)
+            }            
+          } else {
+             this.symbol = '';
+          }
+        }
       }
     );
   }

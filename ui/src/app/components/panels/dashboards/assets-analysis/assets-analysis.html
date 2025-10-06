@@ -16,8 +16,8 @@
             Indicators
         </button>
         <mat-menu #menu="matMenu">
-            @for (widget of widgetConfigService.widgetsToBeAdded(); track widget.id){
-            <button mat-menu-item (click)="widgetConfigService.addWidgetToDashboard(widget)">
+            @for (widget of widgetConfigService.widgetsToBeAdded(); track widget.label){
+            <button mat-menu-item (click)="widgetConfigService.addWidgetToDashboard(user_id, symbol, widget)">
                 <span>{{widget.label}} indicator</span>
             </button>
             } @empty {

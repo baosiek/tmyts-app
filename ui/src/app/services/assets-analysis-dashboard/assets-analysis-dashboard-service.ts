@@ -1,10 +1,13 @@
-import { computed, Injectable, signal } from '@angular/core';
-import { IWidgetConfig } from '../../interfaces/widget-config-interface';
+import { computed, effect, inject, Injectable, signal, Type } from '@angular/core';
+import { IWidgetConfig, IWidgetType, WidgetConfig } from '../../interfaces/widget-config-interface';
 import { ObvWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/obv-widget/obv-widget';
 import { AdlineWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/adline-widget/adline-widget';
 import { AdxWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/adx-widget/adx-widget';
 import { AroonWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/aroon-widget/aroon-widget';
-
+import { UserPreferencesService } from '../user-preferences/user-preferences-service';
+import { catchError } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TmytsSnackbar } from '../../components/reusable-components/tmyts-snackbar/tmyts-snackbar';
 
 /*
 providedIn: 'root' deleted from @Injectable, because
@@ -14,59 +17,103 @@ dashboard.
 @Injectable() 
 export class AssetsAnalysisDashboardService {
 
-  // holds all existing types of widgets for this dashboard service
-  widgetsStore = signal<IWidgetConfig[]>(
+  widgetTypes = signal<IWidgetType[]>(
     [
       {
         id: 1,
         dashboard_id: 'assets_analysis',
         label: 'obv',
         title: 'On-Balance Volume (OBV) indicator',
-        subtitle: 'AAPL',
         content: ObvWidget,
-        rows: 2,
-        columns: 2,
-        color: '#000000',
-        backgroundColor: '#fafaf4'
       },
       {
         id: 2,
         dashboard_id: 'assets_analysis',
         label: 'ad-line',
         title: 'Accumulation/Distribution Line (A/D Line)',
-        subtitle: 'AAPL',
         content: AdlineWidget,
-        rows: 1,
-        columns: 1,
-        color: '#000000',
-        backgroundColor: '#fafaf4'
       },
       {
         id: 3,
         dashboard_id: 'assets_analysis',
         label: 'adx',
         title: 'Average Directional Index (ADX)',
-        subtitle: 'AAPL',
         content: AdxWidget,
-        rows: 1,
-        columns: 1,
-        color: '#000000',
-        backgroundColor: '#fafaf4'
       },
       {
         id: 4,
         dashboard_id: 'assets_analysis',
         label: 'aroon',
         title: 'Aroon Indicator',
-        subtitle: 'AAPL',
         content: AroonWidget,
-        rows: 1,
-        columns: 1,
-        color: '#000000',
-        backgroundColor: '#fafaf4'
       }
     ]
   );
+
+    // holds all existing types of widgets for this dashboard service
+  widgetsStore = signal<IWidgetConfig[]>([]);
+    
+
+  // // holds all existing types of widgets for this dashboard service
+  // widgetsStore = signal<IWidgetConfig[]>(
+  //   [
+  //     {
+  //       id: 1,
+  //       user_id: 1,
+  //       dashboard_id: 'assets_analysis',
+  //       label: 'obv',
+  //       title: 'On-Balance Volume (OBV) indicator',
+  //       subtitle: 'AAPL',
+  //       content: ObvWidget,
+  //       rows: 2,
+  //       columns: 2,
+  //       color: '#000000',
+  //       background_color: '#fafaf4'
+  //     },
+  //     {
+  //       id: 2,
+  //       user_id: 1,
+  //       dashboard_id: 'assets_analysis',
+  //       label: 'ad-line',
+  //       title: 'Accumulation/Distribution Line (A/D Line)',
+  //       subtitle: 'AAPL',
+  //       content: AdlineWidget,
+  //       rows: 1,
+  //       columns: 1,
+  //       color: '#000000',
+  //       background_color: '#fafaf4'
+  //     },
+  //     {
+  //       id: 3,
+  //       user_id: 1,
+  //       dashboard_id: 'assets_analysis',
+  //       label: 'adx',
+  //       title: 'Average Directional Index (ADX)',
+  //       subtitle: 'AAPL',
+  //       content: AdxWidget,
+  //       rows: 1,
+  //       columns: 1,
+  //       color: '#000000',
+  //       background_color: '#fafaf4'
+  //     },
+  //     {
+  //       id: 4,
+  //       user_id: 1,
+  //       dashboard_id: 'assets_analysis',
+  //       label: 'aroon',
+  //       title: 'Aroon Indicator',
+  //       subtitle: 'AAPL',
+  //       content: AroonWidget,
+  //       rows: 1,
+  //       columns: 1,
+  //       color: '#000000',
+  //       background_color: '#fafaf4'
+  //     }
+  //   ]
+  // );
+
+  // user preference storing service
+  userPreferenceService = inject(UserPreferencesService)
 
   // holds all widgets added to the dashboard
   widgetsInDashboard = signal<IWidgetConfig[]>([])
@@ -76,27 +123,137 @@ export class AssetsAnalysisDashboardService {
   widgetsToBeAdded  = computed(
     () => {
       const idsInDashboard = this.widgetsInDashboard().map((w) => w.id);
-      const idsToAdd = this.widgetsStore().filter((w) => !idsInDashboard.includes(w.id));
-      return idsToAdd;
-    }
+      const widgets = this.widgetsStore().filter((w) =>  !idsInDashboard.includes(w.id));
+      return this.widgetTypes().filter((w) =>  !idsInDashboard.includes(w.id));
+    }      
   );
 
-  addWidgetToDashboard(widget: IWidgetConfig) {
-    this.widgetsInDashboard.set([...this.widgetsInDashboard(), {...widget}])
+  constructor(private _snackBar: MatSnackBar){}
+
+  addWidgetToDashboard(user_id: number, symbol: string, widget: IWidgetType) {
+
+    console.log(`widget to be updated into possql: ${JSON.stringify(widget)}`)
+    const theWidget = new WidgetConfig(widget.id, user_id, widget.dashboard_id, widget.label, widget.title, symbol, widget.content, 1, 1, '#ffffff', '#000000')
+
+    // 1) Updates this.widgetsInDashboard
+    this.widgetsInDashboard.set([...this.widgetsInDashboard(), {...theWidget}]);
+ 
+    // 2) Deletes content from widget as it cannot be serialized easily.
+    const widgetStrippedOfContent: Partial<IWidgetConfig> = theWidget
+    delete widgetStrippedOfContent.content;
+    
+    // 3) Update user preferences.
+    this.userPreferenceService.insertWidgetConfig(widgetStrippedOfContent)
+    .pipe(
+      catchError(
+        (error) => {
+          // Handle error response
+          const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
+
+          // Renders error snack-bar
+          this._snackBar.openFromComponent(
+            TmytsSnackbar, {
+              data: {'message': message, 'action': 'Close'},
+              panelClass: ['error-snackbar-theme']
+            }
+          );
+          throw error;
+        }
+      )
+    )
+    .subscribe(
+      {
+        next: (response: IWidgetConfig) => {
+          // Renders error snack-bar
+          this._snackBar.openFromComponent(
+            TmytsSnackbar, {
+              data: {'message': JSON.stringify(response), 'action': 'Close'},
+              panelClass: ['success-snackbar-theme']
+            }
+          );
+        }
+      }
+    );    
   }
 
-  updateWidget(id: number, widget: Partial<IWidgetConfig>) {
-    const widgetIndex = this.widgetsInDashboard().findIndex(w => w.id === id)
+
+  updateWidget(widget: Partial<IWidgetConfig>) {
+    /* 
+    First finds the indes of the widget to be updated.
+    Then update the widget with ...widget
+    Sets the new values to widgetsInDashboard
+    Finally updates the user preferences
+    */
+    console.log(`widget to be updated: ${JSON.stringify(widget)}`)
+    const widgetIndex = this.widgetsInDashboard().findIndex(w => w.id === widget.id)
+    console.log(`widget index: ${JSON.stringify(widgetIndex)}`)
     if (widgetIndex != -1){
       const tempWidgets = [...this.widgetsInDashboard()];
       tempWidgets[widgetIndex] = {...tempWidgets[widgetIndex], ...widget};
       this.widgetsInDashboard.set(tempWidgets);
+
+      const user_id = tempWidgets[widgetIndex].user_id;
+      const dashboard_id = tempWidgets[widgetIndex].dashboard_id;
+
+      this.userPreferenceService.updateWidgets(user_id, dashboard_id, tempWidgets)
+      .pipe(
+        catchError(
+          (error) => {
+            // Handle error response
+            const message: string = `Error: ${JSON.stringify(error)}`;
+
+            // Renders error snack-bar
+            this._snackBar.openFromComponent(
+              TmytsSnackbar, {
+                data: {'message': message, 'action': 'Close'},
+                panelClass: ['error-snackbar-theme']
+              }
+            );
+            throw error;
+          }
+        )        
+      )
+      .subscribe(
+        {
+          next: (response: IWidgetConfig[]) => {
+            this.widgetsInDashboard.set(response);
+          },          
+        }
+      );
     }   
   }
 
-  deleteWidgetFromDashboard(id: number){
-    this.widgetsInDashboard.set(this.widgetsInDashboard().filter(w => w.id !== id));
-  }
+  deleteWidgetFromDashboard(widget: IWidgetConfig){
+    const id: number = widget.id;
+    const user_id: number = widget.user_id;
+    const dashboard_id: string = widget.dashboard_id;
 
-  
+    this.userPreferenceService.deleteWidget(id, user_id, dashboard_id)
+    .pipe(
+      catchError(
+          (error) => {
+            // Handle error response
+            const message: string = `Error: ${JSON.stringify(error)}`;
+
+            // Renders error snack-bar
+            this._snackBar.openFromComponent(
+              TmytsSnackbar, {
+                data: {'message': message, 'action': 'Close'},
+                panelClass: ['error-snackbar-theme']
+              }
+            );
+            throw error;
+          }
+        )  
+    )
+    .subscribe(
+      {
+          next: (response: IWidgetConfig[]) => {
+            this.widgetsInDashboard.set(response);
+          },          
+        }
+    );
+  }  
 }
+
+
