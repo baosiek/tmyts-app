@@ -89,7 +89,7 @@ export class AssetsAnalysisDashboardService {
     )
 
     // 1) Updates this.widgetsInDashboard
-    this.widgetsInDashboard.set([...this.widgetsInDashboard(), {...theWidget}]);
+    // this.widgetsInDashboard.set([...this.widgetsInDashboard(), {...theWidget}]);
  
     // 2) Deletes content from widget as it cannot be serialized easily.
     const widgetStrippedOfContent: Partial<IWidgetConfig> = theWidget
@@ -117,13 +117,14 @@ export class AssetsAnalysisDashboardService {
     .subscribe(
       {
         next: (response: IWidgetConfig) => {
-          // Renders error snack-bar
-          this._snackBar.openFromComponent(
-            TmytsSnackbar, {
-              data: {'message': JSON.stringify(response), 'action': 'Close'},
-              panelClass: ['success-snackbar-theme']
-            }
-          );
+          this.widgetsInDashboard.set([...this.widgetsInDashboard(), {...response}]);
+          // // Renders error snack-bar
+          // this._snackBar.openFromComponent(
+          //   TmytsSnackbar, {
+          //     data: {'message': JSON.stringify(response), 'action': 'Close'},
+          //     panelClass: ['success-snackbar-theme']
+          //   }
+          // );
         }
       }
     );    
