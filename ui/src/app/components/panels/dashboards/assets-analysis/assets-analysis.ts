@@ -73,20 +73,10 @@ export class AssetsAnalysis {
       {
         next: (response: IWidgetConfig[]) => {
           this.widgetConfigService.reInsertContentIntoWidget(response);
-          // response.forEach(
-          //   (r) => {
-          //     const content = this.widgetConfigService.widgetTypes().find(w => w.id === r.id)?.content;
-          //     if (content) {
-          //       r.content = content;
-          //     }
-          //   }
-          // );
-          // this.widgetConfigService.widgetsInDashboard.set(response);
           if (this.widgetConfigService.widgetsInDashboard().length > 0){
             const w: IWidgetConfig | undefined = this.widgetConfigService.widgetsInDashboard().at(0)
             if (w) {
               this.symbol = w.symbol;
-              console.log(`set symbol is: ${this.symbol}`)
             }            
           } else {
              this.symbol = '';

@@ -24,22 +24,29 @@ export class ColorSetting implements OnInit {
   assetsAnalysisDashboardService = inject(AssetsAnalysisDashboardService);
 
   // Use ViewChild to get a reference to the element with the #colorTarget template variable
-  @ViewChild('colorTarget', { static: false }) colorTarget!: ElementRef;
+  // @ViewChild('colorTarget', { static: false }) colorTarget!: ElementRef;
 
    // Use FormGroup for reactive form handling
   colorForm!: FormGroup;
 
   // Create a FormControl for your color picker
-  backgroundColorCtr: FormControl = new FormControl('red');
-  colorCtr: FormControl = new FormControl('black');
+  // backgroundColorCtr: FormControl = new FormControl('#ffffff');
+  // colorCtr: FormControl = new FormControl('#ff3333');
 
   constructor(private fb: FormBuilder, private _snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
+
+      // 2. Define default values
+    const defaultSettings = {
+      colorCtr: this.configWidget().color,
+      backgroundColorCtr: this.configWidget().background_color
+    };
+
     this.colorForm = this.fb.group({
       // Initialize the color with a default value
-      colorCtr: this.colorCtr,
-      backgroundColorCtr: this.backgroundColorCtr
+      colorCtr: defaultSettings.colorCtr,
+      backgroundColorCtr: defaultSettings.backgroundColorCtr
     });
   }
 
@@ -48,11 +55,12 @@ export class ColorSetting implements OnInit {
       currentConfig => (
         {
           ...currentConfig,
-          color: this.colorCtr.value,
+          color: this.colorForm.get('colorCtr')?.value,
         }
       )
     );
     this.assetsAnalysisDashboardService.updateWidget(this.configWidget())
+    
   }
 
   changeBackgroundColor(){
@@ -60,7 +68,7 @@ export class ColorSetting implements OnInit {
       currentConfig => (
         {
           ...currentConfig,
-          background_color: this.backgroundColorCtr.value,
+          background_color: this.colorForm.get('backgroundColorCtr')?.value,
         }
       )
     ); 

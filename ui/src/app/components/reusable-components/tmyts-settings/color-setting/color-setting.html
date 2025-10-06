@@ -3,12 +3,12 @@
   <form [formGroup]="colorForm" class="form-container">
     <mat-form-field appearance="outline">
       <mat-label>Choose a color</mat-label>
-      <input matInput type="color" [formControl]="colorCtr" (change)="changeColor()">
+      <input matInput type="color" formControlName="colorCtr" (change)="changeColor()">
       <mat-icon matSuffix fontSet="material-symbols-outlined">palette</mat-icon>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Choose a background color</mat-label>
-      <input matInput type="color" [formControl]="backgroundColorCtr" (change)="changeBackgroundColor()">
+      <input matInput type="color" formControlName="backgroundColorCtr" (change)="changeBackgroundColor()" value="#FF0000">
       <mat-icon matSuffix fontSet="material-symbols-outlined">palette</mat-icon>
     </mat-form-field>
   </form>
