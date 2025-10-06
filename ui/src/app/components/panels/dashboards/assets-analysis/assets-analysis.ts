@@ -3,10 +3,8 @@ import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
 import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar-service';
 import { TmytsToolbar } from '../../../reusable-components/tmyts-toolbar/tmyts-toolbar';
 import { MATERIAL_IMPORTS } from '../../../../material-imports';
-import { JsonPipe } from '@angular/common';
 import { TmytsWidget } from "../../../reusable-components/tmyts-widget/tmyts-widget";
 import { IWidgetConfig } from '../../../../interfaces/widget-config-interface';
-import { ObvWidget } from './asset-analysis-widgets/obv-widget/obv-widget';
 import { AssetsAnalysisDashboardService } from '../../../../services/assets-analysis-dashboard/assets-analysis-dashboard-service';
 import { UserPreferencesService } from '../../../../services/user-preferences/user-preferences-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -74,15 +72,16 @@ export class AssetsAnalysis {
     .subscribe(
       {
         next: (response: IWidgetConfig[]) => {
-          response.forEach(
-            (r) => {
-              const content = this.widgetConfigService.widgetTypes().find(w => w.id === r.id)?.content;
-              if (content) {
-                r.content = content;
-              }
-            }
-          );
-          this.widgetConfigService.widgetsInDashboard.set(response);
+          this.widgetConfigService.reInsertContentIntoWidget(response);
+          // response.forEach(
+          //   (r) => {
+          //     const content = this.widgetConfigService.widgetTypes().find(w => w.id === r.id)?.content;
+          //     if (content) {
+          //       r.content = content;
+          //     }
+          //   }
+          // );
+          // this.widgetConfigService.widgetsInDashboard.set(response);
           if (this.widgetConfigService.widgetsInDashboard().length > 0){
             const w: IWidgetConfig | undefined = this.widgetConfigService.widgetsInDashboard().at(0)
             if (w) {
@@ -103,7 +102,33 @@ export class AssetsAnalysis {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.widgetConfigService.widgetsInDashboard(), event.previousIndex, event.currentIndex);
+    const temp = this.widgetConfigService.widgetsInDashboard();
+    moveItemInArray(temp, event.previousIndex, event.currentIndex);
+    this.userPreferenceService.updateWidgets(this.user_id, this.id, temp)
+    .pipe(
+      catchError(
+        (error) => {
+          // Handle error response
+          const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
+
+          // Renders error snack-bar
+          this._snackBar.openFromComponent(
+            TmytsSnackbar, {
+              data: {'message': message, 'action': 'Close'},
+              panelClass: ['error-snackbar-theme']
+            }
+          );
+          throw error;
+        }
+      )
+    )
+    .subscribe(
+      {
+        next: (response: IWidgetConfig[]) => {
+          this.widgetConfigService.reInsertContentIntoWidget(response);
+        }
+      }
+    );
   }
 }
 

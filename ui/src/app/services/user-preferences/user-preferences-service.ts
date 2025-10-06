@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IWidgetConfig } from '../../interfaces/widget-config-interface';
-import { WidgetConfigModel } from '../../models/widget-config-model';
 
 @Injectable({
   providedIn: 'root'

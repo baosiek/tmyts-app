@@ -114,7 +114,8 @@ export class AssetsAnalysisDashboardService {
     .subscribe(
       {
         next: (response: IWidgetConfig) => {
-          this.widgetsInDashboard.set([...this.widgetsInDashboard(), {...response}]);
+          const widgets = [...this.widgetsInDashboard(), {...response}];
+          this.reInsertContentIntoWidget(widgets)
         }
       }
     );    
@@ -157,7 +158,7 @@ export class AssetsAnalysisDashboardService {
       .subscribe(
         {
           next: (response: IWidgetConfig[]) => {
-            this.widgetsInDashboard.set(response);
+            this.reInsertContentIntoWidget(response);
           },          
         }
       );
@@ -190,11 +191,26 @@ export class AssetsAnalysisDashboardService {
     .subscribe(
       {
           next: (response: IWidgetConfig[]) => {
-            this.widgetsInDashboard.set(response);
+            this.reInsertContentIntoWidget(response);
           },          
         }
     );
-  }  
+  }
+
+  reInsertContentIntoWidget(configArray: IWidgetConfig[]) {
+    // reinserts content into configArray
+    configArray.forEach(
+      (item) => {
+        const content = this.widgetTypes().find(w => item.label === w.label)?.content;
+        if (content) {
+          item.content = content;
+        }        
+      }
+    )
+
+    // updates widgetsInDashboard
+    this.widgetsInDashboard.set(configArray);
+  }
 }
 
 
