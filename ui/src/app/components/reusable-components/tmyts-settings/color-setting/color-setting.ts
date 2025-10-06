@@ -60,7 +60,7 @@ export class ColorSetting implements OnInit {
       currentConfig => (
         {
           ...currentConfig,
-          backgroundColor: this.backgroundColorCtr.value,
+          background_color: this.backgroundColorCtr.value,
         }
       )
     ); 
