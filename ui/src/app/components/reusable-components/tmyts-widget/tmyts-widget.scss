@@ -7,7 +7,6 @@
     padding: 4px;
     box-sizing: border-box;
     overflow: hidden; // content that surpasses widget size will be hidden
-    cursor: move;
 }
 
 mat-icon {
@@ -29,4 +28,8 @@ mat-icon {
 
 .custom-dialog-container .mat-mdc-dialog-surface {
   border-radius: 8px; /* Optional: adds rounded corners to the overlay */
+}
+
+.dragable-area {
+  cursor: move;
 }

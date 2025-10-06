@@ -1,9 +1,9 @@
-<div class="widget-container" #parentCard>
+<div class="widget-container" #parentCard cdkDrag>
     <mat-card appearance="outlined" class="widget-card"
     [style.background-color]="widgetConfig().background_color"
     [style.color]="widgetConfig().color"
     >
-        <mat-card-header>
+        <mat-card-header class="dragable-area">
             <mat-card-title-group>
                 <mat-card-title>{{widgetConfig().title}}</mat-card-title>
                 <mat-card-subtitle>{{symbol()}}</mat-card-subtitle>

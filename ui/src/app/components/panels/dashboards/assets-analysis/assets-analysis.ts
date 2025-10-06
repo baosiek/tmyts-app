@@ -12,6 +12,7 @@ import { UserPreferencesService } from '../../../../services/user-preferences/us
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError } from 'rxjs';
 import { TmytsSnackbar } from '../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-assets-analysis',
@@ -99,6 +100,10 @@ export class AssetsAnalysis {
   parentNotified(value: Map<String, any>){
     this.result.set(value)
     this.symbol = this.result().get('symbol').symbol
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.widgetConfigService.widgetsInDashboard(), event.previousIndex, event.currentIndex);
   }
 }
 
