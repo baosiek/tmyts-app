@@ -128,13 +128,10 @@ export class AssetsAnalysisDashboardService {
     Sets the new values to widgetsInDashboard
     Finally updates the user preferences
     */
-    console.log(`widget to be updated: ${JSON.stringify(widget)}`)
     const widgetIndex = this.widgetsInDashboard().findIndex(w => w.id === widget.id)
-    console.log(`widget index: ${JSON.stringify(widgetIndex)}`)
     if (widgetIndex != -1){
       const tempWidgets = [...this.widgetsInDashboard()];
       tempWidgets[widgetIndex] = {...tempWidgets[widgetIndex], ...widget};
-      this.widgetsInDashboard.set(tempWidgets);
 
       const user_id = tempWidgets[widgetIndex].user_id;
       const dashboard_id = tempWidgets[widgetIndex].dashboard_id;
