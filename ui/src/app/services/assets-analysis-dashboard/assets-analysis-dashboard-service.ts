@@ -87,15 +87,12 @@ export class AssetsAnalysisDashboardService {
       'var(--mat-sys-surface)',
       'var(--mat-sys-on-surface)'
     )
-
-    // 1) Updates this.widgetsInDashboard
-    // this.widgetsInDashboard.set([...this.widgetsInDashboard(), {...theWidget}]);
  
-    // 2) Deletes content from widget as it cannot be serialized easily.
+    // 1) Deletes content from widget as it cannot be serialized easily.
     const widgetStrippedOfContent: Partial<IWidgetConfig> = theWidget
     delete widgetStrippedOfContent.content;
     
-    // 3) Update user preferences.
+    // 1) Update user preferences.
     this.userPreferenceService.insertWidgetConfig(widgetStrippedOfContent)
     .pipe(
       catchError(
@@ -118,13 +115,6 @@ export class AssetsAnalysisDashboardService {
       {
         next: (response: IWidgetConfig) => {
           this.widgetsInDashboard.set([...this.widgetsInDashboard(), {...response}]);
-          // // Renders error snack-bar
-          // this._snackBar.openFromComponent(
-          //   TmytsSnackbar, {
-          //     data: {'message': JSON.stringify(response), 'action': 'Close'},
-          //     panelClass: ['success-snackbar-theme']
-          //   }
-          // );
         }
       }
     );    
