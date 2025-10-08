@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { IWidgetConfig } from '../../../../../../interfaces/widget-config-interface';
 
 @Component({
   selector: 'app-adline-widget',
@@ -7,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './adline-widget.scss'
 })
 export class AdlineWidget {
+
+  data = input.required<IWidgetConfig>();
 
 }

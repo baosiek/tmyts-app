@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { IWidgetConfig } from '../../../../../../interfaces/widget-config-interface';
 
 @Component({
   selector: 'app-aroon-widget',
@@ -8,4 +9,5 @@ import { Component } from '@angular/core';
 })
 export class AroonWidget {
 
+  data = input.required<IWidgetConfig>();
 }
