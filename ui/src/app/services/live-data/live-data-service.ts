@@ -17,10 +17,7 @@ export class LiveDataService {
   constructor() {}
 
   getSymbolData(symbol: string): Observable<SymbolDataModel> {
-
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const apiMethod = 'basic-ticker-data';
-    const body = symbol ;
 
     return this.http.get<SymbolDataModel>(`${this.apiUrl}/${apiMethod}/?symbol=${symbol}`)
   }
