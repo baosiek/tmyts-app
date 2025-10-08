@@ -1,1 +1,15 @@
-<p>obv-widget works!</p>
+<div class="test">
+    <highcharts-chart
+    #chartComp
+    [constructorType]="chartConstructor"
+    [options]="chartOptions"
+    [(update)]="updateFlag"
+    [oneToOne]="oneToOneFlag"
+    (chartInstance)="onChartInstance($event)"
+    class="chart">
+    </highcharts-chart>
+</div>
+<!-- <div class="test">
+    <p>My Width: {{ width }}px</p>
+      <p>My Height: {{ height }}px</p>
+</div> -->

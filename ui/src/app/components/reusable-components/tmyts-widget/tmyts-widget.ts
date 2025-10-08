@@ -1,4 +1,4 @@
-import { Component, inject, input, signal} from '@angular/core';
+import { Component, ElementRef, inject, input, NgZone, OnChanges, OnInit, signal, SimpleChanges} from '@angular/core';
 import { IWidgetConfig } from '../../../interfaces/widget-config-interface';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { NgComponentOutlet } from '@angular/common';
@@ -22,7 +22,11 @@ import { MatDialog } from '@angular/material/dialog';
     '[style.grid-area]': "'span ' + (widgetConfig().rows ?? 1) + ' / span ' + (widgetConfig().columns ?? 1)",
   }
 })
-export class TmytsWidget{
+export class TmytsWidget implements OnInit, OnChanges{
+
+  width: number | null = null;
+  height: number | null = null;
+  private resizeObserver!: ResizeObserver;
 
   /**
    * Initializes a series of variables where:
@@ -35,6 +39,20 @@ export class TmytsWidget{
   symbol = input.required<string | undefined>();
   user_id = input.required<number>();
   dialog = inject(MatDialog);
+  data: Record<string, IWidgetConfig> = {};
+
+  constructor(private elementRef: ElementRef, private ngZone: NgZone){}
+
+  ngOnInit(): void {
+    this.data = {
+      'data': this.widgetConfig()
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(`ON CHANGES from tmyts`)
+  }
+
 
   toggleFullscreen(): void {
     // define data to pass to dialog
@@ -57,33 +75,21 @@ export class TmytsWidget{
     )
    }
 
-  constructor() {}
+     ngAfterViewInit(): void {
+    // Instantiate the ResizeObserver
+    this.resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
+      // Use ngZone.run() to make sure Angular's change detection is triggered
+      this.ngZone.run(() => {
+        const entry = entries[0];
+        const { width, height } = entry.contentRect;
+        this.width = width;
+        this.height = height;
+        console.log(`Child size updated: ${width}x${height}`);
+      });
+    });
+
+    // Start observing the component's host element
+    this.resizeObserver.observe(this.elementRef.nativeElement);
+  }
 }
 
-/**
- * 
- * buyAsset() {
-     // Set the attributes to pass to the actual dialog, not the General one
-     const data: Map<string, any> = new Map<string, any>()
-     data.set('userId', this.userId())
-     data.set('portfolioId', this.portfolioId())
-     const dialogRef = this.dialog.open(
-       GeneraliDialog,
-       {
-         data: {
-           title: "Buy asset",
-           content: BuyAssetDialog,
-           data: data
-         }
-       }
-     )
-     dialogRef.afterClosed().subscribe(
-       () => {
-         this.getPortfolioActivityContent(
-           this.portfolioId()
-         );
-       }
-     )
-   }
- * 
- */

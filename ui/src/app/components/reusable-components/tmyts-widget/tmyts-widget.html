@@ -14,8 +14,12 @@
                 <mat-icon fontSet="material-symbols-outlined">settings</mat-icon>
             </button>
         </mat-card-header>
-        <mat-card-content>
-            <ng-component [ngComponentOutlet]="widgetConfig().content"></ng-component>
+        <mat-card-content style="height: 100%;">
+            <ng-component
+            [ngComponentOutlet]="widgetConfig().content"
+            [ngComponentOutletInputs]="data"
+            
+            ></ng-component>
             @if (showWidgetSettings()) {
             <app-tmyts-widgets-settings [configWidget]="widgetConfig()" [user_id]="user_id()"
                 [(showWidgetSettings)]="showWidgetSettings"></app-tmyts-widgets-settings>
