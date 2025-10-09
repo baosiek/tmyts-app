@@ -44,7 +44,7 @@ export class SellAssetDialog implements OnInit{
 
   // Initializes signals
   // Holds data passed from PortfolioTableRud component
-  data = input.required<DialogData>()
+  dialogData = input.required<DialogData>()
 
   // Initializes the table datasource
   displayedColumns: string[] = ['symbol', 'symbol_name', 'broker_name', 'total_quantity', 'total_fees', 'average_purchase_price', 'current_price', 'sell'];
@@ -53,8 +53,8 @@ export class SellAssetDialog implements OnInit{
   constructor(public dialogRef: MatDialogRef<SellAssetDialog>, private _snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
-    this.userId = this.data().data.get('userId');
-    this.portfolioId = this.data().data.get('portfolioId');
+    this.userId = this.dialogData().data.get('userId');
+    this.portfolioId = this.dialogData().data.get('portfolioId');
     this.spinnerFlagIsSet = true;
     this.portfolioActivityService.getSymbolsTotalsByPortfolio(this.userId, this.portfolioId)
     .pipe(

@@ -4,5 +4,5 @@
     </button>
 </div>
 <div>
-    <h4>{{data().data.get('widgetConfig').symbol}}</h4>
+    <ng-component [ngComponentOutlet]="generalDialogData.content" [ngComponentOutletInputs]="dialogInputs"></ng-component>
 </div>

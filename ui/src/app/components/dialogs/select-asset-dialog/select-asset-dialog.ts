@@ -47,7 +47,7 @@ export class SelectAssetDialog implements OnInit {
 
   // Initializes signals
   // Holds data passed from PortfolioTableRud component
-  data = input.required<DialogData>()
+  dialogData = input.required<DialogData>()
 
   constructor(
     private _snackBar: MatSnackBar,

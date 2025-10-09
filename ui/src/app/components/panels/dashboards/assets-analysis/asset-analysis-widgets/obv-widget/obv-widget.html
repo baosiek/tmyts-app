@@ -1,15 +1,18 @@
-<div class="test">
-    <highcharts-chart
-    #chartComp
-    [constructorType]="chartConstructor"
-    [options]="chartOptions"
-    [(update)]="updateFlag"
-    [oneToOne]="oneToOneFlag"
-    (chartInstance)="onChartInstance($event)"
-    class="chart">
-    </highcharts-chart>
+<div class="temp">
+    @if (renderingFrom === 'dialog') {
+    <div class="first-component">
+        <button mat-icon-button [mat-dialog-close]="true" style="justify-content: flex-end;">
+            <mat-icon fontSet="material-symbols-outlined">arrows_input</mat-icon>
+        </button>
+    </div>
+    }
+    <div class="main-container" id="container-{{resolvedData().label}}-{{renderingFrom}}">
+        <highcharts-chart
+        highchartsChart
+        [constructorType]="chartConstructor"
+        [options]="chartOptions"
+        [(update)]="updateFlag"
+        [oneToOne]="oneToOneFlag" class="chart-container">
+        </highcharts-chart>
+    </div>
 </div>
-<!-- <div class="test">
-    <p>My Width: {{ width }}px</p>
-      <p>My Height: {{ height }}px</p>
-</div> -->

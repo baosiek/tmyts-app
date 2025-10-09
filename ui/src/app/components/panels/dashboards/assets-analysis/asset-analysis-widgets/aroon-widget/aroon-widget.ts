@@ -1,5 +1,6 @@
 import { Component, input } from '@angular/core';
 import { IWidgetConfig } from '../../../../../../interfaces/widget-config-interface';
+import { DialogData } from '../../../../../dialogs/general-dialog/general-dialog';
 
 @Component({
   selector: 'app-aroon-widget',
@@ -9,5 +10,5 @@ import { IWidgetConfig } from '../../../../../../interfaces/widget-config-interf
 })
 export class AroonWidget {
 
-  data = input.required<IWidgetConfig>();
+  data = input.required<DialogData>();
 }

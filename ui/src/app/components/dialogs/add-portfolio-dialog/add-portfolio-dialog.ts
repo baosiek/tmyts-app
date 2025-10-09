@@ -28,13 +28,13 @@ export class AddPortfolioDialog implements OnInit {
 
   // Initializes signals
   // Holds data passed from PortfolioTableRud component
-  data = input.required<DialogData>()
+  dialogData = input.required<DialogData>()
   user_id!: number;
 
   constructor(public dialogRef: MatDialogRef<AddPortfolioDialog>, private _snackBar: MatSnackBar) {}
 
   ngOnInit() {
-    this.user_id = this.data().data.get('userId')
+    this.user_id = this.dialogData().data.get('userId')
     this.portfolio_model.user_id = this.user_id;
   }
 

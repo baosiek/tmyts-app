@@ -5,7 +5,6 @@ import { NgComponentOutlet } from '@angular/common';
 import { TmytsWidgetsSettings } from "./tmyts-widgets-settings/tmyts-widgets-settings";
 import { CommonModule } from '@angular/common';
 import { GeneraliDialog } from '../../dialogs/general-dialog/general-dialog';
-import { TmytsWidgetsEnlarged } from '../tmyts-widgets-enlarged/tmyts-widgets-enlarged';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -22,11 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
     '[style.grid-area]': "'span ' + (widgetConfig().rows ?? 1) + ' / span ' + (widgetConfig().columns ?? 1)",
   }
 })
-export class TmytsWidget implements OnInit, OnChanges{
-
-  width: number | null = null;
-  height: number | null = null;
-  private resizeObserver!: ResizeObserver;
+export class TmytsWidget implements OnInit{
 
   /**
    * Initializes a series of variables where:
@@ -39,33 +34,31 @@ export class TmytsWidget implements OnInit, OnChanges{
   symbol = input.required<string | undefined>();
   user_id = input.required<number>();
   dialog = inject(MatDialog);
-  data: Record<string, IWidgetConfig> = {};
+  indicatorData: Record<string, IWidgetConfig> = {};
 
   constructor(private elementRef: ElementRef, private ngZone: NgZone){}
 
   ngOnInit(): void {
-    this.data = {
+    this.indicatorData = {
       'data': this.widgetConfig()
     }
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(`ON CHANGES from tmyts`)
-  }
-
-
   toggleFullscreen(): void {
     // define data to pass to dialog
-    const data: Map<string, any> = new Map<string, any>();
-    data.set('widgetConfig', this.widgetConfig());
+    const dataDialog: Map<string, IWidgetConfig> = new Map<string, any>();
+    dataDialog.set('dataDialog', this.widgetConfig());
+    // console.log(`TmytsWidget toggleFullscreen: ${JSON.stringify(dataDialog.get('dataDialog'))}`)
     const dialogRef = this.dialog.open(
       GeneraliDialog,
        {
          data: {
            title: this.widgetConfig().title,
-           content: TmytsWidgetsEnlarged,
-           data: data
-         }
+           content: this.widgetConfig().content,
+           data: dataDialog
+         },
+         width: '100%',
+        //  height: '900px'
        }
     )
     dialogRef.afterClosed().subscribe(
@@ -74,22 +67,5 @@ export class TmytsWidget implements OnInit, OnChanges{
       }
     )
    }
-
-     ngAfterViewInit(): void {
-    // Instantiate the ResizeObserver
-    this.resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
-      // Use ngZone.run() to make sure Angular's change detection is triggered
-      this.ngZone.run(() => {
-        const entry = entries[0];
-        const { width, height } = entry.contentRect;
-        this.width = width;
-        this.height = height;
-        console.log(`Child size updated: ${width}x${height}`);
-      });
-    });
-
-    // Start observing the component's host element
-    this.resizeObserver.observe(this.elementRef.nativeElement);
-  }
 }
 

@@ -1,78 +1,85 @@
-import { AfterViewInit, Component, ElementRef, HostListener, inject, input, NgZone, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, inject, input, OnInit} from '@angular/core';
 import { IWidgetConfig } from '../../../../../../interfaces/widget-config-interface';
 import { MATERIAL_IMPORTS } from '../../../../../../material-imports';
 import { IndicatorService } from '../../../../../../services/indicator/indicator-service';
 import { catchError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
-import { ChartConstructorType, HighchartsChartComponent } from 'highcharts-angular';
-import * as Highcharts from 'highcharts';
+import { ChartConstructorType, HighchartsChartDirective } from 'highcharts-angular';
+import * as Highcharts from 'highcharts/highstock';
+import { IndicatorMap } from '../../../../../../models/indicator-model';
+import { DialogData } from '../../../../../dialogs/general-dialog/general-dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { createDefaultWidgetConfigModel, WidgetConfigModel } from '../../../../../../models/widget-config-model';
 
 @Component({
   selector: 'app-obv-widget',
   imports: [
     ...MATERIAL_IMPORTS,
-    HighchartsChartComponent,
+    HighchartsChartDirective,
+    MatDialogModule
   ],
   templateUrl: './obv-widget.html',
+  providers: [
+
+  ],
   styleUrl: './obv-widget.scss'
 })
 export class ObvWidget implements OnInit {
 
-  @ViewChild('chartComp', { static: false }) chartComponent!: HighchartsChartComponent;
-  @ViewChild('test', { static: false, read: ElementRef }) testDiv!: ElementRef;
-
-  private chartRef?: Highcharts.Chart;
-
-  private resizeObserver?: ResizeObserver;
-
   data = input.required<IWidgetConfig>();
+  dialogData = input<DialogData>()
+  renderingFrom = 'indicator'
+
+  resolvedData = computed<IWidgetConfig | WidgetConfigModel>(
+    () => {
+      if (this.dialogData()?.data) {
+        this.renderingFrom = 'dialog'
+        this.chartHeight = '900px'
+        this.chartTitle = this.dialogData()?.data.get('dataDialog').symbol
+
+        return this.dialogData()?.data.get('dataDialog')
+      } else if (this.data()) {
+        this.chartTitle = this.dialogData()?.data.get('dataDialog').title
+        return this.data();
+      }
+
+      const config = createDefaultWidgetConfigModel()
+      return config;
+    }
+  );
+
   indicatorService = inject(IndicatorService)
 
-  chart?: Highcharts.Chart;
-
+  chart?: Highcharts.StockChart;
+  chartConstructor: ChartConstructorType = 'stockChart';
+  chartOptions!: Highcharts.Options;
   updateFlag: boolean = true;
   oneToOneFlag: boolean = true;
+  Highcharts: typeof Highcharts = Highcharts;
+  chartHeight: string | null = null;
+  chartTitle: string = ''
 
-  chartOptions: Highcharts.Options = {
-    series: [
-      {
-        data: [1, 2, 3],
-        type: 'line',
-        zIndex: 5
-      },
-    ],
-    chart: {
-      type: 'line',
-      height: null,
-      reflow: true,
-      animation: false,
-      marginBottom: 40,
-    },
-    credits: {
-      enabled: false
-    },
-    xAxis: {
-      title: {
-        text: 'X Axis',
-        margin: 10 // Reduce margin if needed
-      },
-      labels: {
-        reserveSpace: true // Prevent labels from being hidden
-      }
-    }
-  };
+  ohlc: any[] = [];
+  volume: any[] = [];
+  obv: any[] = [];
 
-  chartConstructor: ChartConstructorType = 'chart'; // Optional, defaults to 'chart'
+  groupingUnits: [string, number[] | null][] = [
+    ['week', [1]],
+    ['month', [1, 2, 3, 4, 6]]
+  ];
 
-  constructor(private _snackBar: MatSnackBar) { }
+  constructor(
+    private _snackBar: MatSnackBar,
+    private elementRef: ElementRef
+  ) {
+  
+  }
 
-
-  ngOnInit(): void {
-
-    this.indicatorService.getObvIndicator([this.data().symbol])
+  ngOnInit(): void {    
+    this.indicatorService.getObvIndicator([this.resolvedData().symbol])
       .pipe(
-        catchError(
+        catchError<any, any>(
           (error) => {
             // Handle error response
             const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
@@ -90,34 +97,184 @@ export class ObvWidget implements OnInit {
       )
       .subscribe(
         {
-          next: (response) => {
-            console.log(response['AAPL'])
+          next: (responses: IndicatorMap[]) => {
+            // console.log(responses)
+            this.dataIntoChartDataStructure(responses)
           }
         }
       );
   }
 
-  onChartInstance(chart: Highcharts.Chart) {
-    this.chartRef = chart;
-  }
-
-  ngAfterViewInit() {
-    this.resizeObserver = new ResizeObserver(() => {
-      if (this.chartRef) {
-        this.chartRef.reflow();
+  dataIntoChartDataStructure(responses: IndicatorMap[]) {
+    const response = responses.find(r => r.symbol === this.resolvedData().symbol)
+    if (response) {
+      const entries = response.indicator_data
+      for (const entry of entries) {
+        this.ohlc.push(
+          [
+            Number(entry.date),
+            Number(entry.open),
+            Number(entry.high),
+            Number(entry.low),
+            Number(entry.close)
+          ]
+        );
+        this.volume.push(
+          [
+            Number(entry.date),
+            Number(entry.volume)
+          ]
+        );
+        this.obv.push(
+          [
+            Number(entry.date),
+            Number(entry.indicator)
+          ]
+        );
       }
-    });
-    if (this.testDiv?.nativeElement) {
-      this.resizeObserver.observe(this.testDiv.nativeElement);
+      this.initializeChart()
     }
   }
 
-  ngOnDestroy() {
-    if (this.resizeObserver && this.testDiv?.nativeElement) {
-      this.resizeObserver.unobserve(this.testDiv.nativeElement);
-      this.resizeObserver.disconnect();
-    }
+  initializeChart() {
+    // sets series
+    const componentColor = getComputedStyle(document.documentElement).getPropertyValue('--mat-sys-surface').trim()
+    this.chartOptions = {
+      chart: {
+        styledMode: false,
+        backgroundColor: componentColor,
+        style: {
+          color: '#000',
+        },
+        height: this.chartHeight
+      },
+      title: {
+        text: this.chartTitle,
+        style: {
+          color: '#000',
+        },
+      },
+      rangeSelector: {
+        selected: 3,
+      },
+      navigator: {
+        series: {
+          color: 'orange',
+        },
+      },
+      xAxis: {
+        labels: {
+          style: {
+            color: '#000',
+          },
+          align: 'right',
+          x: -3,
+        },
+      },
+      yAxis: [
+        {
+          labels: {
+            style: {
+              color: '#000',
+            },
+          },
+          title: {
+            text: 'OLHC',
+          },
+          height: '45%',
+          lineWidth: 2,
+          resize: {
+            enabled: true,
+          },
+        },
+        {
+          labels: {
+            align: 'right',
+            x: -3,
+          },
+          title: {
+            text: 'Volume',
+          },
+          top: '45%',
+          height: '25%',
+          offset: 0,
+          lineWidth: 2,
+        },
+        {
+          labels: {
+            align: 'right',
+            x: -3,
+          },
+          title: {
+            text: 'OBV',
+          },
+          top: '70%',
+          height: '30%',
+          offset: 0,
+          lineWidth: 2,
+        },
+      ],
+      legend: {
+        itemStyle: {
+          color: '#000',
+        },
+      },
+      accessibility: {
+        enabled: false,
+      },
+      plotOptions: {
+        candlestick: {
+          color: 'pink',
+          lineColor: 'red',
+          upColor: 'green',
+          upLineColor: 'darkgreen',
+        },
+        column: {
+          color: 'blue',
+        },
+      },
+      series: [
+        {
+          type: 'candlestick',
+          name: 'OHLC',
+          data: this.ohlc,
+          dataGrouping: {
+            units: this.groupingUnits,
+            approximation: 'ohlc',
+          },
+          showInLegend: false,
+        },
+        {
+          type: 'column',
+          name: 'Volume',
+          data: this.volume,
+          yAxis: 1,
+          dataGrouping: {
+            approximation: 'average',
+            units: this.groupingUnits,
+          },
+        },
+        {
+          type: 'line',
+          name: 'obv',
+          data: this.obv,
+          yAxis: 2,
+          dataGrouping: {
+            approximation: 'average',
+            units: this.groupingUnits,
+          },
+        },
+      ],
+      credits: {
+        enabled: false,
+      },
+      
+    };
+    
+    // Initializes the chart  iteself.
+    this.chart = Highcharts.stockChart(
+      `container-${this.resolvedData().label}-${this.renderingFrom}`,
+      this.chartOptions
+    );
   }
-
 }
-
