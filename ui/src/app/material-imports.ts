@@ -22,6 +22,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 export const MATERIAL_IMPORTS = [
   MatButtonModule,
@@ -47,5 +48,6 @@ export const MATERIAL_IMPORTS = [
   MatDatepickerModule,
   MatMenuModule,
   MatButtonToggleModule,
-  DragDropModule
+  DragDropModule,
+  MatTooltipModule
 ];
