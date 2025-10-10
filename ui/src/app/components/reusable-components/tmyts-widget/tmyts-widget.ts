@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, input, NgZone, OnChanges, OnInit, signal, SimpleChanges} from '@angular/core';
+import { Component, ElementRef, inject, input, NgZone, OnInit, signal, SimpleChanges} from '@angular/core';
 import { IWidgetConfig } from '../../../interfaces/widget-config-interface';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { NgComponentOutlet } from '@angular/common';
@@ -6,6 +6,7 @@ import { TmytsWidgetsSettings } from "./tmyts-widgets-settings/tmyts-widgets-set
 import { CommonModule } from '@angular/common';
 import { GeneraliDialog } from '../../dialogs/general-dialog/general-dialog';
 import { MatDialog } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-tmyts-widget',
@@ -13,7 +14,8 @@ import { MatDialog } from '@angular/material/dialog';
     ...MATERIAL_IMPORTS,
     NgComponentOutlet,
     TmytsWidgetsSettings,
-    CommonModule
+    CommonModule,
+    MatButtonModule
 ],
   templateUrl: './tmyts-widget.html',
   styleUrl: './tmyts-widget.scss',
@@ -22,6 +24,8 @@ import { MatDialog } from '@angular/material/dialog';
   }
 })
 export class TmytsWidget implements OnInit{
+
+  tootTipText: string = 'The Obv text is here to help'
 
   /**
    * Initializes a series of variables where:
@@ -48,7 +52,6 @@ export class TmytsWidget implements OnInit{
     // define data to pass to dialog
     const dataDialog: Map<string, IWidgetConfig> = new Map<string, any>();
     dataDialog.set('dataDialog', this.widgetConfig());
-    // console.log(`TmytsWidget toggleFullscreen: ${JSON.stringify(dataDialog.get('dataDialog'))}`)
     const dialogRef = this.dialog.open(
       GeneraliDialog,
        {
@@ -58,7 +61,6 @@ export class TmytsWidget implements OnInit{
            data: dataDialog
          },
          width: '100%',
-        //  height: '900px'
        }
     )
     dialogRef.afterClosed().subscribe(

@@ -1,4 +1,4 @@
-<div #colorTarget>
+<div #colorTarget class="main-container">
   <h3>Styling</h3>
   <form [formGroup]="colorForm" class="form-container">
     <mat-form-field appearance="outline">
@@ -12,4 +12,8 @@
       <mat-icon matSuffix fontSet="material-symbols-outlined">palette</mat-icon>
     </mat-form-field>
   </form>
+  <button mat-raised-button class="button-component" (click)="onClick()">
+    Reset
+    <mat-icon fontSet="material-symbols-outlined">reset_settings</mat-icon>
+  </button>
 </div>

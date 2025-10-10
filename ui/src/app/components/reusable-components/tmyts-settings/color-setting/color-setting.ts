@@ -20,6 +20,8 @@ import { TmytsSnackbar } from '../../tmyts-snackbar/tmyts-snackbar';
 export class ColorSetting implements OnInit {
 
   configWidget = model.required<IWidgetConfig>()
+  defaultColor: string = 'var(--mat-sys-on-surface)';
+  defaultBackgroundColor: string = 'var(--mat-sys-surface)'
 
   assetsAnalysisDashboardService = inject(AssetsAnalysisDashboardService);
 
@@ -38,15 +40,15 @@ export class ColorSetting implements OnInit {
   ngOnInit(): void {
 
       // 2. Define default values
-    const defaultSettings = {
+    const currentSettings = {
       colorCtr: this.configWidget().color,
       backgroundColorCtr: this.configWidget().background_color
     };
 
     this.colorForm = this.fb.group({
       // Initialize the color with a default value
-      colorCtr: defaultSettings.colorCtr,
-      backgroundColorCtr: defaultSettings.backgroundColorCtr
+      colorCtr: currentSettings.colorCtr,
+      backgroundColorCtr: currentSettings.backgroundColorCtr
     });
   }
 
@@ -74,4 +76,20 @@ export class ColorSetting implements OnInit {
     ); 
      this.assetsAnalysisDashboardService.updateWidget(this.configWidget()) 
   }
+
+  onClick() {
+    this.configWidget.update(
+      currentConfig => (
+        {
+          ...currentConfig,
+          background_color: this.defaultBackgroundColor,
+          color: this.defaultColor
+        }
+      )
+    );
+    this.colorForm.setValue({ colorCtr: this.defaultColor, backgroundColorCtr: this.defaultBackgroundColor });
+    this.assetsAnalysisDashboardService.updateWidget(this.configWidget()) 
+  }
+
+
 }

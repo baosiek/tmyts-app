@@ -1,4 +1,4 @@
-<div class="widget-container" #parentCard cdkDrag>
+<div class="widget-container" #parentCard>
     <mat-card appearance="outlined" class="widget-card" [style.background-color]="widgetConfig().background_color"
         [style.color]="widgetConfig().color"
         >
@@ -7,6 +7,9 @@
                 <mat-card-title>{{widgetConfig().title}}</mat-card-title>
                 <mat-card-subtitle>{{symbol()}}</mat-card-subtitle>
             </mat-card-title-group>
+            <button mat-icon-button matTooltip="{{tootTipText}}" #tooltip="matTooltip" (click)="tooltip.toggle()">
+                <mat-icon fontSet="material-symbols-outlined">tooltip</mat-icon>
+            </button>
             <button mat-icon-button (click)="toggleFullscreen()">
                 <mat-icon fontSet="material-symbols-outlined">arrows_output</mat-icon>
             </button>
