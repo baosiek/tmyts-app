@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
 import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar-service';
 import { TmytsToolbar } from '../../../reusable-components/tmyts-toolbar/tmyts-toolbar';
@@ -32,17 +32,17 @@ export class AssetsAnalysis {
 
   protected id: string = 'assets_analysis'
   user_id: number = 1
-  dashboardService = inject(ToolbarService);
+  toolbarService = inject(ToolbarService);
   data: ITmytsToolBar | undefined;
   result = signal<Map<String, any>>(new Map())
-  symbol: string = '';
+  symbol = signal<string>('');
 
   widgetConfigService = inject(AssetsAnalysisDashboardService);
   userPreferenceService = inject(UserPreferencesService)
 
   constructor(private _snackBar: MatSnackBar) {
 
-    this.dashboardService.dialogTypes().find(
+    this.toolbarService.dialogTypes().find(
       (dashboard) => {
         if (dashboard) {
           if (dashboard.id === this.id){
@@ -75,12 +75,12 @@ export class AssetsAnalysis {
         next: (response: IWidgetConfig[]) => {
           this.widgetConfigService.reInsertContentIntoWidget(response);
           if (this.widgetConfigService.widgetsInDashboard().length > 0){
-            const w: IWidgetConfig | undefined = this.widgetConfigService.widgetsInDashboard().at(0)
+            const w: IWidgetConfig | undefined = this.widgetConfigService.widgetsInDashboard().at(0);
             if (w) {
-              this.symbol = w.symbol;
+              this.symbol.set(w.symbol);
             }            
           } else {
-             this.symbol = '';
+             this.symbol.set('');
           }
         }
       }
@@ -88,14 +88,26 @@ export class AssetsAnalysis {
   }
 
   parentNotified(value: Map<String, any>){
-    this.result.set(value)
-    this.symbol = this.result().get('symbol').symbol
+    this.result.set(value)    
+    this.symbol.set(this.result().get('symbol').symbol);
+
+    const tempWidget = this.widgetConfigService.widgetsInDashboard();
+    tempWidget.forEach(
+      (w) => {
+        w.symbol = this.symbol();
+      }
+    );
+    this.updateUserPreferences(tempWidget);
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    const temp = this.widgetConfigService.widgetsInDashboard();
-    moveItemInArray(temp, event.previousIndex, event.currentIndex);
-    this.userPreferenceService.updateWidgets(this.user_id, this.id, temp)
+    const tempWidget: IWidgetConfig[] = this.widgetConfigService.widgetsInDashboard();
+    moveItemInArray(tempWidget, event.previousIndex, event.currentIndex);
+    this.updateUserPreferences(tempWidget)
+  }
+
+  updateUserPreferences(widgets: IWidgetConfig[]) {
+    this.userPreferenceService.updateWidgets(this.user_id, this.id, widgets)
     .pipe(
       catchError(
         (error) => {
@@ -120,6 +132,7 @@ export class AssetsAnalysis {
         }
       }
     );
+
   }
 }
 

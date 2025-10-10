@@ -1,0 +1,11 @@
+.main-container{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+}
+
+.button-component {
+  align-self: flex-end; /* Overrides parent alignment for this item */
+}

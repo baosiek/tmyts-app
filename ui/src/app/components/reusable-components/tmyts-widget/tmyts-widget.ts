@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, input, NgZone, OnInit, signal, SimpleChanges} from '@angular/core';
+import { Component, inject, input, OnChanges, OnInit, signal, SimpleChanges} from '@angular/core';
 import { IWidgetConfig } from '../../../interfaces/widget-config-interface';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { NgComponentOutlet } from '@angular/common';
@@ -7,6 +7,8 @@ import { CommonModule } from '@angular/common';
 import { GeneraliDialog } from '../../dialogs/general-dialog/general-dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { InfoDialog } from '../../dialogs/info-dialog/info-dialog';
+import { createDefaultWidgetConfigModel } from '../../../models/widget-config-model';
 
 @Component({
   selector: 'app-tmyts-widget',
@@ -23,7 +25,7 @@ import { MatButtonModule } from '@angular/material/button';
     '[style.grid-area]': "'span ' + (widgetConfig().rows ?? 1) + ' / span ' + (widgetConfig().columns ?? 1)",
   }
 })
-export class TmytsWidget implements OnInit{
+export class TmytsWidget implements OnInit, OnChanges{
 
   tootTipText: string = 'The Obv text is here to help'
 
@@ -38,14 +40,24 @@ export class TmytsWidget implements OnInit{
   symbol = input.required<string | undefined>();
   user_id = input.required<number>();
   dialog = inject(MatDialog);
-  indicatorData: Record<string, IWidgetConfig> = {};
+  indicatorData = signal<Record<string, IWidgetConfig>>({});
 
-  constructor(private elementRef: ElementRef, private ngZone: NgZone){}
+  constructor(){}
 
   ngOnInit(): void {
-    this.indicatorData = {
+    this.indicatorData.set(
+      {
       'data': this.widgetConfig()
-    }
+      }
+    )
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.indicatorData.set(
+      {
+      'data': this.widgetConfig()
+      }
+    )
   }
 
   toggleFullscreen(): void {
@@ -65,7 +77,43 @@ export class TmytsWidget implements OnInit{
     )
     dialogRef.afterClosed().subscribe(
       () => {
-        console.log(`Dialog enlarged closed`)
+        // console.log(`Dialog enlarged closed`)
+      }
+    )
+   }
+
+   openInfoContainer() {
+    const dataDialog: Map<string, IWidgetConfig> = new Map<string, any>();
+    const config: IWidgetConfig = {
+      id: 0,
+      user_id: 0,
+      dashboard_id: '',
+      label: 'obv',
+      title: '',
+      symbol: '',
+      content: InfoDialog,
+      rows: 0,
+      columns: 0,
+      background_color: '',
+      color: ''
+    };
+    config.label = "obv"
+    dataDialog.set('dataDialog', config);
+    const dialogRef = this.dialog.open(
+      GeneraliDialog,
+       {
+         data: {
+           title: this.widgetConfig().title,
+           content: InfoDialog,
+           data: dataDialog
+         },
+         width: '400px',
+         height: '600px'
+       }
+    )
+    dialogRef.afterClosed().subscribe(
+      () => {
+        // console.log(`Dialog enlarged closed`)
       }
     )
    }

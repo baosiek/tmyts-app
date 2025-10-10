@@ -7,7 +7,7 @@
                 <mat-card-title>{{widgetConfig().title}}</mat-card-title>
                 <mat-card-subtitle>{{symbol()}}</mat-card-subtitle>
             </mat-card-title-group>
-            <button mat-icon-button matTooltip="{{tootTipText}}" #tooltip="matTooltip" (click)="tooltip.toggle()">
+            <button mat-icon-button (click)="openInfoContainer()">
                 <mat-icon fontSet="material-symbols-outlined">tooltip</mat-icon>
             </button>
             <button mat-icon-button (click)="toggleFullscreen()">
@@ -19,8 +19,8 @@
         </mat-card-header>
         <mat-card-content style="height: 100%;">
             <ng-component
-            [ngComponentOutlet]="widgetConfig().content"
-            [ngComponentOutletInputs]="indicatorData"
+            [ngComponentOutlet]="widgetConfig().content"           
+            [ngComponentOutletInputs]="indicatorData()"
             ></ng-component>
             @if (showWidgetSettings()) {
             <app-tmyts-widgets-settings [configWidget]="widgetConfig()" [user_id]="user_id()"

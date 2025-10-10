@@ -4,20 +4,20 @@
         <app-tmyts-toolbar [data]="data" (notifyParent)="parentNotified($event)"></app-tmyts-toolbar>
     </div>
     }
-    @if (!symbol) {
-    <div class="assets-analysis-header">
-        <span>No asset has been selected yet.</span>
-    </div>
+    @if (symbol() === '') {
+        <div class="assets-analysis-header">
+            <span>No asset has been selected yet.</span>
+        </div>
     } @else {
     <div class="assets-analysis-header">
-        <span>Selected asset: {{symbol}}</span>
+        <span>Selected asset: {{symbol()}}</span>
         <button mat-raised-button [matMenuTriggerFor]="menu">
             <mat-icon fontSet="material-symbols-outlined">add_chart</mat-icon>
             Indicators
         </button>
         <mat-menu #menu="matMenu">
             @for (widget of widgetConfigService.widgetsToBeAdded(); track widget.label){
-            <button mat-menu-item (click)="widgetConfigService.addWidgetToDashboard(user_id, symbol, widget)">
+            <button mat-menu-item (click)="widgetConfigService.addWidgetToDashboard(user_id, symbol(), widget)">
                 <span>{{widget.label}} indicator</span>
             </button>
             } @empty {
@@ -32,7 +32,7 @@
                 <app-tmyts-widget
                     [widgetConfig]="widget"
                     [user_id]="user_id"
-                    [symbol]="symbol"
+                    [symbol]="symbol()"
                     cdkDrag
                     >
                 </app-tmyts-widget>        

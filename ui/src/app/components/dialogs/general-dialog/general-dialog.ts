@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, Type } from '@angular/core';
+import { Component, inject, OnChanges, OnInit, Type } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { NgComponentOutlet } from '@angular/common';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -18,15 +18,11 @@ export interface DialogData {
   templateUrl: './general-dialog.html',
   styleUrl: './general-dialog.scss'
 })
-export class GeneraliDialog{
+export class GeneraliDialog {
 
   generalDialogData = inject(MAT_DIALOG_DATA)
 
   dialogInputs = {
     dialogData:  this.generalDialogData
   };
-
-  // ngOnInit() {
-  //   console.log(`On init data: ${JSON.stringify(this.generalDialogData)}`)
-  // }  
 }

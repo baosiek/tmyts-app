@@ -1,4 +1,4 @@
-import { Component, computed, ElementRef, inject, input, OnInit} from '@angular/core';
+import { Component, computed, ElementRef, inject, input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import { IWidgetConfig } from '../../../../../../interfaces/widget-config-interface';
 import { MATERIAL_IMPORTS } from '../../../../../../material-imports';
 import { IndicatorService } from '../../../../../../services/indicator/indicator-service';
@@ -25,7 +25,7 @@ import { createDefaultWidgetConfigModel, WidgetConfigModel } from '../../../../.
   ],
   styleUrl: './obv-widget.scss'
 })
-export class ObvWidget implements OnInit {
+export class ObvWidget implements OnInit, OnChanges {
 
   data = input.required<IWidgetConfig>();
   dialogData = input<DialogData>()
@@ -77,6 +77,40 @@ export class ObvWidget implements OnInit {
   }
 
   ngOnInit(): void {    
+    // this.indicatorService.getObvIndicator([this.resolvedData().symbol])
+    //   .pipe(
+    //     catchError<any, any>(
+    //       (error) => {
+    //         // Handle error response
+    //         const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
+
+    //         // Renders error snack-bar
+    //         this._snackBar.openFromComponent(
+    //           TmytsSnackbar, {
+    //           data: { 'message': message, 'action': 'Close' },
+    //           panelClass: ['error-snackbar-theme']
+    //         }
+    //         );
+    //         return error
+    //       }
+    //     )
+    //   )
+    //   .subscribe(
+    //     {
+    //       next: (responses: IndicatorMap[]) => {
+    //         // console.log(responses)
+    //         this.dataIntoChartDataStructure(responses)
+    //       }
+    //     }
+    //   );
+    this.getIndicatorData()
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.getIndicatorData()
+  }
+
+  getIndicatorData(){
     this.indicatorService.getObvIndicator([this.resolvedData().symbol])
       .pipe(
         catchError<any, any>(
@@ -106,6 +140,9 @@ export class ObvWidget implements OnInit {
   }
 
   dataIntoChartDataStructure(responses: IndicatorMap[]) {
+    this.ohlc = []
+    this.volume = []
+    this.obv = []
     const response = responses.find(r => r.symbol === this.resolvedData().symbol)
     if (response) {
       const entries = response.indicator_data
@@ -137,7 +174,6 @@ export class ObvWidget implements OnInit {
   }
 
   initializeChart() {
-    // sets series
     const componentColor = getComputedStyle(document.documentElement).getPropertyValue('--mat-sys-surface').trim()
     this.chartOptions = {
       chart: {

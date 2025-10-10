@@ -1,5 +1,13 @@
+@use '@angular/material' as mat;
+
 .card-header {
     background-color: var(--mat-sys-primary-container); 
     margin-bottom: 16px; 
     height: 42px;
+}
+
+.border-style {
+    @include mat.card-overrides((
+    outlined-outline-width: 2px,    
+  ));
 }
