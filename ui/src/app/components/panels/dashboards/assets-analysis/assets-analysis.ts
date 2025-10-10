@@ -10,7 +10,7 @@ import { UserPreferencesService } from '../../../../services/user-preferences/us
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError } from 'rxjs';
 import { TmytsSnackbar } from '../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-assets-analysis',
@@ -19,7 +19,8 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
     TmytsToolbar,
     TmytsWidget,
     TmytsWidget,
-    // JsonPipe
+    CdkDropList,
+    CdkDrag
 ],
 providers: [
   AssetsAnalysisDashboardService // this service is required only here

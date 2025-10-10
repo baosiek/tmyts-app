@@ -29,7 +29,13 @@
     </div>
     <div class="assets-analysis-content" cdkDropList cdkDropListOrientation="mixed" (cdkDropListDropped)="drop($event)">
         @for (widget of widgetConfigService.widgetsInDashboard(); track widget.id) {
-        <app-tmyts-widget [widgetConfig]="widget" [user_id]="user_id" [symbol]="symbol"></app-tmyts-widget>
+                <app-tmyts-widget
+                    [widgetConfig]="widget"
+                    [user_id]="user_id"
+                    [symbol]="symbol"
+                    cdkDrag
+                    >
+                </app-tmyts-widget>        
         }
     </div>
     }
