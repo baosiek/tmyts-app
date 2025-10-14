@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { InfoDialog } from '../../dialogs/info-dialog/info-dialog';
 import { createDefaultWidgetConfigModel } from '../../../models/widget-config-model';
+import { IInfoDialog } from '../../../interfaces/info-dialog-interface';
 
 @Component({
   selector: 'app-tmyts-widget',
@@ -83,22 +84,21 @@ export class TmytsWidget implements OnInit, OnChanges{
    }
 
    openInfoContainer() {
-    const dataDialog: Map<string, IWidgetConfig> = new Map<string, any>();
-    const config: IWidgetConfig = {
-      id: 0,
-      user_id: 0,
-      dashboard_id: '',
-      label: 'obv',
-      title: '',
-      symbol: '',
-      content: InfoDialog,
-      rows: 0,
-      columns: 0,
-      background_color: '',
-      color: ''
-    };
-    config.label = "obv"
-    dataDialog.set('dataDialog', config);
+    const dataDialog: Map<string, string> = new Map<string, any>();
+    // const config: IWidgetConfig = {
+    //   id: 0,
+    //   user_id: 0,
+    //   dashboard_id: '',
+    //   label: 'obv',
+    //   title: '',
+    //   symbol: '',
+    //   content: InfoDialog,
+    //   rows: 0,
+    //   columns: 0,
+    //   background_color: '',
+    //   color: ''
+    // };
+    dataDialog.set('dataDialog', this.widgetConfig().label);
     const dialogRef = this.dialog.open(
       GeneraliDialog,
        {

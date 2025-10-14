@@ -1,0 +1,117 @@
+import { IInfoDialog } from "../app/interfaces/info-dialog-interface";
+
+export const IndicatorInfo: IInfoDialog[] =
+    [
+        {
+            label: 'obv',
+            text: `<!DOCTYPE html>
+<html lang="en">
+<body>
+
+    <h1>On-Balance Volume (OBV) Indicator</h1>
+
+    <p>The <strong>On-Balance Volume (OBV)</strong> indicator is a technical analysis tool used to measure the cumulative buying and selling pressure in a financial market. It is particularly popular among traders and analysts for identifying potential price movements based on volume changes.</p>
+
+    <h2>Key Features of OBV</h2>
+    <ul>
+        <li><strong>Volume-Based</strong>: OBV uses volume flow to predict changes in stock price. The idea is that volume precedes price movement; thus, if a stock is seeing an increase in volume without a corresponding price increase, it may indicate that the stock is being accumulated.</li>
+        
+        <li><strong>Calculation</strong>:
+            <ul>
+                <li>If the closing price of the current period is <strong>higher</strong> than the previous period, the OBV increases by the volume of the current period.</li>
+                <li>If the closing price is <strong>lower</strong>, the OBV decreases by the volume of the current period.</li>
+                <li>If the closing price is <strong>unchanged</strong>, the OBV remains the same.</li>
+            </ul>
+            <p>The formula can be summarized as:</p>
+            <ul>
+                <li><strong>OBV = Previous OBV + Current Volume</strong> (if the price closes higher)</li>
+                <li><strong>OBV = Previous OBV - Current Volume</strong> (if the price closes lower)</li>
+                <li><strong>OBV = Previous OBV</strong> (if the price closes unchanged)</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>Interpretation</h2>
+    <ul>
+        <li><strong>Bullish Signals</strong>: An increasing OBV suggests that buying pressure is increasing, which might indicate that the price is likely to rise in the future.</li>
+        <li><strong>Bearish Signals</strong>: A decreasing OBV indicates increasing selling pressure, suggesting that the price may fall.</li>
+        <li><strong>Divergence</strong>: If the OBV is moving in the opposite direction of the price, it may signal a potential reversal. For example:
+            <ul>
+                <li>If the price is rising while OBV is falling, it may indicate a weakening trend and a potential price correction.</li>
+                <li>Conversely, if the price is falling while OBV is rising, it could indicate accumulation and a potential price reversal to the upside.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>Limitations</h2>
+    <ul>
+        <li><strong>Volume Manipulation</strong>: In low-volume stocks, OBV can be misleading, as small trades can significantly affect the indicator.</li>
+        <li><strong>Lagging Indicator</strong>: Like many technical indicators, OBV is a lagging indicator, which means it may not predict price movements in real-time.</li>
+    </ul>
+
+    <h2>Conclusion</h2>
+    <p>The OBV indicator is a useful tool for traders looking to understand the relationship between volume and price movement. It can help identify trends and potential reversals, but it’s best used in conjunction with other indicators and analysis techniques to confirm signals and make informed trading decisions.</p>
+
+</body>
+</html>
+    `
+        },
+        {
+            label: 'ad-line',
+            text: `<!DOCTYPE html>
+<html lang="en">
+<body>
+
+    <h1>Accumulation Distribution Line (ADL) Indicator</h1>
+
+    <p>The <strong>Accumulation Distribution Line (ADL)</strong> is a technical analysis indicator used to measure the cumulative flow of money into and out of a security. It combines price and volume to create a single line that provides insights into whether a security is being accumulated (bought) or distributed (sold) over time.</p>
+
+    <h2>Key Features of the Accumulation Distribution Line (ADL)</h2>
+    <ul>
+        <li><strong>Purpose</strong>: The ADL aims to identify the underlying trend of a security by analyzing the relationship between price movement and volume. It helps traders assess whether the price movement is supported by strong buying or selling pressure.</li>
+        
+        <li><strong>Calculation</strong>: The ADL is calculated using the following steps:
+            <ol>
+                <li>Determine the <strong>Money Flow Multiplier</strong>:
+                    <pre>Money Flow Multiplier = (Close - Low) - (High - Close) / (High - Low)</pre>
+                </li>
+                <li>Calculate the <strong>Money Flow Volume</strong>:
+                    <pre>Money Flow Volume = Money Flow Multiplier × Volume</pre>
+                </li>
+                <li>Update the ADL:
+                    <pre>ADL = Previous ADL + Money Flow Volume</pre>
+                </li>
+            </ol>
+        </li>
+    </ul>
+
+    <h2>Interpretation</h2>
+    <ul>
+        <li><strong>Bullish Sign</strong>: When the ADL is rising, it indicates that there is more buying pressure (accumulation) than selling pressure. This can suggest potential price increases.</li>
+        <li><strong>Bearish Sign</strong>: Conversely, when the ADL is falling, it indicates that selling pressure (distribution) is greater than buying pressure. This may suggest potential price declines.</li>
+        <li><strong>Divergence</strong>: Traders often look for divergences between the ADL and the price of the security:
+            <ul>
+                <li><strong>Positive Divergence</strong>: If the price makes a new low but the ADL makes a higher low, it may indicate potential accumulation and a possible price reversal to the upside.</li>
+                <li><strong>Negative Divergence</strong>: If the price makes a new high but the ADL makes a lower high, it could indicate distribution and a possible price reversal to the downside.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>Limitations</h2>
+    <ul>
+        <li><strong>Lagging Indicator</strong>: The ADL is primarily a lagging indicator, meaning it may not predict price movements in real-time. It can provide confirmation of trends rather than predict new ones.</li>
+        <li><strong>Volume Sensitivity</strong>: In low-volume environments, the ADL may not accurately reflect the true buying and selling pressure, making it less effective.</li>
+        <li><strong>False Signals</strong>: Like many technical indicators, the ADL can produce false signals, especially during volatile market conditions. It is best used in conjunction with other indicators or analysis techniques for confirmation.</li>
+    </ul>
+
+    <h2>Conclusion</h2>
+    <p>The Accumulation Distribution Line is a valuable tool for traders looking to understand the underlying supply and demand dynamics of a security. By combining price and volume data, the ADL helps identify potential trends and reversals, making it a useful addition to any technical analysis toolkit. However, as with any indicator, it is important to use the ADL in conjunction with other analysis methods to enhance decision-making.</p>
+
+</body>
+</html>`
+        },
+        {
+            label: 'adx',
+            text: `This is a test`
+        }
+    ]
