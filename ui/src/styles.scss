@@ -53,7 +53,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 /* App Component Customization */
 :root {
   @include mat.card-overrides((
-    outlined-container-shape: 0px,
+    outlined-container-shape: 16px,
     outlined-outline-width: 2px,
   ));
   @include mat.dialog-overrides((
