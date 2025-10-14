@@ -18,5 +18,12 @@ export class IndicatorService {
     const body = symbols ;   
     return this.http.post<IndicatorMap[]>(`${this.apiUrl}/${apiMethod}`, body, { headers })
   }
+
+  getADLineIndicator(symbols: string[]): Observable<IndicatorMap[]>{
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const apiMethod = 'ad_line';
+    const body = symbols ;   
+    return this.http.post<IndicatorMap[]>(`${this.apiUrl}/${apiMethod}`, body, { headers })
+  }
   
 }

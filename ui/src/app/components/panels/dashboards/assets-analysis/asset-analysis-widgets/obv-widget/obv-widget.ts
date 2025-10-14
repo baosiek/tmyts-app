@@ -17,7 +17,6 @@ import { createDefaultWidgetConfigModel, WidgetConfigModel } from '../../../../.
   imports: [
     ...MATERIAL_IMPORTS,
     HighchartsChartDirective,
-    MatDialogModule
   ],
   templateUrl: './obv-widget.html',
   providers: [
@@ -70,44 +69,15 @@ export class ObvWidget implements OnInit, OnChanges {
   ];
 
   constructor(
-    private _snackBar: MatSnackBar,
-    private elementRef: ElementRef
-  ) {
-  
-  }
+    private _snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {    
-    // this.indicatorService.getObvIndicator([this.resolvedData().symbol])
-    //   .pipe(
-    //     catchError<any, any>(
-    //       (error) => {
-    //         // Handle error response
-    //         const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
-
-    //         // Renders error snack-bar
-    //         this._snackBar.openFromComponent(
-    //           TmytsSnackbar, {
-    //           data: { 'message': message, 'action': 'Close' },
-    //           panelClass: ['error-snackbar-theme']
-    //         }
-    //         );
-    //         return error
-    //       }
-    //     )
-    //   )
-    //   .subscribe(
-    //     {
-    //       next: (responses: IndicatorMap[]) => {
-    //         // console.log(responses)
-    //         this.dataIntoChartDataStructure(responses)
-    //       }
-    //     }
-    //   );
-    this.getIndicatorData()
+    this.getIndicatorData();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.getIndicatorData()
+    this.getIndicatorData();
   }
 
   getIndicatorData(){
