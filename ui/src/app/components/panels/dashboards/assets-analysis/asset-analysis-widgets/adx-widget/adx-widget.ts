@@ -1,14 +1,315 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, inject, input, SimpleChanges } from '@angular/core';
 import { IWidgetConfig } from '../../../../../../interfaces/widget-config-interface';
 import { DialogData } from '../../../../../dialogs/general-dialog/general-dialog';
+import { MATERIAL_IMPORTS } from '../../../../../../material-imports';
+import { createDefaultWidgetConfigModel, WidgetConfigModel } from '../../../../../../models/widget-config-model';
+import { IndicatorService } from '../../../../../../services/indicator/indicator-service';
+import { ChartConstructorType, HighchartsChartDirective } from 'highcharts-angular';
+import * as Highcharts from 'highcharts/highstock';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { catchError } from 'rxjs';
+import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
+import { IndicatorDataMapModel, IndicatorModel } from '../../../../../../models/indicator-model';
 
 @Component({
   selector: 'app-adx-widget',
-  imports: [],
+  imports: [
+    ...MATERIAL_IMPORTS,
+    HighchartsChartDirective,
+  ],
   templateUrl: './adx-widget.html',
   styleUrl: './adx-widget.scss'
 })
 export class AdxWidget {
 
-  data = input.required<DialogData>();
+  data = input.required<IWidgetConfig>();
+  dialogData = input<DialogData>()
+  renderingFrom = 'indicator'
+
+  resolvedData = computed<IWidgetConfig | WidgetConfigModel>(
+    () => {
+      if (this.dialogData()?.data) {
+        this.renderingFrom = 'dialog'
+        this.chartHeight = '900px'
+        this.chartTitle = this.dialogData()?.data.get('dataDialog').symbol
+
+        return this.dialogData()?.data.get('dataDialog')
+      } else if (this.data()) {
+        this.chartTitle = this.dialogData()?.data.get('dataDialog').title
+        return this.data();
+      }
+
+      const config = createDefaultWidgetConfigModel()
+      return config;
+    }
+  );
+
+  indicatorService = inject(IndicatorService)
+
+  chart?: Highcharts.StockChart;
+  chartConstructor: ChartConstructorType = 'stockChart';
+  chartOptions!: Highcharts.Options;
+  updateFlag: boolean = true;
+  oneToOneFlag: boolean = true;
+  Highcharts: typeof Highcharts = Highcharts;
+  chartHeight: string | null = null;
+  chartTitle: string = ''
+
+  ohlc: any[] = [];
+  volume: any[] = [];
+  adx: any[] = [];
+  dx: any[] = [];
+  di_plus: any[] = [];
+  di_minus: any[] = [];
+
+  groupingUnits: [string, number[] | null][] = [
+    ['week', [1]],
+    ['month', [1, 2, 3, 4, 6]]
+  ];
+
+  constructor(
+    private _snackBar: MatSnackBar
+  ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.getIndicatorData();
+  }
+
+  getIndicatorData(){
+    this.indicatorService.getADXIndicator([this.resolvedData().symbol])
+      .pipe(
+        catchError<any, any>(
+          (error) => {
+            // Handle error response
+            const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
+
+            // Renders error snack-bar
+            this._snackBar.openFromComponent(
+              TmytsSnackbar, {
+              data: { 'message': message, 'action': 'Close' },
+              panelClass: ['error-snackbar-theme']
+            }
+            );
+            return error
+          }
+        )
+      )
+      .subscribe(
+        {
+          next: (responses: IndicatorDataMapModel) => {
+            const chartData: IndicatorModel[] = responses.data_map[this.resolvedData().symbol].indicator_data;
+            this.dataIntoChartDataStructure(chartData)
+          }
+        }
+      );
+  }
+
+  dataIntoChartDataStructure(chartData: IndicatorModel[]) {
+    this.ohlc = []
+    this.volume = []
+    this.adx = []
+    for (const dataPoint of chartData) {
+      this.ohlc.push(
+        [
+          Number(dataPoint.date),
+          Number(dataPoint.open),
+          Number(dataPoint.high),
+          Number(dataPoint.low),
+          Number(dataPoint.close)
+        ]
+      );
+      this.volume.push(
+        [
+          Number(dataPoint.date),
+          Number(dataPoint.volume)
+        ]
+      );
+      this.adx.push(
+        [
+          Number(dataPoint.date),
+          Number(dataPoint.indicator['adx'])
+        ]
+      );
+      this.dx.push(
+        [
+          Number(dataPoint.date),
+          Number(dataPoint.indicator['dx'])
+        ]
+      );
+      this.di_plus.push(
+        [
+          Number(dataPoint.date),
+          Number(dataPoint.indicator['plus_di'])
+        ]
+      );
+      this.di_minus.push(
+        [
+          Number(dataPoint.date),
+          Number(dataPoint.indicator['minus_di'])
+        ]
+      );
+    }
+      this.initializeChart()
+    }
+
+  initializeChart() {
+    const componentColor = getComputedStyle(document.documentElement).getPropertyValue('--mat-sys-surface').trim()
+    this.chartOptions = {
+      chart: {
+        styledMode: false,
+        backgroundColor: componentColor,
+        style: {
+          color: '#000',
+        },
+        height: this.chartHeight
+      },
+      title: {
+        text: this.chartTitle,
+        style: {
+          color: '#000',
+        },
+      },
+      rangeSelector: {
+        selected: 3,
+      },
+      navigator: {
+        series: {
+          color: 'orange',
+        },
+      },
+      xAxis: {
+        labels: {
+          style: {
+            color: '#000',
+          },
+          align: 'right',
+          x: -3,
+        },
+      },
+      yAxis: [
+        {
+          labels: {
+            style: {
+              color: '#000',
+            },
+          },
+          title: {
+            text: 'OLHC',
+          },
+          height: '45%',
+          lineWidth: 2,
+          resize: {
+            enabled: true,
+          },
+        },
+        {
+          labels: {
+            align: 'right',
+            x: -3,
+          },
+          title: {
+            text: 'Volume',
+          },
+          top: '45%',
+          height: '25%',
+          offset: 0,
+          lineWidth: 2,
+        },
+        {
+          labels: {
+            align: 'right',
+            x: -3,
+          },
+          title: {
+            text: 'ADX',
+          },
+          top: '70%',
+          height: '30%',
+          offset: 0,
+          lineWidth: 2,
+        },
+      ],
+      legend: {
+        itemStyle: {
+          color: '#000',
+        },
+      },
+      accessibility: {
+        enabled: false,
+      },
+      plotOptions: {
+        candlestick: {
+          color: 'pink',
+          lineColor: 'red',
+          upColor: 'green',
+          upLineColor: 'darkgreen',
+        },
+        column: {
+          color: 'blue',
+        },
+      },
+      series: [
+        {
+          type: 'candlestick',
+          name: 'OHLC',
+          data: this.ohlc,
+          dataGrouping: {
+            units: this.groupingUnits,
+            approximation: 'ohlc',
+          },
+          showInLegend: false,
+        },
+        {
+          type: 'column',
+          name: 'Volume',
+          data: this.volume,
+          yAxis: 1,
+          dataGrouping: {
+            approximation: 'average',
+            units: this.groupingUnits,
+          },
+        },
+        {
+          type: 'line',
+          name: '+di',
+          data: this.di_plus,
+          yAxis: 2,
+          dataGrouping: {
+            approximation: 'average',
+            units: this.groupingUnits,
+          },
+        },
+        {
+          type: 'line',
+          name: '-di',
+          data: this.di_minus,
+          yAxis: 2,
+          dataGrouping: {
+            approximation: 'average',
+            units: this.groupingUnits,
+          },
+        },
+        {
+          type: 'line',
+          name: 'adx',
+          data: this.adx,
+          yAxis: 2,
+          dataGrouping: {
+            approximation: 'average',
+            units: this.groupingUnits,
+          },
+        },
+      ],
+      credits: {
+        enabled: false,
+      },
+      
+    };
+    
+    // Initializes the chart  iteself.
+    this.chart = Highcharts.stockChart(
+      `container-${this.resolvedData().label}-${this.renderingFrom}`,
+      this.chartOptions
+    );
+  }
 }

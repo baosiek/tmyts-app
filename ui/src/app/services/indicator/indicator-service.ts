@@ -25,5 +25,12 @@ export class IndicatorService {
     const body = symbols ;   
     return this.http.post<IndicatorDataMapModel>(`${this.apiUrl}/${apiMethod}`, body, { headers })
   }
+
+  getADXIndicator(symbols: string[]): Observable<IndicatorDataMapModel>{
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const apiMethod = 'adx';
+    const body = symbols ;   
+    return this.http.post<IndicatorDataMapModel>(`${this.apiUrl}/${apiMethod}`, body, { headers })
+  }
   
 }

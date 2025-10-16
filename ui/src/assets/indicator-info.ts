@@ -112,6 +112,71 @@ export const IndicatorInfo: IInfoDialog[] =
         },
         {
             label: 'adx',
-            text: `This is a test`
-        }
+            text: `
+<h1>Average Directional Index (ADX)</h1>
+<p>The Average Directional Index (ADX) is a technical analysis tool used to assess the strength of a trend in a financial market. Here's a breakdown of its key components and functionality:</p>
+
+<h2>What is the ADX?</h2>
+<ul>
+    <li><strong>Purpose:</strong> The ADX measures the strength of a trend, regardless of its direction (up or down). It helps traders identify whether a market is trending or ranging.</li>
+    <li><strong>Scale:</strong> The ADX is typically plotted on a scale from 0 to 100.</li>
+</ul>
+
+<h2>Components of the ADX</h2>
+<ol>
+    <li><strong>ADX Line:</strong> 
+        <ul>
+            <li>Represents the strength of a trend.</li>
+            <li>Values above 20 or 25 often indicate a strong trend, while values below suggest a weak or non-trending market.</li>
+        </ul>
+    </li>
+    <li><strong>+DI (Positive Directional Indicator):</strong> 
+        <ul>
+            <li>Measures upward price movement.</li>
+            <li>When +DI is above -DI, it indicates a potential bullish trend.</li>
+        </ul>
+    </li>
+    <li><strong>-DI (Negative Directional Indicator):</strong> 
+        <ul>
+            <li>Measures downward price movement.</li>
+            <li>When -DI is above +DI, it indicates a potential bearish trend.</li>
+        </ul>
+    </li>
+</ol>
+
+<h2>How to Use the ADX</h2>
+<ul>
+    <li><strong>Identifying Trends:</strong> 
+        <ul>
+            <li>An ADX reading above 25 typically indicates a strong trend, while readings below 20 suggest a ranging market.</li>
+        </ul>
+    </li>
+    <li><strong>Crossovers:</strong> 
+        <ul>
+            <li>Traders often look for crossovers between +DI and -DI to identify potential entry and exit points.</li>
+        </ul>
+    </li>
+    <li><strong>Confirmation:</strong> 
+        <ul>
+            <li>The ADX itself does not indicate the direction of the trend, so it is often used in conjunction with other indicators or price action analysis for confirmation.</li>
+        </ul>
+    </li>
+</ul>
+
+<h2>Limitations</h2>
+<ul>
+    <li><strong>Lagging Indicator:</strong> The ADX is based on moving averages, which means it can lag behind market movements.</li>
+    <li><strong>Not Directional:</strong> While it indicates strength, it does not provide information about the trend's direction.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>The ADX is a valuable tool for traders looking to gauge the strength of market trends and make informed decisions. However, it is most effective when used in conjunction with other analysis techniques.</p>
+
+<p>If you have more specific aspects of the ADX you want to explore, feel free to ask!</p>
+
+
+You can use this HTML code in a web page to display the information about the ADX indicator. If you need any adjustments or additional details, let me know!
+            `
+        },
+
     ]
