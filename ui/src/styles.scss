@@ -8,6 +8,9 @@
 @use '../src/app/themes/main_theme.scss' as main-theme;
 @use '../src/app/themes/light_theme.scss' as green-theme;
 
+@import "highcharts/css/stocktools/gui.css"; 
+@import "highcharts/css/annotations/popup.css";
+
 
 html {
   @include mat.theme((

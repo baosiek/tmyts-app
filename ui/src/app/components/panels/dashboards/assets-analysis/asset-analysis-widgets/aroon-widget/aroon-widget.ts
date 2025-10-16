@@ -4,12 +4,18 @@ import { DialogData } from '../../../../../dialogs/general-dialog/general-dialog
 import { MATERIAL_IMPORTS } from '../../../../../../material-imports';
 import { ChartConstructorType, HighchartsChartDirective } from 'highcharts-angular';
 import { createDefaultWidgetConfigModel, WidgetConfigModel } from '../../../../../../models/widget-config-model';
-import Highcharts from 'highcharts/highstock';
 import { IndicatorService } from '../../../../../../services/indicator/indicator-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 import { catchError } from 'rxjs';
 import { IndicatorDataMapModel, IndicatorModel } from '../../../../../../models/indicator-model';
+import Highcharts from 'highcharts/highstock';
+import * as HIndicatorsAll from "highcharts/indicators/indicators-all";
+import * as HDragPanes from "highcharts/modules/drag-panes";
+import * as HAnnotationsAdvanced from "highcharts/modules/annotations-advanced";
+import * as HPriceIndicator from "highcharts/modules/price-indicator";
+import * as HFullScreen from "highcharts/modules/full-screen";
+import * as HStockTools from "highcharts/modules/stock-tools";
 
 @Component({
   selector: 'app-aroon-widget',
@@ -26,11 +32,13 @@ export class AroonWidget {
   data = input.required<IWidgetConfig>();
   dialogData = input<DialogData>()
   renderingFrom = 'indicator'
+  showChartGui = false
 
   resolvedData = computed<IWidgetConfig | WidgetConfigModel>(
     () => {
       if (this.dialogData()?.data) {
         this.renderingFrom = 'dialog'
+        this.showChartGui = true
         this.chartHeight = '900px'
         this.chartTitle = this.dialogData()?.data.get('dataDialog').symbol
 
@@ -52,7 +60,15 @@ export class AroonWidget {
   chartOptions!: Highcharts.Options;
   updateFlag: boolean = true;
   oneToOneFlag: boolean = true;
+
   Highcharts: typeof Highcharts = Highcharts;
+  HIndicatorsAll: typeof HIndicatorsAll = HIndicatorsAll
+  HAnnotationsAdvanced: typeof HAnnotationsAdvanced = HAnnotationsAdvanced
+  HPriceIndicator: typeof HPriceIndicator = HPriceIndicator
+  HDragPanes: typeof HDragPanes = HDragPanes
+  HFullScreen: typeof HFullScreen = HFullScreen
+  HStockTools: typeof HStockTools = HStockTools
+
   chartHeight: string | null = null;
   chartTitle: string = ''
 
@@ -223,6 +239,22 @@ export class AroonWidget {
             color: '#000',
           },
         },
+        stockTools: {
+        gui: {
+          enabled: this.showChartGui, 
+          buttons: [
+            'fullScreen',
+            'simpleShapes',
+            'lines',
+            'crookedLines',
+            'verticalLabels',
+            'flags',
+            'toggleAnnotations',
+            'currentPriceIndicator',
+            'saveChart'
+          ],
+        }
+      },
         accessibility: {
           enabled: false,
         },

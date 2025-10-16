@@ -6,11 +6,18 @@ import { catchError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 import { ChartConstructorType, HighchartsChartDirective } from 'highcharts-angular';
-import * as Highcharts from 'highcharts/highstock';
 import { IndicatorDataMapModel, IndicatorModel } from '../../../../../../models/indicator-model';
 import { DialogData } from '../../../../../dialogs/general-dialog/general-dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { createDefaultWidgetConfigModel, WidgetConfigModel } from '../../../../../../models/widget-config-model';
+import * as Highcharts from 'highcharts/highstock';
+import * as HIndicatorsAll from "highcharts/indicators/indicators-all";
+import * as HDragPanes from "highcharts/modules/drag-panes";
+import * as HAnnotationsAdvanced from "highcharts/modules/annotations-advanced";
+import * as HPriceIndicator from "highcharts/modules/price-indicator";
+import * as HFullScreen from "highcharts/modules/full-screen";
+import * as HStockTools from "highcharts/modules/stock-tools";
+
 
 @Component({
   selector: 'app-obv-widget',
@@ -29,11 +36,13 @@ export class ObvWidget implements OnChanges {
   data = input.required<IWidgetConfig>();
   dialogData = input<DialogData>()
   renderingFrom = 'indicator'
+  showChartGui = false
 
   resolvedData = computed<IWidgetConfig | WidgetConfigModel>(
     () => {
       if (this.dialogData()?.data) {
         this.renderingFrom = 'dialog'
+        this.showChartGui = true
         this.chartHeight = '900px'
         this.chartTitle = this.dialogData()?.data.get('dataDialog').symbol
 
@@ -71,10 +80,6 @@ export class ObvWidget implements OnChanges {
   constructor(
     private _snackBar: MatSnackBar
   ) {}
-
-  // ngOnInit(): void {    
-  //   this.getIndicatorData();
-  // }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.getIndicatorData();
@@ -220,6 +225,23 @@ export class ObvWidget implements OnChanges {
         itemStyle: {
           color: '#000',
         },
+      },
+      stockTools: {
+        // You can also customize the GUI here
+        gui: {
+          enabled: this.showChartGui,
+          buttons: [
+            'fullScreen',
+            'simpleShapes',
+            'lines',
+            'crookedLines',
+            'verticalLabels',
+            'flags',
+            'toggleAnnotations',
+            'currentPriceIndicator',
+            'saveChart'
+          ],
+        }
       },
       accessibility: {
         enabled: false,

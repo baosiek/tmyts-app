@@ -8,6 +8,12 @@ import { UserPreferencesService } from '../user-preferences/user-preferences-ser
 import { catchError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TmytsSnackbar } from '../../components/reusable-components/tmyts-snackbar/tmyts-snackbar';
+import { MacdWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/macd-widget/macd-widget';
+import { FibonacciWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/fibonacci-widget/fibonacci-widget';
+import { SarWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/sar-widget/sar-widget';
+import { BollingerWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/bollinger-widget/bollinger-widget';
+import { RsiWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/rsi-widget/rsi-widget';
+import { StochasticWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/stochastic-widget/stochastic-widget';
 
 /*
 providedIn: 'root' deleted from @Injectable, because
@@ -46,6 +52,48 @@ export class AssetsAnalysisDashboardService {
         label: 'aroon',
         title: 'Aroon Indicator',
         content: AroonWidget,
+      },
+      {
+        id: 5,
+        dashboard_id: 'assets_analysis',
+        label: 'macd',
+        title: 'Moving Average Convergence Divergence (MACD) Indicator',
+        content: MacdWidget,
+      },
+      {
+        id: 6,
+        dashboard_id: 'assets_analysis',
+        label: 'rsi',
+        title: 'The Relative Strength Index (RSI)',
+        content: RsiWidget,
+      },
+      {
+        id: 7,
+        dashboard_id: 'assets_analysis',
+        label: 'stochastic',
+        title: 'Stochastic Oscillator',
+        content: StochasticWidget,
+      },
+      {
+        id: 8,
+        dashboard_id: 'assets_analysis',
+        label: 'fibonacci',
+        title: 'Fibonacci Retracement',
+        content: FibonacciWidget,
+      },
+      {
+        id: 9,
+        dashboard_id: 'assets_analysis',
+        label: 'sar',
+        title: 'Parabolic SAR',
+        content: SarWidget,
+      },
+      {
+        id: 10,
+        dashboard_id: 'assets_analysis',
+        label: 'bollinger',
+        title: 'Bollinger Bands',
+        content: BollingerWidget,
       }
     ]
   );
