@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 import { ChartConstructorType, HighchartsChartDirective } from 'highcharts-angular';
 import * as Highcharts from 'highcharts/highstock';
-import { IndicatorMap } from '../../../../../../models/indicator-model';
+import { IndicatorDataMapModel, IndicatorModel } from '../../../../../../models/indicator-model';
 import { DialogData } from '../../../../../dialogs/general-dialog/general-dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { createDefaultWidgetConfigModel, WidgetConfigModel } from '../../../../../../models/widget-config-model';
@@ -24,7 +24,7 @@ import { createDefaultWidgetConfigModel, WidgetConfigModel } from '../../../../.
   ],
   styleUrl: './obv-widget.scss'
 })
-export class ObvWidget implements OnInit, OnChanges {
+export class ObvWidget implements OnChanges {
 
   data = input.required<IWidgetConfig>();
   dialogData = input<DialogData>()
@@ -72,9 +72,9 @@ export class ObvWidget implements OnInit, OnChanges {
     private _snackBar: MatSnackBar
   ) {}
 
-  ngOnInit(): void {    
-    this.getIndicatorData();
-  }
+  // ngOnInit(): void {    
+  //   this.getIndicatorData();
+  // }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.getIndicatorData();
@@ -101,47 +101,43 @@ export class ObvWidget implements OnInit, OnChanges {
       )
       .subscribe(
         {
-          next: (responses: IndicatorMap[]) => {
-            // console.log(responses)
-            this.dataIntoChartDataStructure(responses)
+          next: (responses: IndicatorDataMapModel) => {
+            const chartData: IndicatorModel[] = responses.data_map[this.resolvedData().symbol].indicator_data;
+            this.dataIntoChartDataStructure(chartData)
           }
         }
       );
   }
 
-  dataIntoChartDataStructure(responses: IndicatorMap[]) {
+  dataIntoChartDataStructure(chartData: IndicatorModel[]) {
     this.ohlc = []
     this.volume = []
     this.obv = []
-    const response = responses.find(r => r.symbol === this.resolvedData().symbol)
-    if (response) {
-      const entries = response.indicator_data
-      for (const entry of entries) {
-        this.ohlc.push(
-          [
-            Number(entry.date),
-            Number(entry.open),
-            Number(entry.high),
-            Number(entry.low),
-            Number(entry.close)
-          ]
-        );
-        this.volume.push(
-          [
-            Number(entry.date),
-            Number(entry.volume)
-          ]
-        );
-        this.obv.push(
-          [
-            Number(entry.date),
-            Number(entry.indicator)
-          ]
-        );
-      }
+    for (const dataPoint of chartData) {
+      this.ohlc.push(
+        [
+          Number(dataPoint.date),
+          Number(dataPoint.open),
+          Number(dataPoint.high),
+          Number(dataPoint.low),
+          Number(dataPoint.close)
+        ]
+      );
+      this.volume.push(
+        [
+          Number(dataPoint.date),
+          Number(dataPoint.volume)
+        ]
+      );
+      this.obv.push(
+        [
+          Number(dataPoint.date),
+          Number(dataPoint.indicator['obv'])
+        ]
+      );
+    }
       this.initializeChart()
     }
-  }
 
   initializeChart() {
     const componentColor = getComputedStyle(document.documentElement).getPropertyValue('--mat-sys-surface').trim()
