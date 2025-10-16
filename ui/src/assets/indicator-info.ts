@@ -178,5 +178,85 @@ export const IndicatorInfo: IInfoDialog[] =
 You can use this HTML code in a web page to display the information about the ADX indicator. If you need any adjustments or additional details, let me know!
             `
         },
+        {
+            label: 'aroon',
+            text: `
+<!DOCTYPE html>
+<html lang="en">
+<body>
+
+<h1>Aroon Indicator</h1>
+<p>The Aroon Indicator is a popular technical analysis tool used to measure the strength and direction of trends in financial markets. 
+It was developed by Tushar Chande in 1995 and is particularly useful for identifying potential trend reversals.</p>
+
+<h2>Components of the Aroon Indicator</h2>
+<ul>
+    <li><strong>Aroon Up</strong>: 
+        <p>Measures the number of periods since the highest high within a specified look-back period. 
+        A value of 0 to 100 is assigned based on how recent the highest high occurred. 
+        A higher Aroon Up value indicates a strong upward trend.</p>
+    </li>
+    <li><strong>Aroon Down</strong>: 
+        <p>Measures the number of periods since the lowest low within the same look-back period. 
+        Similar to Aroon Up, it assigns a value between 0 to 100 based on the recency of the lowest low. 
+        A higher Aroon Down value indicates a strong downward trend.</p>
+    </li>
+</ul>
+
+<h2>Calculation</h2>
+<ul>
+    <li><strong>Look-back Period</strong>: Typically, a period of 14 days is used, but this can be adjusted based on trading strategies.</li>
+    <li><strong>Formulas</strong>:
+        <ul>
+            <li>Aroon Up: 
+                <p><code>Aroon Up = (Number of periods since highest high / Look-back period) × 100</code></p>
+            </li>
+            <li>Aroon Down: 
+                <p><code>Aroon Down = (Number of periods since lowest low / Look-back period) × 100</code></p>
+            </li>
+        </ul>
+    </li>
+</ul>
+
+<h2>Interpretation</h2>
+<ul>
+    <li><strong>Trend Strength</strong>:
+        <ul>
+            <li>Aroon Up > Aroon Down: Indicates a strong upward trend.</li>
+            <li>Aroon Down > Aroon Up: Indicates a strong downward trend.</li>
+        </ul>
+    </li>
+    <li><strong>Values Close to 100</strong>: Suggest that a strong trend is present.</li>
+    <li><strong>Values Close to 0</strong>: Indicate a weak trend or a potential trend reversal.</li>
+</ul>
+
+<h2>Trading Signals</h2>
+<ul>
+    <li><strong>Bullish Signal</strong>: When Aroon Up crosses above Aroon Down, it may indicate the start of a bullish trend.</li>
+    <li><strong>Bearish Signal</strong>: When Aroon Down crosses above Aroon Up, it may indicate the beginning of a bearish trend.</li>
+</ul>
+
+<h2>Advantages</h2>
+<ul>
+    <li><strong>Simplicity</strong>: The Aroon Indicator is easy to calculate and interpret.</li>
+    <li><strong>Dual Trend Measurement</strong>: It provides insights into both upward and downward trends, making it versatile for different market conditions.</li>
+    <li><strong>Trend Reversal Detection</strong>: It can effectively signal potential reversals, which is critical for traders.</li>
+</ul>
+
+<h2>Limitations</h2>
+<ul>
+    <li><strong>Lagging Indicator</strong>: Like many technical indicators, it may lag behind price movements.</li>
+    <li><strong>False Signals</strong>: In choppy or sideways markets, Aroon may give false signals, leading to potential losses.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>The Aroon Indicator is a valuable tool for traders looking to assess the strength and direction of trends in financial markets. 
+By analyzing both Aroon Up and Aroon Down values, traders can make more informed decisions about when to enter or exit positions. 
+As with any technical indicator, it is often best used in conjunction with other analyses and indicators to confirm signals and improve trading strategies.</p>
+
+</body>
+</html>
+            `
+        }
 
     ]
