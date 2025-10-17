@@ -334,6 +334,84 @@ As with any technical indicator, it is often best used in conjunction with other
 </body>
 </html>
             `
+        },
+        {
+            label: 'rsi',
+            text: `
+            <!DOCTYPE html>
+<html lang="en">
+<body>
+
+<h1>Relative Strength Index (RSI)</h1>
+
+<h2>Key Features of the RSI:</h2>
+
+<h3>1. Purpose</h3>
+<p>
+    The RSI measures the speed and change of price movements, helping traders identify overbought or oversold conditions in a market.
+    It is primarily used to determine whether a security is potentially overvalued or undervalued.
+</p>
+
+<h3>2. Calculation</h3>
+<p>
+    The RSI is calculated using the following formula:
+</p>
+<pre>
+RSI = 100 - (100 / (1 + RS))
+</pre>
+<p>where:</p>
+<ul>
+    <li><strong>RS</strong> (Relative Strength) is the average of <em>n</em> days' up closes divided by the average of <em>n</em> days' down closes over a specified period <em>n</em> (commonly set to 14 days).</li>
+</ul>
+<p>
+    The calculation involves:
+</p>
+<ul>
+    <li><strong>Average Gain</strong>: The average of the gains over a specified period.</li>
+    <li><strong>Average Loss</strong>: The average of the losses over the same period.</li>
+</ul>
+
+<h3>3. Range</h3>
+<p>
+    The RSI values range from <strong>0 to 100</strong>.
+    Typically, an RSI above <strong>70</strong> indicates that a security may be overbought, while an RSI below <strong>30</strong> suggests that it may be oversold.
+</p>
+
+<h3>4. Interpretation</h3>
+<ul>
+    <li><strong>Overbought Conditions</strong>:
+        An RSI above 70 may indicate that the asset is overbought, suggesting a potential reversal or correction.
+    </li>
+    <li><strong>Oversold Conditions</strong>:
+        An RSI below 30 may indicate that the asset is oversold, suggesting a potential upward reversal or buying opportunity.
+    </li>
+    <li><strong>Divergences</strong>:
+        Divergence between the RSI and the price movement can signal potential reversals. For example, if prices are making new highs while the RSI is making lower highs, it may indicate weakening momentum.
+    </li>
+</ul>
+
+<h3>5. Limitations</h3>
+<ul>
+    <li>The RSI can produce false signals, especially during strong trends.</li>
+    <li>It is most effective in range-bound markets and may not perform well in trending markets.</li>
+    <li>It's essential to use the RSI in conjunction with other indicators or analysis techniques for confirmation.</li>
+</ul>
+
+<h3>6. Practical Use</h3>
+<p>
+    Traders often use RSI in conjunction with other technical indicators (like moving averages or support and resistance levels) to improve their trading strategy.
+    It can be applied across various time frames, making it versatile for different trading styles, from day trading to long-term investing.
+</p>
+
+<h2>Conclusion</h2>
+<p>
+    The RSI is a valuable tool for traders and analysts to gauge the momentum of a security and make informed trading decisions.
+    By understanding its calculations, interpretations, and limitations, traders can better leverage the RSI in their technical analysis toolkit.
+</p>
+
+</body>
+</html>
+            `
         }
 
     ]
