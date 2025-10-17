@@ -461,6 +461,71 @@ RSI = 100 - (100 / (1 + RS))
 </body>
 </html>
             `
+        },
+        {
+            label: 'sar',
+            text: `
+            <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parabolic Oscillator Indicator</title>
+</head>
+<body>
+    <h1>Parabolic Oscillator Indicator</h1>
+    <p>The Parabolic Oscillator, also known as the Parabolic Stop and Reverse (SAR), is a popular technical analysis tool used by traders to determine potential price reversals in a market. Here’s a detailed overview of the Parabolic Oscillator:</p>
+
+    <h2>Key Features</h2>
+    <ul>
+        <li><strong>Trend Following:</strong> The Parabolic Oscillator is primarily a trend-following indicator, used to identify the direction of the market and potential reversal points.</li>
+        <li><strong>Visual Representation:</strong> It appears as dots plotted above or below the price chart:
+            <ul>
+                <li>Dots above the price indicate a bearish trend (potential sell signals).</li>
+                <li>Dots below the price indicate a bullish trend (potential buy signals).</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>How It Works</h2>
+    <ol>
+        <li><strong>Calculation:</strong>
+            <p>The indicator uses a formula that takes into account the <strong>Extreme Point (EP)</strong> (the highest high or lowest low during the trend) and the <strong>Acceleration Factor (AF)</strong>, which typically starts at 0.02 and can be increased to accelerate the indicator’s sensitivity.</p>
+            <p>The formula for calculating the Parabolic SAR is:</p>
+            <ul>
+                <li>For an uptrend:<br>
+                    <code>SAR = SAR<sub>previous</sub> + AF × (EP - SAR<sub>previous</sub>)</code>
+                </li>
+                <li>For a downtrend:<br>
+                    <code>SAR = SAR<sub>previous</sub> + AF × (EP - SAR<sub>previous</sub>)</code>
+                </li>
+            </ul>
+        </li>
+        <li><strong>Trend Identification:</strong>
+            <p>When the price closes above the SAR, it indicates a potential bullish trend, and when it closes below, it suggests a potential bearish trend.</p>
+        </li>
+        <li><strong>Reversal Signals:</strong>
+            <p>A reversal is indicated when the SAR dots switch from being above the price to below it, or vice versa.</p>
+        </li>
+    </ol>
+
+    <h2>Applications</h2>
+    <ul>
+        <li><strong>Entry and Exit Points:</strong> Traders use the Parabolic Oscillator to determine optimal entry and exit points in a trade.</li>
+        <li><strong>Trailing Stops:</strong> It can also serve as a trailing stop-loss indicator, allowing traders to lock in profits as the price moves in their favor.</li>
+    </ul>
+
+    <h2>Limitations</h2>
+    <ul>
+        <li><strong>Choppy Markets:</strong> The Parabolic Oscillator can produce false signals in sideways or choppy markets, leading to potential losses.</li>
+        <li><strong>Lagging Indicator:</strong> Since it relies on past price data, it may lag and not always provide timely signals, especially in rapidly changing market conditions.</li>
+    </ul>
+
+    <h2>Conclusion</h2>
+    <p>The Parabolic Oscillator is a useful tool for traders looking to identify trends and reversal points. However, it’s essential to use it in conjunction with other indicators or analysis techniques to confirm signals and reduce the risk of false entries or exits.</p>
+</body>
+</html>
+            `
         }
 
     ]

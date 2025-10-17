@@ -28,7 +28,6 @@ import { IndicatorDataMapModel, IndicatorModel } from '../../../../../../models/
 })
 export class StochasticWidget {
 
-
   data = input.required<IWidgetConfig>();
   dialogData = input<DialogData>()
   renderingFrom = 'indicator'
