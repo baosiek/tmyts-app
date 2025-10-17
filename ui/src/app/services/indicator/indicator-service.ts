@@ -53,5 +53,12 @@ export class IndicatorService {
     const body = symbols;
     return this.http.post<IndicatorDataMapModel>(`${this.apiUrl}/${apiMethod}`, body, { headers })
   }
+
+  getStochasticIndicator(symbols: string[]): Observable<IndicatorDataMapModel> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const apiMethod = 'stochastic';
+    const body = symbols;
+    return this.http.post<IndicatorDataMapModel>(`${this.apiUrl}/${apiMethod}`, body, { headers })
+  }
   
 }

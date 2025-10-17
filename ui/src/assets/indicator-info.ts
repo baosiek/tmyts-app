@@ -412,6 +412,55 @@ RSI = 100 - (100 / (1 + RS))
 </body>
 </html>
             `
+        },
+        {
+            label: 'stochastic',
+            text: `
+            <!DOCTYPE html>
+<html lang="en">
+<body>
+    <h1>Stochastic Oscillator</h1>
+    <p>The stochastic oscillator is a momentum indicator used in technical analysis to measure the level of a security's closing price relative to its price range over a specific period. Here’s a breakdown of its key components and how it works:</p>
+
+    <h2>Key Components</h2>
+    <ul>
+        <li><strong>%K Line:</strong> This is the main line of the stochastic oscillator, representing the current closing price in relation to the price range over a set number of periods (often 14). It is calculated using the formula:</li>
+        <p><code>%K = ((Current Close - Lowest Low) / (Highest High - Lowest Low)) × 100</code></p>
+
+        <li><strong>%D Line:</strong> This is the smoothed version of the %K line, usually calculated as a simple moving average of the %K line over a specified number of periods (commonly 3). It serves as a signal line.</li>
+    </ul>
+
+    <h2>How It Works</h2>
+    <ul>
+        <li><strong>Range:</strong> The stochastic oscillator ranges from 0 to 100. Values above 80 typically indicate that the security is overbought, while values below 20 suggest it is oversold.</li>
+
+        <li><strong>Signals:</strong>
+            <ul>
+                <li><strong>Buy Signal:</strong> When the %K line crosses above the %D line, it may indicate a potential buy opportunity.</li>
+                <li><strong>Sell Signal:</strong> Conversely, when the %K line crosses below the %D line, it may signal a potential sell opportunity.</li>
+            </ul>
+        </li>
+
+        <li><strong>Divergence:</strong> Traders often look for divergences between the stochastic oscillator and the price action. For example, if the price is making new highs while the stochastic oscillator is not, it could suggest a weakening trend.</li>
+    </ul>
+
+    <h2>Applications</h2>
+    <ul>
+        <li><strong>Trend Confirmation:</strong> Use it in conjunction with other indicators to confirm trends.</li>
+        <li><strong>Timing Entries and Exits:</strong> Helps traders identify potential reversal points.</li>
+    </ul>
+
+    <h2>Limitations</h2>
+    <ul>
+        <li><strong>False Signals:</strong> Like any indicator, it can produce false signals, especially in strong trending markets.</li>
+        <li><strong>Lagging Indicator:</strong> The %D line is a lagging indicator, meaning it can sometimes react too late to price changes.</li>
+    </ul>
+
+    <h2>Conclusion</h2>
+    <p>The stochastic oscillator is a valuable tool for traders looking to gauge momentum and identify potential entry and exit points. However, it should be used alongside other analysis techniques for more reliable trading decisions.</p>
+</body>
+</html>
+            `
         }
 
     ]

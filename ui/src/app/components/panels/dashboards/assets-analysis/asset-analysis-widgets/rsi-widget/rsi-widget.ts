@@ -27,6 +27,7 @@ import { IndicatorDataMapModel, IndicatorModel } from '../../../../../../models/
   styleUrl: './rsi-widget.scss'
 })
 export class RsiWidget {
+  
   data = input.required<IWidgetConfig>();
   dialogData = input<DialogData>()
   renderingFrom = 'indicator'
@@ -248,6 +249,8 @@ export class RsiWidget {
             'fullScreen',
             'simpleShapes',
             'lines',
+            'measure',
+            'advanced',
             'crookedLines',
             'verticalLabels',
             'flags',

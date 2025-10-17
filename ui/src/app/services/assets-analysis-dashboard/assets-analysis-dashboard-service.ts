@@ -75,13 +75,6 @@ export class AssetsAnalysisDashboardService {
         content: StochasticWidget,
       },
       {
-        id: 8,
-        dashboard_id: 'assets_analysis',
-        label: 'fibonacci',
-        title: 'Fibonacci Retracement',
-        content: FibonacciWidget,
-      },
-      {
         id: 9,
         dashboard_id: 'assets_analysis',
         label: 'sar',
