@@ -526,6 +526,71 @@ RSI = 100 - (100 / (1 + RS))
 </body>
 </html>
             `
+        },
+        {
+            label: 'bollinger',
+            text: `
+            <!DOCTYPE html>
+<html lang="en">
+<body>
+    <h1>Bollinger Bands</h1>
+    <p>Bollinger Bands are a popular technical analysis tool used by traders to assess price volatility and identify potential overbought or oversold conditions in a market. They consist of a middle band and two outer bands, which are derived from a moving average and standard deviations. Here’s a detailed overview of Bollinger Bands:</p>
+
+    <h2>Key Components</h2>
+    <ol>
+        <li><strong>Middle Band:</strong>
+            <p>This is typically a <strong>20-period simple moving average (SMA)</strong> of the closing prices. It serves as the baseline for the upper and lower bands.</p>
+        </li>
+        <li><strong>Upper Band:</strong>
+            <p>This band is calculated by adding <strong>two standard deviations (SD)</strong> to the middle band:</p>
+            <p><code>Upper Band = Middle Band + (2 × Standard Deviation)</code></p>
+        </li>
+        <li><strong>Lower Band:</strong>
+            <p>This band is calculated by subtracting <strong>two standard deviations (SD)</strong> from the middle band:</p>
+            <p><code>Lower Band = Middle Band - (2 × Standard Deviation)</code></p>
+        </li>
+    </ol>
+
+    <h2>How It Works</h2>
+    <ul>
+        <li><strong>Volatility Measurement:</strong>
+            <p>The distance between the upper and lower bands varies with market volatility:</p>
+            <ul>
+                <li><strong>Wider Bands:</strong> Indicate higher volatility, as prices are more dispersed from the mean.</li>
+                <li><strong>Narrower Bands:</strong> Indicate lower volatility, as prices are more tightly clustered around the mean.</li>
+            </ul>
+        </li>
+        <li><strong>Price Behavior:</strong>
+            <p>Prices often bounce between the upper and lower bands, making them useful for identifying potential reversal points.</p>
+        </li>
+    </ul>
+
+    <h2>Trading Signals</h2>
+    <ol>
+        <li><strong>Overbought and Oversold Conditions:</strong>
+            <p>When the price touches or exceeds the upper band, it may indicate that the asset is overbought and could be due for a pullback.</p>
+            <p>Conversely, when the price touches or falls below the lower band, it may indicate that the asset is oversold and could be due for a rebound.</p>
+        </li>
+        <li><strong>Breakouts:</strong>
+            <p>A breakout above the upper band or below the lower band can signal a continuation of the trend. Traders often look for confirmation from other indicators to validate the breakout.</p>
+        </li>
+        <li><strong>Squeeze:</strong>
+            <p>A squeeze occurs when the bands come close together, indicating low volatility and potential for future price movement. Traders may look for a breakout direction after a squeeze.</p>
+        </li>
+    </ol>
+
+    <h2>Limitations</h2>
+    <ul>
+        <li><strong>False Signals:</strong> Bollinger Bands can produce false signals, especially in trending markets where prices may remain outside the bands for extended periods.</li>
+        <li><strong>Contextual Analysis:</strong> They should be used in conjunction with other indicators and analysis techniques to confirm signals and improve reliability.</li>
+    </ul>
+
+    <h2>Conclusion</h2>
+    <p>Bollinger Bands are a versatile tool for identifying market volatility and potential price reversals. They can be effective for both trend trading and range trading strategies. However, as with any technical indicator, they are best used in combination with other tools and analysis methods to enhance trading decisions.</p>
+</body>
+</html>
+            `
         }
+
 
     ]

@@ -67,5 +67,12 @@ export class IndicatorService {
     const body = symbols;
     return this.http.post<IndicatorDataMapModel>(`${this.apiUrl}/${apiMethod}`, body, { headers })
   }
+
+  getBollingerIndicator(symbols: string[]): Observable<IndicatorDataMapModel> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const apiMethod = 'bollinger';
+    const body = symbols;
+    return this.http.post<IndicatorDataMapModel>(`${this.apiUrl}/${apiMethod}`, body, { headers })
+  }
   
 }
