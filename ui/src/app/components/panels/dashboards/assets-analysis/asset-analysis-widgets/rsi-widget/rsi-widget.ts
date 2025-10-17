@@ -221,6 +221,19 @@ export class RsiWidget {
           height: '30%',
           offset: 0,
           lineWidth: 2,
+          plotBands: [{
+            from: 30, 
+            to: 70, 
+            color: 'rgba(68, 170, 213, 0.1)', // Light blue color with transparency
+            label: {
+              text: 'Target Zone',
+              align: 'center',
+              style: {
+                color: '#606060'
+              }
+            },
+            zIndex: -1 // Ensure the band is behind the line series
+          }]
         },
       ],
       legend: {
