@@ -73,7 +73,6 @@ export class AroonWidget {
   chartTitle: string = ''
 
   ohlc: any[] = [];
-  volume: any[] = [];
   aroon_up: any[] = [];
   aroon_down: any[] = [];
 
@@ -122,7 +121,6 @@ export class AroonWidget {
 
   dataIntoChartDataStructure(chartData: IndicatorModel[]) {
     this.ohlc = []
-    this.volume = []
     this.aroon_up = []
     this.aroon_down = []
     for (const dataPoint of chartData) {
@@ -133,12 +131,6 @@ export class AroonWidget {
           Number(dataPoint.high),
           Number(dataPoint.low),
           Number(dataPoint.close)
-        ]
-      );
-      this.volume.push(
-        [
-          Number(dataPoint.date),
-          Number(dataPoint.volume)
         ]
       );
       this.aroon_up.push(
@@ -199,9 +191,9 @@ export class AroonWidget {
               },
             },
             title: {
-              text: 'OLHC',
+              text: 'Prices',
             },
-            height: '45%',
+            height: '75%',
             lineWidth: 2,
             resize: {
               enabled: true,
@@ -213,23 +205,10 @@ export class AroonWidget {
               x: -3,
             },
             title: {
-              text: 'Volume',
-            },
-            top: '45%',
-            height: '25%',
-            offset: 0,
-            lineWidth: 2,
-          },
-          {
-            labels: {
-              align: 'right',
-              x: -3,
-            },
-            title: {
               text: 'AROON',
             },
-            top: '70%',
-            height: '30%',
+            top: '75%',
+            height: '25%',
             offset: 0,
             lineWidth: 2,
           },
@@ -247,6 +226,8 @@ export class AroonWidget {
             'simpleShapes',
             'lines',
             'crookedLines',
+            'measure',
+            'advanced',
             'verticalLabels',
             'flags',
             'toggleAnnotations',
@@ -272,7 +253,7 @@ export class AroonWidget {
         series: [
           {
             type: 'candlestick',
-            name: 'OHLC',
+            name: 'Prices',
             data: this.ohlc,
             dataGrouping: {
               units: this.groupingUnits,
@@ -281,20 +262,10 @@ export class AroonWidget {
             showInLegend: false,
           },
           {
-            type: 'column',
-            name: 'Volume',
-            data: this.volume,
-            yAxis: 1,
-            dataGrouping: {
-              approximation: 'average',
-              units: this.groupingUnits,
-            },
-          },
-          {
             type: 'line',
             name: 'Aroon Up',
             data: this.aroon_up,
-            yAxis: 2,
+            yAxis: 1,
             dataGrouping: {
               approximation: 'average',
               units: this.groupingUnits,
@@ -304,7 +275,7 @@ export class AroonWidget {
             type: 'line',
             name: 'Aroon down',
             data: this.aroon_down,
-            yAxis: 2,
+            yAxis: 1,
             dataGrouping: {
               approximation: 'average',
               units: this.groupingUnits,

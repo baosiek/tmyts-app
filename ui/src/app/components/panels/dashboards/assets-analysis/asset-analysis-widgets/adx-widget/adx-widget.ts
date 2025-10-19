@@ -72,9 +72,7 @@ export class AdxWidget {
   chartTitle: string = ''
 
   ohlc: any[] = [];
-  volume: any[] = [];
   adx: any[] = [];
-  dx: any[] = [];
   di_plus: any[] = [];
   di_minus: any[] = [];
 
@@ -121,9 +119,10 @@ export class AdxWidget {
   }
 
   dataIntoChartDataStructure(chartData: IndicatorModel[]) {
-    this.ohlc = []
-    this.volume = []
-    this.adx = []
+    this.ohlc = [];
+    this.adx = [];
+    this.di_plus = [];
+    this.di_minus = [];
     for (const dataPoint of chartData) {
       this.ohlc.push(
         [
@@ -134,22 +133,10 @@ export class AdxWidget {
           Number(dataPoint.close)
         ]
       );
-      this.volume.push(
-        [
-          Number(dataPoint.date),
-          Number(dataPoint.volume)
-        ]
-      );
       this.adx.push(
         [
           Number(dataPoint.date),
           Number(dataPoint.indicator['adx'])
-        ]
-      );
-      this.dx.push(
-        [
-          Number(dataPoint.date),
-          Number(dataPoint.indicator['dx'])
         ]
       );
       this.di_plus.push(
@@ -210,9 +197,9 @@ export class AdxWidget {
             },
           },
           title: {
-            text: 'OLHC',
+            text: 'Prices',
           },
-          height: '45%',
+          height: '75%',
           lineWidth: 2,
           resize: {
             enabled: true,
@@ -224,23 +211,10 @@ export class AdxWidget {
             x: -3,
           },
           title: {
-            text: 'Volume',
-          },
-          top: '45%',
-          height: '25%',
-          offset: 0,
-          lineWidth: 2,
-        },
-        {
-          labels: {
-            align: 'right',
-            x: -3,
-          },
-          title: {
             text: 'ADX',
           },
-          top: '70%',
-          height: '30%',
+          top: '75%',
+          height: '25%',
           offset: 0,
           lineWidth: 2,
         },
@@ -258,6 +232,8 @@ export class AdxWidget {
             'simpleShapes',
             'lines',
             'crookedLines',
+            'measure',
+            'advanced',
             'verticalLabels',
             'flags',
             'toggleAnnotations',
@@ -283,7 +259,7 @@ export class AdxWidget {
       series: [
         {
           type: 'candlestick',
-          name: 'OHLC',
+          name: 'Prices',
           data: this.ohlc,
           dataGrouping: {
             units: this.groupingUnits,
@@ -292,20 +268,10 @@ export class AdxWidget {
           showInLegend: false,
         },
         {
-          type: 'column',
-          name: 'Volume',
-          data: this.volume,
-          yAxis: 1,
-          dataGrouping: {
-            approximation: 'average',
-            units: this.groupingUnits,
-          },
-        },
-        {
           type: 'line',
           name: '+di',
           data: this.di_plus,
-          yAxis: 2,
+          yAxis: 1,
           dataGrouping: {
             approximation: 'average',
             units: this.groupingUnits,
@@ -315,7 +281,7 @@ export class AdxWidget {
           type: 'line',
           name: '-di',
           data: this.di_minus,
-          yAxis: 2,
+          yAxis: 1,
           dataGrouping: {
             approximation: 'average',
             units: this.groupingUnits,
@@ -325,7 +291,7 @@ export class AdxWidget {
           type: 'line',
           name: 'adx',
           data: this.adx,
-          yAxis: 2,
+          yAxis: 1,
           dataGrouping: {
             approximation: 'average',
             units: this.groupingUnits,

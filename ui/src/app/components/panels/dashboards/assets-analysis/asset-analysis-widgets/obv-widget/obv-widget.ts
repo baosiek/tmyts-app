@@ -186,7 +186,7 @@ export class ObvWidget implements OnChanges {
             },
           },
           title: {
-            text: 'OLHC',
+            text: 'Prices',
           },
           height: '45%',
           lineWidth: 2,
@@ -235,6 +235,8 @@ export class ObvWidget implements OnChanges {
             'simpleShapes',
             'lines',
             'crookedLines',
+            'measure',
+            'advanced',
             'verticalLabels',
             'flags',
             'toggleAnnotations',
@@ -260,7 +262,7 @@ export class ObvWidget implements OnChanges {
       series: [
         {
           type: 'candlestick',
-          name: 'OHLC',
+          name: 'Prices',
           data: this.ohlc,
           dataGrouping: {
             units: this.groupingUnits,

@@ -73,7 +73,6 @@ export class MacdWidget {
   chartTitle: string = ''
 
   ohlc: any[] = [];
-  volume: any[] = [];
   macd: any[] = [];
   signal: any[] = [];
   histogram: any[] = [];
@@ -122,7 +121,6 @@ export class MacdWidget {
 
   dataIntoChartDataStructure(chartData: IndicatorModel[]) {
     this.ohlc = [];
-    this.volume = [];
     this.macd = [];
     this.signal = [];
     this.histogram = [];
@@ -134,12 +132,6 @@ export class MacdWidget {
           Number(dataPoint.high),
           Number(dataPoint.low),
           Number(dataPoint.close)
-        ]
-      );
-      this.volume.push(
-        [
-          Number(dataPoint.date),
-          Number(dataPoint.volume)
         ]
       );
       this.macd.push(
@@ -207,9 +199,9 @@ export class MacdWidget {
             },
           },
           title: {
-            text: 'OLHC',
+            text: 'Prices',
           },
-          height: '45%',
+          height: '75%',
           lineWidth: 2,
           resize: {
             enabled: true,
@@ -221,23 +213,10 @@ export class MacdWidget {
             x: -3,
           },
           title: {
-            text: 'Volume',
-          },
-          top: '45%',
-          height: '25%',
-          offset: 0,
-          lineWidth: 2,
-        },
-        {
-          labels: {
-            align: 'right',
-            x: -3,
-          },
-          title: {
             text: 'MACD',
           },
-          top: '70%',
-          height: '30%',
+          top: '75%',
+          height: '25%',
           offset: 0,
           lineWidth: 2,
         },
@@ -255,6 +234,8 @@ export class MacdWidget {
             'simpleShapes',
             'lines',
             'crookedLines',
+            'measure',
+            'advanced',
             'verticalLabels',
             'flags',
             'toggleAnnotations',
@@ -283,7 +264,7 @@ export class MacdWidget {
       series: [
         {
           type: 'candlestick',
-          name: 'OHLC',
+          name: 'Prices',
           data: this.ohlc,
           dataGrouping: {
             units: this.groupingUnits,
@@ -292,20 +273,10 @@ export class MacdWidget {
           showInLegend: false,
         },
         {
-          type: 'column',
-          name: 'Volume',
-          data: this.volume,
-          yAxis: 1,
-          dataGrouping: {
-            approximation: 'average',
-            units: this.groupingUnits,
-          },
-        },
-        {
           type: 'line',
           name: 'MACD',
           data: this.macd,
-          yAxis: 2,
+          yAxis: 1,
           dataGrouping: {
             approximation: 'average',
             units: this.groupingUnits,
@@ -315,7 +286,7 @@ export class MacdWidget {
           type: 'line',
           name: 'Signal',
           data: this.signal,
-          yAxis: 2,
+          yAxis: 1,
           dataGrouping: {
             approximation: 'average',
             units: this.groupingUnits,
@@ -327,7 +298,7 @@ export class MacdWidget {
           data: this.histogram,
           color: '#08a60e',
           negativeColor: '#a61308',
-          yAxis: 2,
+          yAxis: 1,
           dataGrouping: {
             approximation: 'average',
             units: this.groupingUnits,

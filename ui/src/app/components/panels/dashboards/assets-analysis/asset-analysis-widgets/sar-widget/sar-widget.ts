@@ -189,7 +189,7 @@ export class SarWidget {
             },
           },
           title: {
-            text: 'OLHC',
+            text: 'Prices',
           },
           height: '100%',
           lineWidth: 2,
@@ -197,32 +197,6 @@ export class SarWidget {
             enabled: true,
           },
         },
-        // {
-        //   labels: {
-        //     align: 'right',
-        //     x: -3,
-        //   },
-        //   title: {
-        //     text: 'Volume',
-        //   },
-        //   top: '45%',
-        //   height: '25%',
-        //   offset: 0,
-        //   lineWidth: 2,
-        // },
-        // {
-        //   labels: {
-        //     align: 'right',
-        //     x: -3,
-        //   },
-        //   title: {
-        //     text: 'PSAR',
-        //   },
-        //   top: '70%',
-        //   height: '30%',
-        //   offset: 0,
-        //   lineWidth: 2,
-        // },
       ],
       legend: {
         itemStyle: {
@@ -236,9 +210,9 @@ export class SarWidget {
             'fullScreen',
             'simpleShapes',
             'lines',
-            'measure',
-            'advanced',
             'crookedLines',
+            'measure',
+            'advanced',            
             'verticalLabels',
             'flags',
             'toggleAnnotations',
@@ -280,7 +254,7 @@ export class SarWidget {
       series: [
         {
           type: 'candlestick',
-          name: 'OHLC',
+          name: 'Prices',
           data: this.ohlc,
           dataGrouping: {
             units: this.groupingUnits,
@@ -288,16 +262,6 @@ export class SarWidget {
           },
           showInLegend: false,
         },
-        // {
-        //   type: 'column',
-        //   name: 'Volume',
-        //   data: this.volume,
-        //   yAxis: 1,
-        //   dataGrouping: {
-        //     approximation: 'average',
-        //     units: this.groupingUnits,
-        //   },
-        // },
         {
           type: 'scatter',
           name: 'Parabolic SAR',

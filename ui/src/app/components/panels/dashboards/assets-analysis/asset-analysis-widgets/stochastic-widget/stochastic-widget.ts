@@ -197,9 +197,9 @@ export class StochasticWidget {
             },
           },
           title: {
-            text: 'OLHC',
+            text: 'Prices',
           },
-          height: '45%',
+          height: '75%',
           lineWidth: 2,
           resize: {
             enabled: true,
@@ -211,23 +211,10 @@ export class StochasticWidget {
             x: -3,
           },
           title: {
-            text: 'Volume',
+            text: 'Stochastic',
           },
-          top: '45%',
+          top: '75%',
           height: '25%',
-          offset: 0,
-          lineWidth: 2,
-        },
-        {
-          labels: {
-            align: 'right',
-            x: -3,
-          },
-          title: {
-            text: 'RSI',
-          },
-          top: '70%',
-          height: '30%',
           offset: 0,
           lineWidth: 2,
           plotBands: [{
@@ -258,6 +245,8 @@ export class StochasticWidget {
             'simpleShapes',
             'lines',
             'crookedLines',
+            'measure',
+            'advanced',
             'verticalLabels',
             'flags',
             'toggleAnnotations',
@@ -283,7 +272,7 @@ export class StochasticWidget {
       series: [
         {
           type: 'candlestick',
-          name: 'OHLC',
+          name: 'Prices',
           data: this.ohlc,
           dataGrouping: {
             units: this.groupingUnits,
@@ -292,20 +281,10 @@ export class StochasticWidget {
           showInLegend: false,
         },
         {
-          type: 'column',
-          name: 'Volume',
-          data: this.volume,
-          yAxis: 1,
-          dataGrouping: {
-            approximation: 'average',
-            units: this.groupingUnits,
-          },
-        },
-        {
           type: 'line',
           name: '%K',
           data: this.k_line,
-          yAxis: 2,
+          yAxis: 1,
           dataGrouping: {
             approximation: 'average',
             units: this.groupingUnits,
@@ -315,7 +294,7 @@ export class StochasticWidget {
           type: 'line',
           name: '%D',
           data: this.d_line,
-          yAxis: 2,
+          yAxis: 1,
           dataGrouping: {
             approximation: 'average',
             units: this.groupingUnits,

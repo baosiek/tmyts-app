@@ -71,7 +71,7 @@ export class AdlineWidget implements OnChanges {
 
   ohlc: any[] = [];
   volume: any[] = [];
-  obv: any[] = [];
+  adLine: any[] = [];
 
   groupingUnits: [string, number[] | null][] = [
     ['week', [1]],
@@ -118,7 +118,7 @@ export class AdlineWidget implements OnChanges {
   dataIntoChartDataStructure(chartData: IndicatorModel[]) {
     this.ohlc = []
     this.volume = []
-    this.obv = []
+    this.adLine = []
     for (const dataPoint of chartData) {
       this.ohlc.push(
         [
@@ -135,7 +135,7 @@ export class AdlineWidget implements OnChanges {
           Number(dataPoint.volume)
         ]
       );
-      this.obv.push(
+      this.adLine.push(
         [
           Number(dataPoint.date),
           Number(dataPoint.indicator['ad_line'])
@@ -232,6 +232,8 @@ export class AdlineWidget implements OnChanges {
             'simpleShapes',
             'lines',
             'crookedLines',
+            'measure',
+            'advanced',
             'verticalLabels',
             'flags',
             'toggleAnnotations',
@@ -257,7 +259,7 @@ export class AdlineWidget implements OnChanges {
       series: [
         {
           type: 'candlestick',
-          name: 'OHLC',
+          name: 'Prices',
           data: this.ohlc,
           dataGrouping: {
             units: this.groupingUnits,
@@ -278,7 +280,7 @@ export class AdlineWidget implements OnChanges {
         {
           type: 'line',
           name: 'obv',
-          data: this.obv,
+          data: this.adLine,
           yAxis: 2,
           dataGrouping: {
             approximation: 'average',

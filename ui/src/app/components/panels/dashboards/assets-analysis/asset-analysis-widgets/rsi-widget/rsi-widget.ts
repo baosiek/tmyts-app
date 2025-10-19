@@ -27,7 +27,7 @@ import { IndicatorDataMapModel, IndicatorModel } from '../../../../../../models/
   styleUrl: './rsi-widget.scss'
 })
 export class RsiWidget {
-  
+
   data = input.required<IWidgetConfig>();
   dialogData = input<DialogData>()
   renderingFrom = 'indicator'
@@ -189,9 +189,9 @@ export class RsiWidget {
             },
           },
           title: {
-            text: 'OLHC',
+            text: 'Prices',
           },
-          height: '45%',
+          height: '75%',
           lineWidth: 2,
           resize: {
             enabled: true,
@@ -203,28 +203,15 @@ export class RsiWidget {
             x: -3,
           },
           title: {
-            text: 'Volume',
+            text: 'RSI',
           },
-          top: '45%',
+          top: '75%',
           height: '25%',
           offset: 0,
           lineWidth: 2,
-        },
-        {
-          labels: {
-            align: 'right',
-            x: -3,
-          },
-          title: {
-            text: 'RSI',
-          },
-          top: '70%',
-          height: '30%',
-          offset: 0,
-          lineWidth: 2,
           plotBands: [{
-            from: 30, 
-            to: 70, 
+            from: 30,
+            to: 70,
             color: 'rgba(68, 170, 213, 0.1)', // Light blue color with transparency
             label: {
               text: 'Target Zone',
@@ -257,7 +244,7 @@ export class RsiWidget {
             'toggleAnnotations',
             'currentPriceIndicator',
             'saveChart'
-          ],
+          ],          
         }
       },
       accessibility: {
@@ -269,9 +256,6 @@ export class RsiWidget {
           lineColor: 'red',
           upColor: 'green',
           upLineColor: 'darkgreen',
-        },
-        column: {
-          color: 'blue',
         },
       },
       series: [
@@ -286,20 +270,10 @@ export class RsiWidget {
           showInLegend: false,
         },
         {
-          type: 'column',
-          name: 'Volume',
-          data: this.volume,
-          yAxis: 1,
-          dataGrouping: {
-            approximation: 'average',
-            units: this.groupingUnits,
-          },
-        },
-        {
           type: 'line',
           name: 'RSI',
           data: this.rsi,
-          yAxis: 2,
+          yAxis: 1,
           dataGrouping: {
             approximation: 'average',
             units: this.groupingUnits,
