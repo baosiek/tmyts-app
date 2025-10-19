@@ -85,19 +85,6 @@ export class TmytsWidget implements OnInit, OnChanges{
 
    openInfoContainer() {
     const dataDialog: Map<string, string> = new Map<string, any>();
-    // const config: IWidgetConfig = {
-    //   id: 0,
-    //   user_id: 0,
-    //   dashboard_id: '',
-    //   label: 'obv',
-    //   title: '',
-    //   symbol: '',
-    //   content: InfoDialog,
-    //   rows: 0,
-    //   columns: 0,
-    //   background_color: '',
-    //   color: ''
-    // };
     dataDialog.set('dataDialog', this.widgetConfig().label);
     const dialogRef = this.dialog.open(
       GeneraliDialog,
@@ -108,7 +95,7 @@ export class TmytsWidget implements OnInit, OnChanges{
            data: dataDialog
          },
          width: '400px',
-         height: '600px'
+         height: '800px'
        }
     )
     dialogRef.afterClosed().subscribe(

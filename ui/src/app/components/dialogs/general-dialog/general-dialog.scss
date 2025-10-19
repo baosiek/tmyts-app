@@ -20,7 +20,7 @@
   position: sticky;
   top: 0;
   left: 0;
-  @include mat.card-overrides((outlined-outline-width: 1px,
+  @include mat.card-overrides((outlined-outline-width: 2px,
     ));
 }
 
