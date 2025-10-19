@@ -103,21 +103,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   width: 100%; /* Ensures it is responsive up to the max-width */
 }
 
-// .highcharts-bindings-wrapper li>button.highcharts-menu-item-btn {
-//   background-color: #fff;
-// }
-
 .highcharts-bindings-wrapper .highcharts-stocktools-toolbar li {
-  list-style: none;
-  margin-bottom: 3px;
-  padding: 0;
-  clear: both;
-  width: 100%;
-  height: 40px;
-  cursor: pointer;
-  position: relative;
-  background-color: #02521a;
-  transition: background-color 250ms;
+  background-color: #850223;
 }
 
 
