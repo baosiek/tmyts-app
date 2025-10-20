@@ -1,5 +1,38 @@
+@use '@angular/material' as mat;
+
 .card-header {
-    background-color: var(--mat-sys-primary-container); 
-    margin-bottom: 16px; 
-    height: 42px;
+  background-color: var(--mat-sys-primary-container);
+  margin-bottom: 16px;
+  height: 42px;
+
+  position: sticky;
+  top: 0;
+  /* Adjust as needed for desired position */
+  left: 0;
+  /* Adjust as needed for desired position */
+  width: 100%;
+  /* Ensure it spans the full width */
+  z-index: 1000;
+  /* Ensure it's on top of other content */
+}
+
+.border-style {
+  position: sticky;
+  top: 0;
+  left: 0;
+  @include mat.card-overrides((outlined-outline-width: 2px,
+    ));
+}
+
+
+.fixed-dialog-toolbar {
+  position: sticky;
+  top: 0;
+  /* Adjust as needed for desired position */
+  left: 0;
+  /* Adjust as needed for desired position */
+  width: 100%;
+  /* Ensure it spans the full width */
+  z-index: 1000;
+  /* Ensure it's on top of other content */
 }

@@ -8,6 +8,9 @@
 @use '../src/app/themes/main_theme.scss' as main-theme;
 @use '../src/app/themes/light_theme.scss' as green-theme;
 
+@import "highcharts/css/stocktools/gui.css"; 
+@import "highcharts/css/annotations/popup.css";
+
 
 html {
   @include mat.theme((
@@ -53,7 +56,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 /* App Component Customization */
 :root {
   @include mat.card-overrides((
-    outlined-container-shape: 0px,
+    outlined-container-shape: 16px,
     outlined-outline-width: 2px,
   ));
   @include mat.dialog-overrides((
@@ -99,5 +102,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   max-width: 1000px !important; /* Set your desired max-width */
   width: 100%; /* Ensures it is responsive up to the max-width */
 }
+
+.highcharts-bindings-wrapper .highcharts-stocktools-toolbar li {
+  background-color: #850223;
+}
+
 
 

@@ -1,0 +1,15 @@
+<div >
+    <mat-toolbar>
+        <div>
+            <span>{{data().title}}</span>
+        </div>
+        <div >
+            @if (data().dialog) {
+            <button mat-raised-button (click)="add()">
+                {{data().dialog?.button_text}}
+                <mat-icon>{{data().dialog?.button_icon}}</mat-icon>
+            </button>
+            }
+        </div>
+    </mat-toolbar>
+</div>

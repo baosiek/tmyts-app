@@ -3,8 +3,8 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BasicTickerDataModel } from '../../models/basic-ticker-data';
 import { PortfolioPerformanceModel } from '../../models/portfolio-performance-model';
-import { SymbolDataModel } from '../../components/dialogs/buy-stock-dialog/buy-stock-model';
 import { IndexCardInterface } from '../../components/panels/indexes-cards/indexes-cards';
+import { SymbolDataModel } from '../../components/dialogs/buy-asset-dialog/buy-asset-model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +17,7 @@ export class LiveDataService {
   constructor() {}
 
   getSymbolData(symbol: string): Observable<SymbolDataModel> {
-
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const apiMethod = 'basic-ticker-data';
-    const body = symbol ;
 
     return this.http.get<SymbolDataModel>(`${this.apiUrl}/${apiMethod}/?symbol=${symbol}`)
   }

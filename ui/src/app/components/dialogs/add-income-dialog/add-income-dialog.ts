@@ -11,7 +11,7 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { ReturnMessage } from '../../../models/return-message';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TmytsSnackbar } from '../../sub-components/tmyts-snackbar/tmyts-snackbar';
+import { TmytsSnackbar } from '../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 
 @Component({
   selector: 'app-add-income-dialog',
@@ -37,7 +37,7 @@ export class AddIncomeDialog implements OnInit {
 
   // Initializes signals
   // Holds data passed from PortfolioTableRud component
-  data = input.required<DialogData>()
+  dialogData = input.required<DialogData>()
 
   // Initializes required services
   portfolioActivityService = inject(PortfolioActivityService)
@@ -52,8 +52,8 @@ export class AddIncomeDialog implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.userId = this.data().data.get('userId');
-    this.portfolioId = this.data().data.get('portfolioId');
+    this.userId = this.dialogData().data.get('userId');
+    this.portfolioId = this.dialogData().data.get('portfolioId');
     this.spinnerFlagIsEmpty = true;
     this.portfolioActivityService.getSymbolsTotalsByPortfolio(this.userId, this.portfolioId)
       .pipe(

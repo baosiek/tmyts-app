@@ -27,6 +27,11 @@ export class Sidenav {
         label: "Portfolios",
         route: "/portfolio_management"
       },
+      // {
+      //   icon: "finance_mode",
+      //   label: "Asset analysis",
+      //   route: "/asset_analysis"
+      // },
       {
         icon: "finance_mode",
         label: "Assets analysis",

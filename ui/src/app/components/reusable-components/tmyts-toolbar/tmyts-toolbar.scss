@@ -1,0 +1,17 @@
+@use '@angular/material' as mat;
+@use '../../../custom-styles/index.scss' as global;
+
+mat-toolbar {
+  @include mat.toolbar-overrides((
+    title-text-size: 32px,
+    title-text-weight: normal
+  ));
+  display: flex;
+  justify-content: space-between; /* Pushes items to opposite ends */
+  width: 100%; /* Ensure the container takes full width for alignment */
+}
+  
+
+.container-space-between {
+    @include global.flex-space-between;
+}

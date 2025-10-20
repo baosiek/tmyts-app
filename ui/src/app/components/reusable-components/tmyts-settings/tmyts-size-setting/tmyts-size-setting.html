@@ -1,0 +1,30 @@
+<div class="main-container">
+    <h3>Sizing</h3>
+    <table>
+        <tr>
+            <td><div>Width</div></td>
+            <td>
+                <mat-button-toggle-group [value]="configWidget().columns"
+                    (change)="widgetConfigService.updateWidget({id:configWidget().id, columns: +$event.value})" style="margin-right: 4px;">
+                    <mat-button-toggle [value]="1">1</mat-button-toggle>
+                    <mat-button-toggle [value]="2">2</mat-button-toggle>
+                    <mat-button-toggle [value]="3">3</mat-button-toggle>
+                    <mat-button-toggle [value]="4">4</mat-button-toggle>
+                </mat-button-toggle-group>
+            </td>
+        </tr>
+        <tr>
+            <td><div>Height</div></td>
+            <td>
+                <mat-button-toggle-group [value]="configWidget().rows"
+                    (change)="widgetConfigService.updateWidget({id:configWidget().id, rows: +$event.value})" style="margin-right: 4px;">
+                    <mat-button-toggle [value]="1">1</mat-button-toggle>
+                    <mat-button-toggle [value]="2">2</mat-button-toggle>
+                    <mat-button-toggle [value]="3">3</mat-button-toggle>
+                    <mat-button-toggle [value]="4">4</mat-button-toggle>
+                </mat-button-toggle-group>
+            </td>
+        </tr>
+    </table>
+</div>
+

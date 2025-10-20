@@ -9,7 +9,7 @@ import { ReturnMessage } from '../../../models/return-message';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DialogData } from '../general-dialog/general-dialog';
 import { MatDialogRef } from '@angular/material/dialog';
-import { TmytsSnackbar } from '../../sub-components/tmyts-snackbar/tmyts-snackbar';
+import { TmytsSnackbar } from '../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 
 @Component({
   selector: 'app-add-portfolio-dialog',
@@ -28,15 +28,14 @@ export class AddPortfolioDialog implements OnInit {
 
   // Initializes signals
   // Holds data passed from PortfolioTableRud component
-  data = input.required<DialogData>()
+  dialogData = input.required<DialogData>()
   user_id!: number;
 
   constructor(public dialogRef: MatDialogRef<AddPortfolioDialog>, private _snackBar: MatSnackBar) {}
 
   ngOnInit() {
-    this.user_id = this.data().data.get('userId')
+    this.user_id = this.dialogData().data.get('userId')
     this.portfolio_model.user_id = this.user_id;
-    console.log(`user id: ${this.portfolio_model.user_id}`)
   }
 
   save() {

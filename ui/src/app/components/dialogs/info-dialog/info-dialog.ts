@@ -1,0 +1,32 @@
+import { Component, input, OnInit, signal } from '@angular/core';
+import { DialogData } from '../general-dialog/general-dialog';
+import { MatButtonModule } from "@angular/material/button";
+import { MATERIAL_IMPORTS } from '../../../material-imports';
+import { IndicatorInfo } from '../../../../assets/indicator-info'
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
+@Component({
+  selector: 'app-info-dialog',
+  imports: [
+    ...MATERIAL_IMPORTS
+],
+  templateUrl: './info-dialog.html',
+  styleUrl: './info-dialog.scss'
+})
+export class InfoDialog implements OnInit{
+  dialogData = input.required<DialogData>();
+  indicatorInfo = signal<SafeHtml>('');
+  sanitizedHtmlContent!: SafeHtml;
+
+  constructor(private sanitizer: DomSanitizer){}
+
+  ngOnInit(): void {
+    const label = this.dialogData().data.get('dataDialog');
+    const indicatorInfo = IndicatorInfo.find(i => i.label === label);
+    if (indicatorInfo) {
+      this.sanitizedHtmlContent = this.sanitizer.bypassSecurityTrustHtml(indicatorInfo.text);
+      this.indicatorInfo.set(this.sanitizedHtmlContent)
+    }
+
+  }
+}

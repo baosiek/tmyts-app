@@ -1,9 +1,8 @@
-<mat-card appearance="outlined">
+<mat-card class="border-style">
     <mat-card-header class="card-header">
         <mat-card-title>{{generalDialogData.title}}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-    <!--  ng-component to enable the Type<unknown> -->
     <ng-component [ngComponentOutlet]="generalDialogData.content" [ngComponentOutletInputs]="dialogInputs"></ng-component>
     </mat-card-content>
 </mat-card>

@@ -1,0 +1,16 @@
+<div>
+    <button mat-icon-button class="delete-button" (click)="widgetSerive.deleteWidgetFromDashboard(configWidget())">
+        <mat-icon class="icon-color" fontSet="material-symbols-outlined">delete</mat-icon>
+    </button>
+        <button mat-icon-button (click)="showWidgetSettings.set(false)" class="close-button">
+        <mat-icon class="icon-color" fontSet="material-symbols-outlined">close</mat-icon>
+    </button>
+</div>
+<div class="main-container">
+    <div>
+        <app-color-setting [configWidget]="configWidget()"></app-color-setting>
+    </div>
+    <div>
+        <app-tmyts-size-setting [configWidget]="configWidget()"></app-tmyts-size-setting>
+    </div>
+</div>

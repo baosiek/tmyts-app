@@ -7,19 +7,18 @@ import { MatStepper } from '@angular/material/stepper';
 import { MatListOption } from '@angular/material/list';
 import { LiveDataService } from '../../../services/live-data/live-data-service';
 import { catchError } from 'rxjs';
-import { createNewSymbolData } from '../buy-stock-dialog/buy-stock-model';
 import { DialogData } from '../general-dialog/general-dialog';
 import { CurrencyPipe, PercentPipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { PortfolioActivityMode } from '../../../models/portfolio-activity-model';
 import { PortfolioActivityService } from '../../../services/portfolio-activity/portfolio-activity-service';
 import { BrokerService } from '../../../services/broker/broker-service';
-import { BrokerModel, createBroker } from '../../../models/broker_model';
-import { PortfolioModel } from '../../../models/portfolio-model';
-import { TmytsSnackbar } from '../../sub-components/tmyts-snackbar/tmyts-snackbar';
+import { BrokerModel } from '../../../models/broker_model';
+import { TmytsSnackbar } from '../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ReturnMessage } from '../../../models/return-message';
+import { createNewSymbolData } from './buy-asset-model';
 
 @Component({
   selector: 'app-buy-asset-dialog',
@@ -60,7 +59,7 @@ export class BuyAssetDialog {
   // Holds symbol live data like price
   symbolLiveData = signal(createNewSymbolData())
   // Holds data passed from PortfolioTableRud component
-  data = input.required<DialogData>()  
+  dialogData = input.required<DialogData>()  
 
   /**
    * Two steps:
@@ -96,8 +95,8 @@ export class BuyAssetDialog {
       }
     );
     
-    const userId  = this.data().data.get('userId')
-    const portfolioId  = this.data().data.get('portfolioId')
+    const userId  = this.dialogData().data.get('userId')
+    const portfolioId  = this.dialogData().data.get('portfolioId')
 
     const formValues = {
       'user_id': 1,
