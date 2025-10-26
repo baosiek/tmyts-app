@@ -225,6 +225,7 @@ export class ObvWidget implements OnChanges {
         itemStyle: {
           color: '#000',
         },
+        enabled: true
       },
       stockTools: {
         // You can also customize the GUI here
@@ -268,7 +269,7 @@ export class ObvWidget implements OnChanges {
             units: this.groupingUnits,
             approximation: 'ohlc',
           },
-          showInLegend: false,
+          showInLegend: true,
         },
         {
           type: 'column',

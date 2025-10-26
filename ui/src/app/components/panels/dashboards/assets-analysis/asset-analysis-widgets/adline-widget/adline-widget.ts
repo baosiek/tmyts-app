@@ -224,6 +224,12 @@ export class AdlineWidget implements OnChanges {
           lineWidth: 2,
         },
       ],
+      legend: {
+        itemStyle: {
+          color: '#000',
+        },
+        enabled: true
+      },
       stockTools: {
         gui: {
           enabled: this.showChartGui, 
@@ -265,7 +271,7 @@ export class AdlineWidget implements OnChanges {
             units: this.groupingUnits,
             approximation: 'ohlc',
           },
-          showInLegend: false,
+          showInLegend: true,
         },
         {
           type: 'column',
@@ -279,7 +285,7 @@ export class AdlineWidget implements OnChanges {
         },
         {
           type: 'line',
-          name: 'obv',
+          name: 'A/D Line',
           data: this.adLine,
           yAxis: 2,
           dataGrouping: {

@@ -217,6 +217,7 @@ export class AroonWidget {
           itemStyle: {
             color: '#000',
           },
+          enabled: true
         },
         stockTools: {
         gui: {
@@ -259,7 +260,7 @@ export class AroonWidget {
               units: this.groupingUnits,
               approximation: 'ohlc',
             },
-            showInLegend: false,
+            showInLegend: true,
           },
           {
             type: 'line',

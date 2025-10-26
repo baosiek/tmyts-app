@@ -228,6 +228,7 @@ export class RsiWidget {
         itemStyle: {
           color: '#000',
         },
+        enabled: true
       },
       stockTools: {
         gui: {
@@ -267,7 +268,7 @@ export class RsiWidget {
             units: this.groupingUnits,
             approximation: 'ohlc',
           },
-          showInLegend: false,
+          showInLegend: true,
         },
         {
           type: 'line',

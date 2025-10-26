@@ -202,6 +202,7 @@ export class SarWidget {
         itemStyle: {
           color: '#000',
         },
+        enabled: true
       },
       stockTools: {
         gui: {
@@ -260,7 +261,7 @@ export class SarWidget {
             units: this.groupingUnits,
             approximation: 'ohlc',
           },
-          showInLegend: false,
+          showInLegend: true,
         },
         {
           type: 'scatter',

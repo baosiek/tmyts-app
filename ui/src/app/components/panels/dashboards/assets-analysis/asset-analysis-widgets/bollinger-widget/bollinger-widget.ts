@@ -219,6 +219,7 @@ export class BollingerWidget {
         itemStyle: {
           color: '#000',
         },
+        enabled: true
       },
       stockTools: {
         gui: {
@@ -258,7 +259,7 @@ export class BollingerWidget {
             units: this.groupingUnits,
             approximation: 'ohlc',
           },
-          showInLegend: false,
+          showInLegend: true,
         },
         {
           type: 'line',
@@ -280,7 +281,7 @@ export class BollingerWidget {
         },
         {
           type: 'line',
-          name: 'lower',
+          name: 'Lower and',
           data: this.lower,
           dataGrouping: {
             approximation: 'average',

@@ -223,6 +223,7 @@ export class AdxWidget {
         itemStyle: {
           color: '#000',
         },
+        enabled: true
       },
       stockTools: {
         gui: {
@@ -265,11 +266,11 @@ export class AdxWidget {
             units: this.groupingUnits,
             approximation: 'ohlc',
           },
-          showInLegend: false,
+          showInLegend: true,
         },
         {
           type: 'line',
-          name: '+di',
+          name: '+DI',
           data: this.di_plus,
           yAxis: 1,
           dataGrouping: {
@@ -279,7 +280,7 @@ export class AdxWidget {
         },
         {
           type: 'line',
-          name: '-di',
+          name: '-DI',
           data: this.di_minus,
           yAxis: 1,
           dataGrouping: {
@@ -289,7 +290,7 @@ export class AdxWidget {
         },
         {
           type: 'line',
-          name: 'adx',
+          name: 'ADX',
           data: this.adx,
           yAxis: 1,
           dataGrouping: {

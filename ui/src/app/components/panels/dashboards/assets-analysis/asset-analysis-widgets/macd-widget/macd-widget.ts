@@ -225,6 +225,7 @@ export class MacdWidget {
         itemStyle: {
           color: '#000',
         },
+        enabled: true
       },
       stockTools: {
         gui: {
@@ -270,7 +271,7 @@ export class MacdWidget {
             units: this.groupingUnits,
             approximation: 'ohlc',
           },
-          showInLegend: false,
+          showInLegend: true,
         },
         {
           type: 'line',
