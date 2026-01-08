@@ -1,19 +1,19 @@
-import { AfterViewInit, Component, EventEmitter, inject, input, InputSignal, OnChanges, Output, ViewChild } from '@angular/core';
-import { MATERIAL_IMPORTS } from '../../../../../../material-imports';
 import { CurrencyPipe, DatePipe } from '@angular/common';
+import { AfterViewInit, Component, EventEmitter, inject, input, InputSignal, OnChanges, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { GeneraliDialog } from '../../../../../dialogs/general-dialog/general-dialog';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { PortfolioActivityMode, PortfolioActivityModel } from '../../../../../../models/portfolio-activity-model';
-import { PortfolioActivityService } from '../../../../../../services/portfolio-activity/portfolio-activity-service';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { catchError } from 'rxjs';
 import { PortfolioComponentsDataExchange } from '../../../../../../interfaces/portfolio-components-data-exchange';
-import { BuyAssetDialog } from '../../../../../dialogs/buy-asset-dialog/buy-asset-dialog';
+import { MATERIAL_IMPORTS } from '../../../../../../material-imports';
+import { PortfolioActivityModel } from '../../../../../../models/portfolio-activity-model';
+import { PortfolioActivityService } from '../../../../../../services/portfolio-activity/portfolio-activity-service';
 import { AddIncomeDialog } from '../../../../../dialogs/add-income-dialog/add-income-dialog';
+import { BuyAssetDialog } from '../../../../../dialogs/buy-asset-dialog/buy-asset-dialog';
+import { GeneraliDialog } from '../../../../../dialogs/general-dialog/general-dialog';
 import { SellAssetDialog } from '../../../../../dialogs/sell-asset-dialog/sell-asset-dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 
 @Component({
@@ -33,7 +33,7 @@ export class PortfolioTableRud implements OnChanges,  AfterViewInit {
 
   portfolioActivityService = inject(PortfolioActivityService)
 
-  displayedColumns: string[] = ['symbol', 'symbol_name', 'purchase_price', 'quantity', 'purchase_date', 'fees', 'cash_in', 'broker_name', "delete"];
+  displayedColumns: string[] = ['id', 'symbol', 'symbol_name', 'purchase_price', 'quantity', 'purchase_date', 'fees', 'cash_in', 'broker_name', "delete"];
   dataSource: MatTableDataSource<PortfolioActivityModel> = new MatTableDataSource();
 
   userId: InputSignal<number> = input.required<number>();
@@ -176,22 +176,15 @@ export class PortfolioTableRud implements OnChanges,  AfterViewInit {
     )
   }
 
-  deleteRow(element: PortfolioActivityModel) {
-    const temp = element as PortfolioActivityModel
-    this.portfolioActivityService.deleteActivityForPortfolio(element.id)
+  deleteRow(id: number) {
+    this.portfolioActivityService.deleteActivityForPortfolio(id)
     .pipe(
-        catchError(
-          (error) => {
-            throw error
-          }
-        )
-      )
-      .subscribe(
-        (response) => {
-          this.getPortfolioActivityContent(
-            this.portfolioId()
-         );
-        }
-      )
+      catchError((error) => {
+        throw error;
+      })
+    )
+    .subscribe((response) => {
+      this.getPortfolioActivityContent(this.portfolioId());
+    });
   }
 }

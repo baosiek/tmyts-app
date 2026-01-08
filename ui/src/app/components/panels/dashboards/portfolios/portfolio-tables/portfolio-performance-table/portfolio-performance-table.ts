@@ -1,15 +1,13 @@
-import { Component, inject, Input, OnChanges } from '@angular/core';
-import { MATERIAL_IMPORTS } from '../../../../../../material-imports';
-import { PortfolioPerformanceInterface } from '../../../../../../interfaces/portfolio-performance-interface';
-import { PortfolioComponentsDataExchange } from '../../../../../../interfaces/portfolio-components-data-exchange';
-import { LiveDataService } from '../../../../../../services/live-data/live-data-service';
-import { catchError } from 'rxjs';
-import { PortfolioPerformanceModel } from '../../../../../../models/portfolio-performance-model';
-import { MatTableDataSource } from '@angular/material/table';
 import { CurrencyPipe, NgClass, NgStyle, PercentPipe } from '@angular/common';
+import { Component, inject, Input, OnChanges } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
+import { PortfolioComponentsDataExchange } from '../../../../../../interfaces/portfolio-components-data-exchange';
+import { MATERIAL_IMPORTS } from '../../../../../../material-imports';
+import { PortfolioPerformanceModel } from '../../../../../../models/portfolio-performance-model';
+import { LiveDataService } from '../../../../../../services/live-data/live-data-service';
 import { TmytsChip } from '../../../../../reusable-components/tmyts-chip/tmyts-chip';
 import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-portfolio-performance-table',
@@ -30,7 +28,7 @@ export class PortfolioPerformanceTable implements OnChanges{
 
   liveDataService = inject(LiveDataService)
 
-  displayedColumns: string[] = ['symbol', 'quantity', 'average_price', 'actual_price', 'cash_in', 'fees', 'variation', 'percent'];
+  displayedColumns: string[] = ['symbol', 'quantity', 'average_price', 'actual_price', 'cash_in', 'fees', 'gain_loss', 'percent'];
   dataSource: MatTableDataSource<PortfolioPerformanceModel> = new MatTableDataSource();
   spinnerFlagIsSet: boolean = false;
 
@@ -40,11 +38,12 @@ export class PortfolioPerformanceTable implements OnChanges{
     
     if (this.dataExchangeFromParent.symbol_list.length > 0) {
       if (this.dataExchangeFromParent.portfolio_id) {
+        const uniqueSimbols = [...new Set(this.dataExchangeFromParent.symbol_list)];
         this.spinnerFlagIsSet = true;
         this.liveDataService.getDetailedPortfolioActivity(
           this.dataExchangeFromParent.user_id,
           this.dataExchangeFromParent.portfolio_id,
-          this.dataExchangeFromParent.symbol_list
+          uniqueSimbols
         )
         .subscribe(
           {
@@ -83,6 +82,7 @@ export class PortfolioPerformanceTable implements OnChanges{
   }
 
   getTotalGainAnLoss() {
+    console.log(this.dataSource.data.reduce((acc, value) => acc + (value.gain_loss), 0));
        return this.dataSource.data.reduce((acc, value) => acc + (value.gain_loss), 0);
   }
 

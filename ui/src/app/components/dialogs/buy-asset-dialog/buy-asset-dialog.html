@@ -14,7 +14,7 @@
                         @if (searchResults().length > 0){
                         <mat-selection-list [multiple]="false" hideSingleSelectionIndicator #selectedSymbols
                             (selectionChange)="onSymbolSelectionChange(stepper, selectedSymbols.selectedOptions.selected)">
-                            @for (result of searchResults(); track result.id) {
+                            @for (result of searchResults(); track result.symbol) {
                             <mat-list-option [value]="result">
                                 <div matListItemTitle>{{result.symbol}}</div>
                                 <div matListItemLine>{{result.symbol_name}}</div>

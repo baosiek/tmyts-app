@@ -1,16 +1,16 @@
-import { Component, inject, input, OnInit } from '@angular/core';
-import { MATERIAL_IMPORTS } from '../../../material-imports';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DialogData } from '../general-dialog/general-dialog';
-import { PortfolioActivityService } from '../../../services/portfolio-activity/portfolio-activity-service';
-import { catchError, of } from 'rxjs';
-import { MatTableDataSource } from '@angular/material/table';
-import { PortfolioActivityModel, SymbolByPortfolioTotalsModel } from '../../../models/portfolio-activity-model';
 import { CurrencyPipe, NgClass } from '@angular/common';
+import { Component, inject, input, OnInit } from '@angular/core';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ReturnMessage } from '../../../models/return-message';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
+import { catchError, of } from 'rxjs';
+import { MATERIAL_IMPORTS } from '../../../material-imports';
+import { PortfolioActivityModel, SymbolByPortfolioTotalsModel } from '../../../models/portfolio-activity-model';
+import { ReturnMessage } from '../../../models/return-message';
+import { PortfolioActivityService } from '../../../services/portfolio-activity/portfolio-activity-service';
 import { TmytsSnackbar } from '../../reusable-components/tmyts-snackbar/tmyts-snackbar';
+import { DialogData } from '../general-dialog/general-dialog';
 
 @Component({
   selector: 'app-sell-asset-dialog',
@@ -38,7 +38,7 @@ export class SellAssetDialog implements OnInit{
   userId: number = 0;
   portfolioId: number = 0;
   selectedSymbol: SymbolByPortfolioTotalsModel | null = null;
-  quantityToSell: number | null = 0;
+  maxQuantityToSell: number = 0;
   spinnerFlagIsSet: boolean = false;
 
 
@@ -85,16 +85,19 @@ export class SellAssetDialog implements OnInit{
 
   selectRow(row: SymbolByPortfolioTotalsModel) {
     this.selectedSymbol = row;
+    this.maxQuantityToSell = this.selectedSymbol.total_quantity
+    console.log(this.maxQuantityToSell)
   }
 
   sell(element: SymbolByPortfolioTotalsModel) {
-    const selected = this.dataSource.data.find(el => el.symbol_id === element.symbol_id)
-    if (selected) {
+    const selected = this.dataSource.data.find(el => el.symbol === element.symbol)
+    if (selected && (this.maxQuantityToSell >= selected.total_quantity)) {
+      // console.log(selected)
+      console.log(this.selectedSymbol)
       const activity: Partial<PortfolioActivityModel> = {
-        id: 0,
         user_id: selected.user_id,
         portfolio_id: selected.portfolio_id,
-        symbol_id: selected.symbol_id,
+        symbol: selected.symbol,
         quantity: selected.total_quantity * -1,
         purchase_price: selected.current_price,
         purchase_date: new Date(),
@@ -139,6 +142,15 @@ export class SellAssetDialog implements OnInit{
               }
             );
           }
+        }
+      );
+    } else {
+      // Renders error snack-bar
+      const message: string = "Selling quantity is bigger than owned quantity";
+      this._snackBar.openFromComponent(
+        TmytsSnackbar, {
+          data: {'message': message, 'action': 'Close'},
+          panelClass: ['error-snackbar-theme']
         }
       );
     }    

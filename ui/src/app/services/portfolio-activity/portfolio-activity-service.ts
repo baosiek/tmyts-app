@@ -41,6 +41,7 @@ export class PortfolioActivityService {
   }
 
   deleteActivityForPortfolio(id: number) {
+    console.log("id: %s", id)
     const apiMethod = 'delete';
     return this.http.delete<PortfolioActivityModel[]>(`${this.apiUrl}/${apiMethod}/?id=${id}`)
   }

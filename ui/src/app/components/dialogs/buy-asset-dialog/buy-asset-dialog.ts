@@ -1,23 +1,23 @@
-import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
-import { MATERIAL_IMPORTS } from '../../../material-imports';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { QuickSearchService } from '../../../services/quick-search/quick-search-service';
-import { createNewSymbol, SymbolModel } from '../../../models/symbol-model';
-import { MatStepper } from '@angular/material/stepper';
-import { MatListOption } from '@angular/material/list';
-import { LiveDataService } from '../../../services/live-data/live-data-service';
-import { catchError } from 'rxjs';
-import { DialogData } from '../general-dialog/general-dialog';
 import { CurrencyPipe, PercentPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { PortfolioActivityMode } from '../../../models/portfolio-activity-model';
-import { PortfolioActivityService } from '../../../services/portfolio-activity/portfolio-activity-service';
-import { BrokerService } from '../../../services/broker/broker-service';
-import { BrokerModel } from '../../../models/broker_model';
-import { TmytsSnackbar } from '../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatListOption } from '@angular/material/list';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatStepper } from '@angular/material/stepper';
+import { catchError } from 'rxjs';
+import { MATERIAL_IMPORTS } from '../../../material-imports';
+import { BrokerModel } from '../../../models/broker_model';
+import { PortfolioActivityMode } from '../../../models/portfolio-activity-model';
 import { ReturnMessage } from '../../../models/return-message';
+import { createNewSymbol, SymbolModel } from '../../../models/symbol-model';
+import { BrokerService } from '../../../services/broker/broker-service';
+import { LiveDataService } from '../../../services/live-data/live-data-service';
+import { PortfolioActivityService } from '../../../services/portfolio-activity/portfolio-activity-service';
+import { QuickSearchService } from '../../../services/quick-search/quick-search-service';
+import { TmytsSnackbar } from '../../reusable-components/tmyts-snackbar/tmyts-snackbar';
+import { DialogData } from '../general-dialog/general-dialog';
 import { createNewSymbolData } from './buy-asset-model';
 
 @Component({
@@ -183,9 +183,9 @@ export class BuyAssetDialog {
    * this method is executed
    */
   buyAsset() {
-    if (this.selectedSymbol.id){
+    if (this.selectedSymbol.symbol){
       const data = this.stepTwoForm.value as PortfolioActivityMode
-      data.symbol_id = this.selectedSymbol.id
+      data.symbol = this.selectedSymbol.symbol
       this.portfolioActivityService.insertNewActivity(data)
       .subscribe(
         {

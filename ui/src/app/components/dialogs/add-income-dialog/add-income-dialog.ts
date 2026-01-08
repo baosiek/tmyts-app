@@ -1,17 +1,16 @@
-import { Component, inject, input, NgModule, OnInit, signal } from '@angular/core';
-import { MATERIAL_IMPORTS } from '../../../material-imports';
-import { MatTableDataSource } from '@angular/material/table';
-import { PortfolioActivityModel, SymbolByPortfolioTotalsModel } from '../../../models/portfolio-activity-model';
-import { DatePipe, NgClass } from '@angular/common';
-import { DialogData } from '../general-dialog/general-dialog';
-import { PortfolioActivityService } from '../../../services/portfolio-activity/portfolio-activity-service';
-import { catchError, of } from 'rxjs';
-import { MatDatepicker } from '@angular/material/datepicker';
-import { FormsModule, NgModel } from '@angular/forms';
-import { ReturnMessage } from '../../../models/return-message';
+import { NgClass } from '@angular/common';
+import { Component, inject, input, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
+import { catchError, of } from 'rxjs';
+import { MATERIAL_IMPORTS } from '../../../material-imports';
+import { PortfolioActivityModel, SymbolByPortfolioTotalsModel } from '../../../models/portfolio-activity-model';
+import { ReturnMessage } from '../../../models/return-message';
+import { PortfolioActivityService } from '../../../services/portfolio-activity/portfolio-activity-service';
 import { TmytsSnackbar } from '../../reusable-components/tmyts-snackbar/tmyts-snackbar';
+import { DialogData } from '../general-dialog/general-dialog';
 
 @Component({
   selector: 'app-add-income-dialog',
@@ -88,10 +87,9 @@ export class AddIncomeDialog implements OnInit {
 
   add(element: SymbolByPortfolioTotalsModel) {
     const activity: Partial<PortfolioActivityModel> = {
-      id: 0,
       user_id: element.user_id,
       portfolio_id: element.portfolio_id,
-      symbol_id: element.symbol_id,
+      symbol: element.symbol,
       quantity: 0,
       purchase_price: 0,
       purchase_date: this.pickedDate.value,
