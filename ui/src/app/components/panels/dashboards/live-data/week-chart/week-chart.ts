@@ -17,6 +17,9 @@ export class WeekChart {
     chart: {
       animation: false
     },
+    accessibility: {
+      enabled: false
+    },
     plotOptions: {
       series: {
         animation: false
