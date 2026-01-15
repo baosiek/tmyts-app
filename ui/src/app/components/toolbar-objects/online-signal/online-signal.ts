@@ -41,7 +41,7 @@ export class OnlineSignal implements OnInit{
           }
         },
         error: (error) => {
-          console.log(error)
+          this.isHealthy = false
         },
         complete: () => {}
       }

@@ -29,12 +29,6 @@ export class TmytsToolbar{
   constructor() {
   }
 
-  ngOnInit() {
-    if (this.data()?.toolbar_object){
-      console.log(this.data()?.toolbar_object?.text)
-    }
-  }
-
   add() {   
     if (this.data()?.dialog) {
       const dialogRef = this.dialog.open(

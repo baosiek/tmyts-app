@@ -44,7 +44,6 @@ export class LiveData  implements OnInit{
         if (dashboard) {
           if (dashboard.id === this.id){
             this.data = dashboard;
-            console.log(`=======> ${this.data}`)
           }          
         }        
       }
@@ -69,7 +68,6 @@ export class LiveData  implements OnInit{
           next: (response: PortfolioModel[]) => {
             // Handle successful response updating portfolio list
             this.portfolioList = [ ...response ]
-            console.log(this.portfolioList)
 
             // typescript syntax to get the first element
             const [firstPortfolio] = this.portfolioList;
@@ -78,7 +76,6 @@ export class LiveData  implements OnInit{
             thus it selects automatically the first portfolio in portfolioList*/
             if (this.selectedPortfolio == 0) {
               this.selectedPortfolio = firstPortfolio.id;
-              console.log(`Selected portfolio: ${this.selectedPortfolio}`)
             }
             
           },
