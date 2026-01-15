@@ -28,4 +28,13 @@ export const routes: Routes = [
             );
         },
     },
+    {
+        path: 'live-data',
+        pathMatch: 'full',
+        loadComponent: () => {
+            return import('./components/panels/dashboards/live-data/live-data').then(
+                (m) => m.LiveData
+            );
+        },
+    },
 ];

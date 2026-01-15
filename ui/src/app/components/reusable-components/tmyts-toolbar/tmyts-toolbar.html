@@ -10,6 +10,9 @@
                 <mat-icon>{{data().dialog?.button_icon}}</mat-icon>
             </button>
             }
+            @if (data().toolbar_object){
+                <app-general-toolbar-object [data]="data()"></app-general-toolbar-object>
+            }
         </div>
     </mat-toolbar>
 </div>

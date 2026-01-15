@@ -1,0 +1,14 @@
+.content-wrapper {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  min-height: 400px; /* Set minimum height */
+  max-height: 80vh; /* Limit maximum height */
+}
+
+.content-wrapper > div {
+  flex: 1;
+  min-width: 0; /* Prevents flex items from overflowing */
+  display: flex;
+  flex-direction: column;
+}

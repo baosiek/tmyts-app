@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
-import { AddPortfolioDialog } from '../../components/dialogs/add-portfolio-dialog/add-portfolio-dialog';
-import { ITmytsToolBar } from '../../interfaces/tmyts-toolbar-interface';
 import { SelectAssetDialog } from '../../components/dialogs/select-asset-dialog/select-asset-dialog';
+import { OnlineSignal } from '../../components/toolbar-objects/online-signal/online-signal';
+import { ITmytsToolBar } from '../../interfaces/tmyts-toolbar-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +22,14 @@ export class ToolbarService {
             button_text: 'Select',
             button_icon: 'search_insights',
             dialog_content: SelectAssetDialog
+          }
+        },
+        {
+          id: 'live_data',
+          title: "Live data",
+          toolbar_object: {
+            text: 'test',
+            object_content: OnlineSignal
           }
         },
       ]

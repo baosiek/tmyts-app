@@ -14,6 +14,9 @@ export interface ITmytsToolBar {
         button_icon: string;
         dialog_title: string;
         dialog_content: Type<unknown>;
-    }
-    
+    };
+    toolbar_object?: {
+        text: string;
+        object_content: Type<unknown>;
+    } 
 }

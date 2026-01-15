@@ -1,22 +1,15 @@
-import { Component, computed, ElementRef, inject, input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import { Component, computed, inject, input, OnChanges, SimpleChanges } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ChartConstructorType, HighchartsChartDirective } from 'highcharts-angular';
+import * as Highcharts from 'highcharts/highstock';
+import { catchError } from 'rxjs';
 import { IWidgetConfig } from '../../../../../../interfaces/widget-config-interface';
 import { MATERIAL_IMPORTS } from '../../../../../../material-imports';
-import { IndicatorService } from '../../../../../../services/indicator/indicator-service';
-import { catchError } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
-import { ChartConstructorType, HighchartsChartDirective } from 'highcharts-angular';
 import { IndicatorDataMapModel, IndicatorModel } from '../../../../../../models/indicator-model';
-import { DialogData } from '../../../../../dialogs/general-dialog/general-dialog';
-import { MatDialogModule } from '@angular/material/dialog';
 import { createDefaultWidgetConfigModel, WidgetConfigModel } from '../../../../../../models/widget-config-model';
-import * as Highcharts from 'highcharts/highstock';
-import * as HIndicatorsAll from "highcharts/indicators/indicators-all";
-import * as HDragPanes from "highcharts/modules/drag-panes";
-import * as HAnnotationsAdvanced from "highcharts/modules/annotations-advanced";
-import * as HPriceIndicator from "highcharts/modules/price-indicator";
-import * as HFullScreen from "highcharts/modules/full-screen";
-import * as HStockTools from "highcharts/modules/stock-tools";
+import { IndicatorService } from '../../../../../../services/indicator/indicator-service';
+import { DialogData } from '../../../../../dialogs/general-dialog/general-dialog';
+import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 
 
 @Component({
@@ -26,9 +19,6 @@ import * as HStockTools from "highcharts/modules/stock-tools";
     HighchartsChartDirective,
   ],
   templateUrl: './obv-widget.html',
-  providers: [
-
-  ],
   styleUrl: './obv-widget.scss'
 })
 export class ObvWidget implements OnChanges {

@@ -1,21 +1,20 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { MATERIAL_IMPORTS } from '../../../../material-imports';
-import { TmytsToolbar } from '../../../reusable-components/tmyts-toolbar/tmyts-toolbar';
-import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
-import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar-service';
-import { PortfolioModel } from '../../../../models/portfolio-model';
-import { PortfolioTableRud } from "./portfolio-tables/portfolio-table-rud/portfolio-table-rud";
+import { Component, inject, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { catchError } from 'rxjs';
+import { PortfolioComponentsDataExchange } from '../../../../interfaces/portfolio-components-data-exchange';
+import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
+import { MATERIAL_IMPORTS } from '../../../../material-imports';
+import { PortfolioModel } from '../../../../models/portfolio-model';
+import { PortfolioDatabaseService } from '../../../../services/portfolio-database/portfolio-database-service';
+import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar-service';
 import { AddPortfolioDialog } from '../../../dialogs/add-portfolio-dialog/add-portfolio-dialog';
 import { GeneraliDialog } from '../../../dialogs/general-dialog/general-dialog';
-import { PortfolioDatabaseService } from '../../../../services/portfolio-database/portfolio-database-service';
-import { catchError } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormsModule } from '@angular/forms';
-import { PortfolioPerformanceTable } from "./portfolio-tables/portfolio-performance-table/portfolio-performance-table";
-import { PortfolioComponentsDataExchange } from '../../../../interfaces/portfolio-components-data-exchange';
-import { TmytsChip } from "../../../reusable-components/tmyts-chip/tmyts-chip";
+import { TmytsToolbar } from '../../../reusable-components/tmyts-toolbar/tmyts-toolbar';
 import { IndexesCards } from "../../indexes-cards/indexes-cards";
+import { PortfolioPerformanceTable } from "./portfolio-tables/portfolio-performance-table/portfolio-performance-table";
+import { PortfolioTableRud } from "./portfolio-tables/portfolio-table-rud/portfolio-table-rud";
 @Component({
   selector: 'app-portfolios',
   imports: [
@@ -40,7 +39,6 @@ export class Portfolios implements OnInit{
   portfolioList: PortfolioModel[] = []
   dialog = inject(MatDialog);
   private _snackBar = inject(MatSnackBar);
-  // selectedPortfolio!: number;
   selectedPortfolio: number = 0;
 
   dataExchangeToChild = PortfolioComponentsDataExchange.create(0, 0, []);

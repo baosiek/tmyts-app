@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, EventEmitter, inject, input, output, Output, signal, Type } from '@angular/core';
-import { MATERIAL_IMPORTS } from '../../../material-imports';
+import { Component, inject, input, output, Type } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { GeneraliDialog } from '../../dialogs/general-dialog/general-dialog';
 import { ITmytsToolBar } from '../../../interfaces/tmyts-toolbar-interface';
+import { MATERIAL_IMPORTS } from '../../../material-imports';
+import { GeneraliDialog } from '../../dialogs/general-dialog/general-dialog';
+import { GeneralToolbarObject } from "../../toolbar-objects/general-toolbar-object/general-toolbar-object";
 
 export interface IDialog {
   id: number;
@@ -13,8 +14,9 @@ export interface IDialog {
 @Component({
   selector: 'app-tmyts-toolbar',
   imports: [
-    ...MATERIAL_IMPORTS
-  ],
+    ...MATERIAL_IMPORTS,
+    GeneralToolbarObject
+],
   templateUrl: './tmyts-toolbar.html',
   styleUrl: './tmyts-toolbar.scss'
 })
@@ -25,6 +27,12 @@ export class TmytsToolbar{
   notifyParent = output<Map<String, any>>();
 
   constructor() {
+  }
+
+  ngOnInit() {
+    if (this.data()?.toolbar_object){
+      console.log(this.data()?.toolbar_object?.text)
+    }
   }
 
   add() {   

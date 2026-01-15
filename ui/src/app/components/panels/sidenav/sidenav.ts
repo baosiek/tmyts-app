@@ -1,6 +1,6 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
-import { MATERIAL_IMPORTS } from '../../../material-imports';
+import { Component, computed, input, signal } from '@angular/core';
 import { RouterLink, RouterModule } from '@angular/router';
+import { MATERIAL_IMPORTS } from '../../../material-imports';
 
 export type MenuItemModel = {
   icon: string
@@ -27,11 +27,11 @@ export class Sidenav {
         label: "Portfolios",
         route: "/portfolio_management"
       },
-      // {
-      //   icon: "finance_mode",
-      //   label: "Asset analysis",
-      //   route: "/asset_analysis"
-      // },
+      {
+        icon: "finance_mode",
+        label: "Live Data",
+        route: "/live-data"
+      },
       {
         icon: "finance_mode",
         label: "Assets analysis",
