@@ -7,14 +7,17 @@ import { PortfolioComponentsDataExchange } from '../../../../interfaces/portfoli
 import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
 import { MATERIAL_IMPORTS } from '../../../../material-imports';
 import { PortfolioModel } from '../../../../models/portfolio-model';
+import { ReturnMessage } from '../../../../models/return-message';
+import { UserModel } from '../../../../models/user-model';
 import { PortfolioDatabaseService } from '../../../../services/portfolio-database/portfolio-database-service';
 import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar-service';
+import { UserService } from '../../../../services/user-service/user-service';
 import { AddPortfolioDialog } from '../../../dialogs/add-portfolio-dialog/add-portfolio-dialog';
 import { GeneraliDialog } from '../../../dialogs/general-dialog/general-dialog';
 import { TmytsToolbar } from '../../../reusable-components/tmyts-toolbar/tmyts-toolbar';
-import { IndexesCards } from "../../indexes-cards/indexes-cards";
-import { PortfolioPerformanceTable } from "./portfolio-tables/portfolio-performance-table/portfolio-performance-table";
-import { PortfolioTableRud } from "./portfolio-tables/portfolio-table-rud/portfolio-table-rud";
+import { IndexesCards } from '../../indexes-cards/indexes-cards';
+import { PortfolioPerformanceTable } from './portfolio-tables/portfolio-performance-table/portfolio-performance-table';
+import { PortfolioTableRud } from './portfolio-tables/portfolio-table-rud/portfolio-table-rud';
 @Component({
   selector: 'app-portfolios',
   imports: [
@@ -23,36 +26,50 @@ import { PortfolioTableRud } from "./portfolio-tables/portfolio-table-rud/portfo
     PortfolioTableRud,
     FormsModule,
     PortfolioPerformanceTable,
-    IndexesCards
-],
+    IndexesCards,
+  ],
   templateUrl: './portfolios.html',
-  styleUrl: './portfolios.scss'
+  styleUrl: './portfolios.scss',
 })
-
-export class Portfolios implements OnInit{
-
-  protected id: string = 'portfolio'
-  user_id: number = 1
+export class Portfolios implements OnInit {
+  protected id: string = 'portfolio';
+  user_id: number = 1;
   portfolioService = inject(ToolbarService);
-  portfilioDbService = inject(PortfolioDatabaseService)
+  portfilioDbService = inject(PortfolioDatabaseService);
+  userService = inject(UserService);
   data: ITmytsToolBar | undefined;
-  portfolioList: PortfolioModel[] = []
+  portfolioList: PortfolioModel[] = [];
   dialog = inject(MatDialog);
   private _snackBar = inject(MatSnackBar);
-  selectedPortfolio: number = 0;
+  selectedPortfolio: number | null = 0;
 
   dataExchangeToChild = PortfolioComponentsDataExchange.create(0, 0, []);
 
   constructor() {
-    this.portfolioService.dialogTypes().find(
-      (portfolio) => {
-        if (portfolio) {
-          if (portfolio.id === this.id) {
-            this.data = portfolio;
-          }
+    this.portfolioService.dialogTypes().find((portfolio) => {
+      if (portfolio) {
+        if (portfolio.id === this.id) {
+          this.data = portfolio;
         }
       }
-    );
+    });
+
+    this.userService
+      .getUser(this.user_id)
+      .pipe(
+        catchError((error) => {
+          throw error;
+        }),
+      )
+      .subscribe({
+        next: (response: UserModel) => {
+          this.selectedPortfolio = response.portfolio_id;
+          this.updatePortfolioList();
+        },
+        error: (error) => {
+          // Handle error response
+        },
+      });
   }
 
   ngOnInit(): void {
@@ -61,62 +78,77 @@ export class Portfolios implements OnInit{
 
   add() {
     // Set the attributes to pass to the actual dialog, not the General one
-    const data: Map<string, any> = new Map<string, any>()
-    data.set('userId', this.user_id)
-    const dialogRef = this.dialog.open(
-      GeneraliDialog,
-      {
-        data: {
-          title: "Add new portfolio",
-          data: data,
-          content: AddPortfolioDialog
-        }
-      }
-    )
-    dialogRef.afterClosed().subscribe(
-      (response) => {
-        const createdPortfolio: PortfolioModel = response as PortfolioModel
-        this.selectedPortfolio = createdPortfolio.id
-        this.updatePortfolioList();
-      }
-    )
+    const data: Map<string, any> = new Map<string, any>();
+    data.set('userId', this.user_id);
+    const dialogRef = this.dialog.open(GeneraliDialog, {
+      data: {
+        title: 'Add new portfolio',
+        data: data,
+        content: AddPortfolioDialog,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((response) => {
+      const createdPortfolio: PortfolioModel = response as PortfolioModel;
+      this.selectedPortfolio = createdPortfolio.id;
+      this.updatePortfolioList();
+    });
   }
 
   updatePortfolioList() {
-    this.portfilioDbService.readAllPortfolios(this.user_id)
+    this.portfilioDbService
+      .readAllPortfolios(this.user_id)
       .pipe(
-        catchError(
-          (error) => {
-            throw error
-          }
-        )
+        catchError((error) => {
+          throw error;
+        }),
       )
-      .subscribe(
-        {
-          next: (response: PortfolioModel[]) => {
-            // Handle successful response updating portfolio list
-            this.portfolioList = [ ...response ]
+      .subscribe({
+        next: (response: PortfolioModel[]) => {
+          // Handle successful response updating portfolio list
+          this.portfolioList = [...response];
 
-            // typescript syntax to get the first element
-            const [firstPortfolio] = this.portfolioList;
+          // typescript syntax to get the first element
+          const [firstPortfolio] = this.portfolioList;
 
-            /* upon this component init selectedPortfolio is zero, 
+          /* upon this component init selectedPortfolio is zero, 
             thus it selects automatically the first portfolio in portfolioList*/
-            if (this.selectedPortfolio == 0) {
-              this.selectedPortfolio = firstPortfolio.id;
-            }
-            
-          },
-          error: (error) => {
-            // Handle error response
-            this._snackBar.open(`HTTPError:${error.status}: 
-              No portfolios found for user_id ${this.user_id}.`, 'Close');
+          if (this.selectedPortfolio == 0) {
+            this.selectedPortfolio = firstPortfolio.id;
           }
-        }
-      );
-    }
+        },
+        error: (error) => {
+          // Handle error response
+          this._snackBar.open(
+            `HTTPError:${error.status}: 
+              No portfolios found for user_id ${this.user_id}.`,
+            'Close',
+          );
+        },
+      });
+  }
 
-    receiveMessage(event: PortfolioComponentsDataExchange){
-      this.dataExchangeToChild = event;
-    }
+  receiveMessage(event: PortfolioComponentsDataExchange) {
+    this.dataExchangeToChild = event;
+    const partialUser: Partial<UserModel> | null = {
+      portfolio_id: event.portfolio_id,
+    };
+    this.userService
+      .updateUser(this.user_id, partialUser)
+      .pipe(
+        catchError((error) => {
+          throw error;
+        }),
+      )
+      .subscribe({
+        next: (response: ReturnMessage) => {
+          console.log(response);
+          this._snackBar.open(response.message, 'Close');
+        },
+        error: (error) => {
+          // Handle error response
+        },
+      });
+    console.log(event.portfolio_id);
+  }
 }
