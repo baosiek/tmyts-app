@@ -5,13 +5,13 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 @Injectable({
   providedIn: 'root',
 })
-export class IbLivePriceService {
+export class IBLivePriceService {
   private sockets: Map<string, WebSocketSubject<PriceUpdateMessage>> = new Map<
     string,
     WebSocketSubject<PriceUpdateMessage>
   >();
 
-  private readonly baseUrl: string = 'ws://localhost:8000/prices/ws/stream/';
+  private readonly baseUrl: string = 'ws://localhost:8000/prices/ws/stream';
 
   /**
    * Retrieves an observable stream for a specific stock symbol.

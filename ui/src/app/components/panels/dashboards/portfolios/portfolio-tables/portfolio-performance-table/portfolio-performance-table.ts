@@ -95,9 +95,9 @@ export class PortfolioPerformanceTable implements OnChanges {
   }
 
   getTotalGainAnLoss() {
-    console.log(
-      this.dataSource.data.reduce((acc, value) => acc + value.gain_loss, 0),
-    );
+    // console.log(
+    //   this.dataSource.data.reduce((acc, value) => acc + value.gain_loss, 0),
+    // );
     return this.dataSource.data.reduce(
       (acc, value) => acc + value.gain_loss,
       0,

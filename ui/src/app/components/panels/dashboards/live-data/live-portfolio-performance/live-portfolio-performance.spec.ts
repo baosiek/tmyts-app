@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WeekPerformance } from './week-performance';
+import { LivePortfolioPerformance } from './live-portfolio-performance';
 
-describe('WeekPerformance', () => {
-  let component: WeekPerformance;
-  let fixture: ComponentFixture<WeekPerformance>;
+describe('LivePortfolioPerformance', () => {
+  let component: LivePortfolioPerformance;
+  let fixture: ComponentFixture<LivePortfolioPerformance>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [WeekPerformance]
+      imports: [LivePortfolioPerformance]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(WeekPerformance);
+    fixture = TestBed.createComponent(LivePortfolioPerformance);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

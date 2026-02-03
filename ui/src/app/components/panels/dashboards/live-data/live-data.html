@@ -1,28 +1,36 @@
 <div>
-    @if (data){
+  @if (data) {
     <div>
-        <app-tmyts-toolbar [data]="data"></app-tmyts-toolbar>
+      <app-tmyts-toolbar [data]="data"></app-tmyts-toolbar>
     </div>
+  }
+  <mat-form-field appearance="outline" style="width: 100%; margin-top: 1.5%">
+    @if (portfolioList.length > 0) {
+      <mat-label>Portfolio id</mat-label>
+    } @else {
+      <mat-label
+        >You have no saved portfolios. Click on the button to create
+        one</mat-label
+      >
     }
-    <mat-form-field appearance="outline" style="width: 100%; margin-top: 1.5%;">
-        @if (portfolioList.length > 0) {
-        <mat-label>Portfolio id</mat-label>
-        } @else {
-        <mat-label>You have no saved portfolios. Click on the button to create one</mat-label>
-        }
-        <mat-select [(ngModel)]="selectedPortfolio">
-            <mat-option [value]="0"></mat-option>
-            @for (portfolio of portfolioList; track portfolio.id){
-            <mat-option [value]="portfolio.id">{{portfolio.portfolio_name}}</mat-option>
-            }
-        </mat-select>
-    </mat-form-field>
-        <div class="content-wrapper">
-        <div>
-           <app-week-performance></app-week-performance>
-        </div>
-        <div>
-           <app-week-chart></app-week-chart>
-        </div>
+    <mat-select [(ngModel)]="selectedPortfolio">
+      <mat-option [value]="0"></mat-option>
+      @for (portfolio of portfolioList; track portfolio.id) {
+        <mat-option [value]="portfolio.id">{{
+          portfolio.portfolio_name
+        }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <div class="content-wrapper">
+    <div>
+      <app-live-portfolio-performance
+        [userId]="user_id"
+        [portfolioId]="selectedPortfolio"
+      ></app-live-portfolio-performance>
     </div>
+    <div>
+      <app-week-chart></app-week-chart>
+    </div>
+  </div>
 </div>

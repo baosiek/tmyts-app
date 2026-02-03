@@ -142,13 +142,13 @@ export class Portfolios implements OnInit {
       )
       .subscribe({
         next: (response: ReturnMessage) => {
-          console.log(response);
+          // console.log(response);
           this._snackBar.open(response.message, 'Close');
         },
         error: (error) => {
           // Handle error response
         },
       });
-    console.log(event.portfolio_id);
+    // console.log(event.portfolio_id);
   }
 }
