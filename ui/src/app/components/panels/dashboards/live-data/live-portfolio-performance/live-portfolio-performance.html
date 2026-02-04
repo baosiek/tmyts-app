@@ -1,26 +1,45 @@
-<table mat-table [dataSource]="dataSource()" class="mat-elevation-z8">
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
   <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
 
-  <!-- Position Column -->
+  <!-- Symbol column -->
   <ng-container matColumnDef="symbol">
     <th mat-header-cell *matHeaderCellDef>Symbol</th>
     <td mat-cell *matCellDef="let element">{{ element.symbol }}</td>
   </ng-container>
 
-  <!-- Name Column -->
+  <!-- Symbol name column -->
+  <ng-container matColumnDef="symbol_name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let element">{{ element.symbol_name }}</td>
+  </ng-container>
+
+    <!-- Quantity column -->
+  <ng-container matColumnDef="total_quantity">
+    <th mat-header-cell *matHeaderCellDef>Quantity</th>
+    <td mat-cell *matCellDef="let element">{{element.total_quantity}}</td>
+  </ng-container>
+
+  <!-- Avg price column -->
+  <ng-container matColumnDef="weighted_average_purchase_price">
+    <th mat-header-cell *matHeaderCellDef>Avg. Price</th>
+    <td mat-cell *matCellDef="let element">{{element.weighted_average_purchase_price}}</td>
+  </ng-container>
+
+  <!-- last price column in realtime-->
+  <ng-container matColumnDef="rt_price">
+    <th mat-header-cell *matHeaderCellDef>Real Time</th>
+    <td mat-cell *matCellDef="let element"
+    [ngStyle]="{'color': '#40033e', 'font-weight': 'bold', 'font-size': '18px'}">
+    {{element.rt_price}}</td>
+  </ng-container>
+
+    <!-- Gain loss column -->
   <ng-container matColumnDef="gain_loss">
-    <th mat-header-cell *matHeaderCellDef>Gain/Loss</th>
-    <td
-      mat-cell
-      *matCellDef="let element"
-      [ngStyle]="{
-        color: element.gain_loss >= 0 ? '#0d9e03' : '#732f2f',
-        'font-weight': 'bold',
-      }"
-    >
-      {{ element.gain_loss | currency }}
-    </td>
+    <th mat-header-cell *matHeaderCellDef> Gain/Loss </th>
+    <td mat-cell *matCellDef="let element"
+      [ngStyle]="{'color': element.gain_loss >= 0 ? '#0d9e03' : '#732f2f', 'font-weight': 'bold'}">
+      {{element.gain_loss | currency}} </td>
   </ng-container>
 
   <!-- Percent Column -->
@@ -44,37 +63,36 @@
     </td>
   </ng-container>
 
-  <!-- Name Column -->
-  <ng-container matColumnDef="gain_loss_w">
-    <th mat-header-cell *matHeaderCellDef>Gain/Loss</th>
-    <td
-      mat-cell
-      *matCellDef="let element"
-      [ngStyle]="{
-        color: element.gain_loss >= 0 ? '#0d9e03' : '#732f2f',
-        'font-weight': 'bold',
-      }"
-    >
-      {{ element.gain_loss | currency }}
-    </td>
+  <!-- Close price -->
+  <ng-container matColumnDef="adj_price_close">
+    <th mat-header-cell *matHeaderCellDef>Close</th>
+    <td mat-cell *matCellDef="let element">{{element.adj_price_close | currency }}</td>
   </ng-container>
 
-  <!-- Percent Column -->
-  <ng-container matColumnDef="percent_w">
+    <!-- Gain loss column -->
+  <ng-container matColumnDef="last_gain_loss">
+    <th mat-header-cell *matHeaderCellDef> Gain/Loss </th>
+    <td mat-cell *matCellDef="let element"
+      [ngStyle]="{'color': element.last_gain_loss >= 0 ? '#0d9e03' : '#732f2f', 'font-weight': 'bold'}">
+      {{element.last_gain_loss | currency}}</td>
+  </ng-container>
+
+    <!-- Percent Column -->
+  <ng-container matColumnDef="last_percent">
     <th mat-header-cell *matHeaderCellDef>Percent</th>
     <td mat-cell style="padding: 0" *matCellDef="let element">
-      @if (element.percent >= 0) {
+      @if (element.last_percent >= 0) {
         <app-tmyts-chip
           iconName="arrow_upward_alt"
           classType="success-container"
           backgroundColorColor="#7ff593"
-          >{{ element.percent | percent: "1.2-2" }}
+          >{{ element.last_percent | percent: "1.2-2" }}
         </app-tmyts-chip>
       } @else {
         <app-tmyts-chip
           iconName="arrow_downward_alt"
           classType="error-container"
-          >{{ element.percent | percent: "1.2-2" }}
+          >{{ element.last_percent | percent: "1.2-2" }}
         </app-tmyts-chip>
       }
     </td>
@@ -82,7 +100,7 @@
 
   <!-- Grouping Header Definition -->
   <ng-container matColumnDef="header-group-1">
-    <th mat-header-cell *matHeaderCellDef [attr.colspan]="1"></th>
+    <th mat-header-cell *matHeaderCellDef [attr.colspan]="2"></th>
   </ng-container>
 
   <!-- Grouping Header Definition -->
@@ -90,10 +108,10 @@
     <th
       mat-header-cell
       *matHeaderCellDef
-      style="padding-left: 100px"
-      [attr.colspan]="3"
+      style="padding-left: 200px"
+      [attr.colspan]="5"
     >
-      Daily Performance
+      Portfolio Performance
     </th>
   </ng-container>
 
@@ -102,10 +120,10 @@
     <th
       mat-header-cell
       *matHeaderCellDef
-      style="padding-left: 100px"
-      [attr.colspan]="5"
+      style="padding-left: 70px"
+      [attr.colspan]="3"
     >
-      Weekly Performance
+      Daily Performance
     </th>
   </ng-container>
 

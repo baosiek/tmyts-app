@@ -6,3 +6,4 @@ export interface LivePerformanceInterface {
     gain_loss: number;
     percent: number;
 }
+
