@@ -14,7 +14,7 @@ import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar
 import { UserService } from '../../../../services/user-service/user-service';
 import { TmytsToolbar } from '../../../reusable-components/tmyts-toolbar/tmyts-toolbar';
 import { WeekChart } from './week-chart/week-chart';
-import { LivePortfolioPerformance } from './live-portfolio-performance/live-portfolio-performance';
+import { LiveAssetPerformance } from './live-asset-performance/live-asset-performance';
 
 export interface Tile {
   color: string;
@@ -32,7 +32,7 @@ export interface Tile {
     MatSelect,
     MatOption,
     FormsModule,
-    LivePortfolioPerformance,
+    LiveAssetPerformance,
     WeekChart,
     MatDialogModule,
   ],

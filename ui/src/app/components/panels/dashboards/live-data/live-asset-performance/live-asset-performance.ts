@@ -20,12 +20,12 @@ import { TmytsChip } from '../../../../reusable-components/tmyts-chip/tmyts-chip
 import { TmytsSnackbar } from '../../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 
 @Component({
-  selector: 'app-live-portfolio-performance',
+  selector: 'app-live-asset-performance',
   imports: [MatTableModule, CommonModule, TmytsChip],
-  templateUrl: './live-portfolio-performance.html',
-  styleUrl: './live-portfolio-performance.scss',
+  templateUrl: './live-asset-performance.html',
+  styleUrl: './live-asset-performance.scss',
 })
-export class LivePortfolioPerformance implements OnInit, OnDestroy {
+export class LiveAssetPerformance implements OnInit, OnDestroy {
   displayedColumns: string[] = ['symbol', 'symbol_name', 'total_quantity', 'weighted_average_purchase_price', 'rt_price', 'gain_loss', 'percent', 'adj_price_close', 'last_gain_loss', 'last_percent'];
   private destroyRef = inject(DestroyRef);
   private streamService = inject(IBLivePriceService);
@@ -75,7 +75,14 @@ export class LivePortfolioPerformance implements OnInit, OnDestroy {
                   this.dataSource.data = response;
                 },
                 error: (error) => {
-                  console.log(error);
+                  // Handle error response
+                  const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
+
+                  // Renders error snack-bar
+                  this._snackBar.openFromComponent(TmytsSnackbar, {
+                    data: { message: message, action: 'Close' },
+                    panelClass: ['error-snackbar-theme'],
+                  });
                 },
                 complete: () => {
                   // this.spinnerFlagIsSet = false;

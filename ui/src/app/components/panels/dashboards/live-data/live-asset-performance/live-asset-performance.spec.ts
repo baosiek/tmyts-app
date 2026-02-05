@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LivePortfolioPerformance } from './live-portfolio-performance';
+import { LiveAssetPerformance } from './live-asset-performance';
 
-describe('LivePortfolioPerformance', () => {
-  let component: LivePortfolioPerformance;
-  let fixture: ComponentFixture<LivePortfolioPerformance>;
+describe('LiveAssetPerformance', () => {
+  let component: LiveAssetPerformance;
+  let fixture: ComponentFixture<LiveAssetPerformance>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LivePortfolioPerformance]
+      imports: [LiveAssetPerformance]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(LivePortfolioPerformance);
+    fixture = TestBed.createComponent(LiveAssetPerformance);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
