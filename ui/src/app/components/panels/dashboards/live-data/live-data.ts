@@ -13,8 +13,8 @@ import { PortfolioDatabaseService } from '../../../../services/portfolio-databas
 import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar-service';
 import { UserService } from '../../../../services/user-service/user-service';
 import { TmytsToolbar } from '../../../reusable-components/tmyts-toolbar/tmyts-toolbar';
-import { WeekChart } from './week-chart/week-chart';
 import { LiveAssetPerformance } from './live-asset-performance/live-asset-performance';
+import { LivePortfolioPerformance } from "./live-portfolio-performance/live-portfolio-performance";
 
 export interface Tile {
   color: string;
@@ -33,8 +33,8 @@ export interface Tile {
     MatOption,
     FormsModule,
     LiveAssetPerformance,
-    WeekChart,
     MatDialogModule,
+    LivePortfolioPerformance
   ],
   templateUrl: './live-data.html',
   styleUrl: './live-data.scss',

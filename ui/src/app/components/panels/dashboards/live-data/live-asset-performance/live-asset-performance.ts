@@ -26,8 +26,18 @@ import { TmytsSnackbar } from '../../../../reusable-components/tmyts-snackbar/tm
   styleUrl: './live-asset-performance.scss',
 })
 export class LiveAssetPerformance implements OnInit, OnDestroy {
-  displayedColumns: string[] = ['symbol', 'symbol_name', 'total_quantity', 'weighted_average_purchase_price', 'rt_price', 'gain_loss', 'percent', 'adj_price_close', 'last_gain_loss', 'last_percent'];
-  private destroyRef = inject(DestroyRef);
+  displayedColumns: string[] = [
+    'symbol',
+    'total_quantity',
+    'weighted_average_purchase_price',
+    'rt_price',
+    'gain_loss',
+    'percent',
+    'adj_price_close',
+    'last_gain_loss',
+    'last_percent',
+  ];
+
   private streamService = inject(IBLivePriceService);
   private tmytsService = inject(TmytsPricesHistoryService)
   private subscription?: Subscription;
@@ -67,7 +77,6 @@ export class LiveAssetPerformance implements OnInit, OnDestroy {
             symbols.forEach((symbol) => {
               this.registerToIBLivePrice(symbol);
             });
-
             this.tmytsService
               .getPortfolioPerformance(this.userId(), portfolioId, symbols)
               .subscribe({
@@ -111,18 +120,16 @@ export class LiveAssetPerformance implements OnInit, OnDestroy {
     this.subscription = this.streamService.getPriceStream(symbol).subscribe({
       next: (message) => {
         // The API message structure is {"symbol": "...", "price": ...}
-        if (message.symbol === symbol) {
-          this.dataSource.data.forEach((item) => {
-            if (item.symbol === symbol) {
-              item.rt_price = message.price;
-              item.gain_loss = item.rt_price - item.weighted_average_purchase_price;
-              item.percent = (item.gain_loss / item.weighted_average_purchase_price);
-              item.last_gain_loss = item.rt_price - item.adj_price_close;
-              item.last_percent = (item.last_gain_loss / item.adj_price_close);
-            }
-          });
-          this.dataSource._updateChangeSubscription()
-        }
+        this.dataSource.data.forEach((item) => {
+          if (item.symbol === symbol) {
+            item.rt_price = message.price;
+            item.gain_loss = item.rt_price - item.weighted_average_purchase_price;
+            item.percent = (item.gain_loss / item.weighted_average_purchase_price);
+            item.last_gain_loss = item.rt_price - item.adj_price_close;
+            item.last_percent = (item.last_gain_loss / item.adj_price_close);
+          }
+        });
+        this.dataSource._updateChangeSubscription()
       },
       error: (err) => console.error(`Error with ${symbol} stream:`, err),
     });

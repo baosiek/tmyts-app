@@ -23,7 +23,7 @@
   <!-- Avg price column -->
   <ng-container matColumnDef="weighted_average_purchase_price">
     <th mat-header-cell *matHeaderCellDef>Avg. Price</th>
-    <td mat-cell *matCellDef="let element">{{element.weighted_average_purchase_price}}</td>
+    <td mat-cell *matCellDef="let element">{{element.weighted_average_purchase_price | currency:'USD':'symbol':'1.2-2'}}</td>
   </ng-container>
 
   <!-- last price column in realtime-->
@@ -31,7 +31,7 @@
     <th mat-header-cell *matHeaderCellDef>Real Time</th>
     <td mat-cell *matCellDef="let element"
     [ngStyle]="{'color': '#40033e', 'font-weight': 'bold', 'font-size': '18px'}">
-    {{element.rt_price}}</td>
+    {{element.rt_price | currency:'USD':'symbol':'1.2-2'}}</td>
   </ng-container>
 
     <!-- Gain loss column -->
@@ -39,7 +39,7 @@
     <th mat-header-cell *matHeaderCellDef> Gain/Loss </th>
     <td mat-cell *matCellDef="let element"
       [ngStyle]="{'color': element.gain_loss >= 0 ? '#0d9e03' : '#732f2f', 'font-weight': 'bold'}">
-      {{element.gain_loss | currency}} </td>
+      {{element.gain_loss | currency:'USD':'symbol':'1.2-2'}} </td>
   </ng-container>
 
   <!-- Percent Column -->
@@ -66,7 +66,7 @@
   <!-- Close price -->
   <ng-container matColumnDef="adj_price_close">
     <th mat-header-cell *matHeaderCellDef>Close</th>
-    <td mat-cell *matCellDef="let element">{{element.adj_price_close | currency }}</td>
+    <td mat-cell *matCellDef="let element">{{element.adj_price_close | currency:'USD':'symbol':'1.2-2' }}</td>
   </ng-container>
 
     <!-- Gain loss column -->
@@ -74,7 +74,7 @@
     <th mat-header-cell *matHeaderCellDef> Gain/Loss </th>
     <td mat-cell *matCellDef="let element"
       [ngStyle]="{'color': element.last_gain_loss >= 0 ? '#0d9e03' : '#732f2f', 'font-weight': 'bold'}">
-      {{element.last_gain_loss | currency}}</td>
+      {{element.last_gain_loss | currency:'USD':'symbol':'1.2-2' }}</td>
   </ng-container>
 
     <!-- Percent Column -->

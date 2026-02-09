@@ -30,7 +30,10 @@
       ></app-live-asset-performance>
     </div>
     <div>
-      <app-week-chart></app-week-chart>
+      <app-live-portfolio-performance
+      [userId]="user_id"
+      [portfolioId]="selectedPortfolio"
+      ></app-live-portfolio-performance>
     </div>
   </div>
 </div>
