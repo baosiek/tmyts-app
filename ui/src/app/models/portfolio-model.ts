@@ -1,8 +1,8 @@
 export type PortfolioModel = {
-    id: number;
-    user_id: number;
-    portfolio_name: string;
-    description: string;
+  portfolio_id: number;
+  user_id: number;
+  portfolio_name: string;
+  description: string;
 }
 
 // Factory function to create a new PortfolioModel object

@@ -90,7 +90,7 @@ export class Portfolios implements OnInit {
 
     dialogRef.afterClosed().subscribe((response) => {
       const createdPortfolio: PortfolioModel = response as PortfolioModel;
-      this.selectedPortfolio = createdPortfolio.id;
+      this.selectedPortfolio = createdPortfolio.portfolio_id;
       this.updatePortfolioList();
     });
   }
@@ -114,7 +114,7 @@ export class Portfolios implements OnInit {
           /* upon this component init selectedPortfolio is zero, 
             thus it selects automatically the first portfolio in portfolioList*/
           if (this.selectedPortfolio == 0) {
-            this.selectedPortfolio = firstPortfolio.id;
+            this.selectedPortfolio = firstPortfolio.portfolio_id;
           }
         },
         error: (error) => {

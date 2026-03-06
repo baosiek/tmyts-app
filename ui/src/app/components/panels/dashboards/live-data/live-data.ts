@@ -73,6 +73,7 @@ export class LiveData implements OnInit {
       )
       .subscribe({
         next: (response: UserModel) => {
+          // Handle successful response)
           this.selectedPortfolio = response.portfolio_id;
           this.updatePortfolioList();
         },
@@ -105,7 +106,7 @@ export class LiveData implements OnInit {
           /* upon this component init selectedPortfolio is zero, 
             thus it selects automatically the first portfolio in portfolioList*/
           if (this.selectedPortfolio == 0) {
-            this.selectedPortfolio = firstPortfolio.id;
+            this.selectedPortfolio = firstPortfolio.portfolio_id;
           }
         },
         error: (error) => {

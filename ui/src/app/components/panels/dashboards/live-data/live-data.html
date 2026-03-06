@@ -15,8 +15,8 @@
     }
     <mat-select [(ngModel)]="selectedPortfolio">
       <mat-option [value]="0"></mat-option>
-      @for (portfolio of portfolioList; track portfolio.id) {
-        <mat-option [value]="portfolio.id">{{
+      @for (portfolio of portfolioList; track portfolio.portfolio_id) {
+        <mat-option [value]="portfolio.portfolio_id">{{
           portfolio.portfolio_name
         }}</mat-option>
       }
