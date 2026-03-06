@@ -11,7 +11,7 @@ export class IBLivePriceService {
     WebSocketSubject<PriceUpdateMessage>
   >();
 
-  private readonly baseUrl: string = 'ws://localhost:8000/prices/ws/stream';
+  private readonly baseUrl: string = 'ws://localhost:8001/portfolio/ws/stream';
 
   /**
    * Retrieves an observable stream for a specific stock symbol.

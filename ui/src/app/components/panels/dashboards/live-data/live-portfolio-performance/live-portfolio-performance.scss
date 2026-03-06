@@ -1,0 +1,17 @@
+.key-value {
+    // Enables flexbox layout
+    display: flex;
+    
+    // Vertically centers items along the cross-axis
+    align-items: center; 
+    
+    // Adds a gap between the <h1> and the number
+    gap: 12px; 
+
+    h1 {
+        // Removes default browser margins that might 
+        // cause the container to look uneven
+        margin: 0;
+        font-size: 1.5rem; // Adjust as needed
+    }
+}

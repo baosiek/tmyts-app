@@ -1,1 +1,48 @@
-<p>live-portfolio-performance works!</p>
+<div class="key-value">
+    <h1>Initial value:</h1> <span>{{initialAmount | currency:'USD':'symbol':'1.2-2'}}</span>
+</div>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="price_date">
+    <th mat-header-cell *matHeaderCellDef> Date </th>
+    <td mat-cell *matCellDef="let element"> {{element.price_date}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="cash">
+    <th mat-header-cell *matHeaderCellDef> Cash Balance </th>
+    <td mat-cell *matCellDef="let element"> {{element.cash | currency:'USD':'symbol':'1.2-2'}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="market_value">
+    <th mat-header-cell *matHeaderCellDef> Market Value </th>
+    <td mat-cell *matCellDef="let element"> {{element.market_value | currency:'USD':'symbol':'1.2-2'}} </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="nav">
+    <th mat-header-cell *matHeaderCellDef> NAV </th>
+    <td mat-cell *matCellDef="let element"> {{element.nav | currency:'USD':'symbol':'1.2-2'}} </td>
+  </ng-container>
+
+   <!-- Symbol Column -->
+  <ng-container matColumnDef="daily_return">
+    <th mat-header-cell *matHeaderCellDef> Daily Return </th>
+    <td mat-cell *matCellDef="let element"> {{element.daily_return | percent: "1.2-2"}} </td>
+  </ng-container>
+
+<!-- Symbol Column -->
+  <ng-container matColumnDef="cumulative_return">
+    <th mat-header-cell *matHeaderCellDef> Cumulative Return </th>
+    <td mat-cell *matCellDef="let element"> {{element.cumulative_return | percent: "1.2-2"}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
