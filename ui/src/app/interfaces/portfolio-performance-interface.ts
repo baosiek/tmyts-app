@@ -1,14 +1,14 @@
 export interface PortfolioPerformanceInterface {
-    symbol_id: string;
-    symbol_name: string;
+    asset_id: string;
+    asset_name: string;
     price: number;
     variation: number,
     percent: number
 }
 
 export interface LivePortfolioPerformanceInterface {
-    symbol: string;
-    symbol_name: string;
+    asset: string;
+    asset_name: string;
     total_quantity: number;
     total_cash_in: number;
     total_cash_out: number;

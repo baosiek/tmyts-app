@@ -16,16 +16,16 @@
       <td mat-cell *matCellDef="let element"> {{element.id}} </td>
     </ng-container>
 
-    <!-- Position Symbol -->
-    <ng-container matColumnDef="symbol">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Symbol </th>
-      <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+    <!-- Position Asset -->
+    <ng-container matColumnDef="asset">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Asset </th>
+      <td mat-cell *matCellDef="let element"> {{element.asset}} </td>
     </ng-container>
 
-    <!-- Name Symbol name -->
-    <ng-container matColumnDef="symbol_name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Symbol name </th>
-      <td mat-cell *matCellDef="let element"> {{element.symbol_name}} </td>
+    <!-- Name Asset name -->
+    <ng-container matColumnDef="asset_name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Asset name </th>
+      <td mat-cell *matCellDef="let element"> {{element.asset_name}} </td>
     </ng-container>
 
     <!-- Purchase price Column -->

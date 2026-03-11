@@ -1,14 +1,14 @@
 import { Component, inject, input, OnInit, signal } from '@angular/core';
-import { MATERIAL_IMPORTS } from '../../../material-imports';
-import { SymbolModel } from '../../../models/symbol-model';
-import { catchError, of } from 'rxjs';
-import { QuickSearchService } from '../../../services/quick-search/quick-search-service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DialogData } from '../general-dialog/general-dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { TmytsSnackbar } from '../../reusable-components/tmyts-snackbar/tmyts-snackbar';
-import { MatListOption, MatSelectionList } from '@angular/material/list';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatListOption } from '@angular/material/list';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { catchError, of } from 'rxjs';
+import { MATERIAL_IMPORTS } from '../../../material-imports';
+import { AssetModel } from '../../../models/asset-model';
+import { QuickSearchService } from '../../../services/quick-search/quick-search-service';
+import { TmytsSnackbar } from '../../reusable-components/tmyts-snackbar/tmyts-snackbar';
+import { DialogData } from '../general-dialog/general-dialog';
 
 @Component({
   selector: 'app-select-asset-dialog',
@@ -32,13 +32,13 @@ export class SelectAssetDialog implements OnInit {
   */
 
   // Asset selection field
-  assetDelectionForm = this._formBuilder.group({
-    symbol: ['', Validators.required],
+  assetSelectionForm = this._formBuilder.group({
+    asset: ['', Validators.required],
   });
 
   // Initializes signals
   // Holds quickSearch results
-  searchResults = signal<SymbolModel[]>([])
+  searchResults = signal<AssetModel[]>([])
   // Term to perform quick search
   term: string | null | undefined = ''
 
@@ -55,7 +55,7 @@ export class SelectAssetDialog implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.assetDelectionForm.get('symbol')?.valueChanges
+    this.assetSelectionForm.get('asset')?.valueChanges
       .subscribe(
         value => {
           this.term = value;
@@ -96,34 +96,34 @@ export class SelectAssetDialog implements OnInit {
   }
 
   onSelectionChange(selectedOptions: MatListOption[]) {
-    const selectedValue = selectedOptions.map(option => option.value).at(0) as SymbolModel;
+    const selectedValue = selectedOptions.map(option => option.value).at(0) as AssetModel;
 
-    const result: Map<String, SymbolModel> = new Map();
-    result.set("symbol", selectedValue)
+    const result: Map<String, AssetModel> = new Map();
+    result.set("asset", selectedValue)
 
     this.dialogRef.close(result)
   }
 
   onEnterKey() {
     // holds the form field value
-    const symbolValue = this.assetDelectionForm.get('symbol')?.value;
+    const assetValue = this.assetSelectionForm.get('asset')?.value;
 
-    // as symbol value can be null it checks if it is null
-    const typedSymbol = this.searchResults().find(v => v.symbol.toLowerCase() === (symbolValue ? symbolValue.toLowerCase() : ''))
-    
-    // if typed symbol was found, ends the dialog returning the symbol 
-    if (typedSymbol) {
-      const result: Map<String, SymbolModel> = new Map();
-      result.set("symbol", typedSymbol)
+    // as asset value can be null it checks if it is null
+    const typedAsset = this.searchResults().find(v => v.asset.toLowerCase() === (assetValue ? assetValue.toLowerCase() : ''))
+
+    // if typed asset was found, ends the dialog returning the asset 
+    if (typedAsset) {
+      const result: Map<String, AssetModel> = new Map();
+      result.set("asset", typedAsset)
       this.dialogRef.close(result)
     } else {
       // Renders error snack-bar
-      const message: string = `Could not find symbol [ ${this.assetDelectionForm.get('symbol')?.value} ]`
+      const message: string = `Could not find asset [ ${this.assetSelectionForm.get('asset')?.value} ]`
       this._snackBar.openFromComponent(
         TmytsSnackbar, {
-          data: {'message': message, 'action': 'Close'},
-          panelClass: ['error-snackbar-theme']
-        }
+        data: { 'message': message, 'action': 'Close' },
+        panelClass: ['error-snackbar-theme']
+      }
       );
     }
   }

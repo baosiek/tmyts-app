@@ -39,8 +39,8 @@ export class PortfolioTableRud implements OnChanges, AfterViewInit {
 
   displayedColumns: string[] = [
     'id',
-    'symbol',
-    'symbol_name',
+    'asset',
+    'asset_name',
     'purchase_price',
     'quantity',
     'purchase_date',
@@ -53,8 +53,8 @@ export class PortfolioTableRud implements OnChanges, AfterViewInit {
     new MatTableDataSource();
 
   userId: InputSignal<number> = input.required<number>();
-  portfolioId: InputSignal<number | null> = input.required<number | null>();
-  portfilioSymbols: string[] = [];
+  portfolioName: InputSignal<string | null> = input.required<string | null>();
+  portfilioAssets: string[] = [];
   spinnerFlagIsSet: boolean = false;
 
   @Output() portfolioExchangeData =
@@ -70,29 +70,29 @@ export class PortfolioTableRud implements OnChanges, AfterViewInit {
   }
 
   ngOnChanges(): void {
-    console.log(`this.portfolioId(): ${this.portfolioId()}`);
-    this.getPortfolioActivityContent(this.portfolioId());
+    console.log(`this.portfolioName(): ${this.portfolioName()}`);
+    this.getPortfolioActivityContent(this.portfolioName());
   }
 
-  getPortfolioActivityContent(portfolioId: number | null) {
-    if (portfolioId) {
+  getPortfolioActivityContent(portfolioName: string | null) {
+    if (portfolioName) {
       this.spinnerFlagIsSet = true;
       this.portfolioActivityService
-        .getActivityForPortfolio(this.userId(), portfolioId)
+        .getActivityForPortfolio(this.userId(), portfolioName)
         .subscribe({
           next: (response: PortfolioActivityModel[]) => {
             // updates datasource
             this.dataSource.data = response;
 
-            // builds list of symbols to send to performance table component
-            const symbols: string[] = [];
+            // builds list of assets to send to performance table component
+            const assets: string[] = [];
             response.forEach((item) => {
-              symbols.push(item.symbol);
+              assets.push(item.asset);
             });
             const dataExchange = PortfolioComponentsDataExchange.create(
               this.userId(),
-              this.portfolioId(),
-              symbols,
+              this.portfolioName(),
+              assets,
             );
             this.portfolioExchangeData.emit(dataExchange);
           },
@@ -117,7 +117,7 @@ export class PortfolioTableRud implements OnChanges, AfterViewInit {
     // Set the attributes to pass to the actual dialog, not the General one
     const data: Map<string, any> = new Map<string, any>();
     data.set('userId', this.userId());
-    data.set('portfolioId', this.portfolioId());
+    data.set('portfolioName', this.portfolioName());
     const dialogRef = this.dialog.open(GeneraliDialog, {
       data: {
         title: 'Buy asset',
@@ -126,7 +126,7 @@ export class PortfolioTableRud implements OnChanges, AfterViewInit {
       },
     });
     dialogRef.afterClosed().subscribe(() => {
-      this.getPortfolioActivityContent(this.portfolioId());
+      this.getPortfolioActivityContent(this.portfolioName());
     });
   }
 
@@ -134,7 +134,7 @@ export class PortfolioTableRud implements OnChanges, AfterViewInit {
     // Set the attributes to pass to the actual dialog, not the General one
     const data: Map<string, any> = new Map<string, any>();
     data.set('userId', this.userId());
-    data.set('portfolioId', this.portfolioId());
+    data.set('portfolioName', this.portfolioName());
     const dialogRef = this.dialog.open(GeneraliDialog, {
       data: {
         title: 'Sell asset',
@@ -143,7 +143,7 @@ export class PortfolioTableRud implements OnChanges, AfterViewInit {
       },
     });
     dialogRef.afterClosed().subscribe(() => {
-      this.getPortfolioActivityContent(this.portfolioId());
+      this.getPortfolioActivityContent(this.portfolioName());
     });
   }
 
@@ -151,7 +151,7 @@ export class PortfolioTableRud implements OnChanges, AfterViewInit {
     // Set the attributes to pass to the actual dialog, not the General one
     const data: Map<string, any> = new Map<string, any>();
     data.set('userId', this.userId());
-    data.set('portfolioId', this.portfolioId());
+    data.set('portfolioName', this.portfolioName());
     const dialogRef = this.dialog.open(GeneraliDialog, {
       data: {
         title: 'Add income',
@@ -160,7 +160,7 @@ export class PortfolioTableRud implements OnChanges, AfterViewInit {
       },
     });
     dialogRef.afterClosed().subscribe(() => {
-      this.getPortfolioActivityContent(this.portfolioId());
+      this.getPortfolioActivityContent(this.portfolioName());
     });
   }
 
@@ -173,7 +173,7 @@ export class PortfolioTableRud implements OnChanges, AfterViewInit {
         }),
       )
       .subscribe((response) => {
-        this.getPortfolioActivityContent(this.portfolioId());
+        this.getPortfolioActivityContent(this.portfolioName());
       });
   }
 }

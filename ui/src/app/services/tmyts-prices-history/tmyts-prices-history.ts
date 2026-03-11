@@ -15,21 +15,21 @@ export class TmytsPricesHistoryService {
   constructor() { }
 
 
-  getPortfolioPerformance(user_id: number, portfolio_id: number, symbols: string[]): Observable<LivePortfolioPerformanceInterface[]> {
+  getPortfolioPerformance(user_id: number, portfolio_name: string, symbols: string[]): Observable<LivePortfolioPerformanceInterface[]> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const apiMethod = 'portfolio_performance';
     const body = symbols;
 
-    return this.http.post<LivePortfolioPerformanceInterface[]>(`${this.apiUrl}/${apiMethod}/?user_id=${user_id}&portfolio_id=${portfolio_id}`, body, { headers })
+    return this.http.post<LivePortfolioPerformanceInterface[]>(`${this.apiUrl}/${apiMethod}/?user_id=${user_id}&portfolio_name=${portfolio_name}`, body, { headers })
   }
 
-  getPortfolioDailtPerformance(user_id: number, portfolio_id: number | null, initial_principla: number,): Observable<PortfolioCashflowInterface[]> {
+  getPortfolioDailtPerformance(user_id: number, portfolio_name: string | null, initial_principla: number,): Observable<PortfolioCashflowInterface[]> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const apiMethod = 'portfolio_daily_performance';
 
     return this.http.get<PortfolioCashflowInterface[]>(
       `${this.apiUrl}/${apiMethod}/?user_id=${user_id}
-      &portfolio_id=${portfolio_id}&initial_principal=${initial_principla}`
+      &portfolio_name=${portfolio_name}&initial_principal=${initial_principla}`
     )
   }
 }

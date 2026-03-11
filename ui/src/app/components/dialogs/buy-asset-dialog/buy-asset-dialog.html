@@ -6,18 +6,18 @@
                     <form [formGroup]="stepOneForm">
                         <ng-template matStepLabel>Type an investment name or symbol</ng-template>
                         <mat-form-field appearance="outline" style="margin-top: 12px; width: 500px">
-                            <mat-label>Symbol or investment</mat-label>
-                            <input matInput formControlName="symbol" placeholder="Select a symbol"
+                            <mat-label>Asset or investment</mat-label>
+                            <input matInput formControlName="asset" placeholder="Select an asset"
                                 (keyup)="searchTerm($event)">
                             <mat-icon matSuffix>search_insights</mat-icon>
                         </mat-form-field>
                         @if (searchResults().length > 0){
                         <mat-selection-list [multiple]="false" hideSingleSelectionIndicator #selectedSymbols
-                            (selectionChange)="onSymbolSelectionChange(stepper, selectedSymbols.selectedOptions.selected)">
-                            @for (result of searchResults(); track result.symbol) {
+                            (selectionChange)="onAssetSelectionChange(stepper, selectedSymbols.selectedOptions.selected)">
+                            @for (result of searchResults(); track result.asset) {
                             <mat-list-option [value]="result">
-                                <div matListItemTitle>{{result.symbol}}</div>
-                                <div matListItemLine>{{result.symbol_name}}</div>
+                                <div matListItemTitle>{{result.asset}}</div>
+                                <div matListItemLine>{{result.asset_name}}</div>
                             </mat-list-option>
                             <mat-divider></mat-divider>
                             }
@@ -31,11 +31,11 @@
                 </mat-step>
                 <mat-step [stepControl]="stepTwoForm">
                     <div class="stock-card">
-                        <span>{{selectedSymbol.symbol}}</span>
-                        <span>{{selectedSymbol.symbol_name}}</span>
-                        <span>{{symbolLiveData().price_close | currency:'USD':'symbol':'1.2-2'}}</span>
-                        <span>{{symbolLiveData().difference | currency:'USD':'symbol':'1.2-2' }}</span>
-                        <span>{{symbolLiveData().percent | percent:'1.2-2'}}</span>
+                        <span>{{selectedAsset.asset}}</span>
+                        <span>{{selectedAsset.asset_name}}</span>
+                        <span>{{assetLiveData().price_close | currency:'USD':'symbol':'1.2-2'}}</span>
+                        <span>{{assetLiveData().difference | currency:'USD':'symbol':'1.2-2' }}</span>
+                        <span>{{assetLiveData().percent | percent:'1.2-2'}}</span>
                     </div>
                     <form [formGroup]="stepTwoForm" class="form-container">
                         <ng-template matStepLabel>Fill transaction information</ng-template>

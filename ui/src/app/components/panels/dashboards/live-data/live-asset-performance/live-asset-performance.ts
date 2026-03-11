@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
-  DestroyRef,
   inject,
   input,
   InputSignal,
@@ -27,7 +26,8 @@ import { TmytsSnackbar } from '../../../../reusable-components/tmyts-snackbar/tm
 })
 export class LiveAssetPerformance implements OnInit, OnDestroy {
   displayedColumns: string[] = [
-    'symbol',
+    'asset',
+    'asset_name',
     'total_quantity',
     'weighted_average_purchase_price',
     'rt_price',
@@ -45,7 +45,7 @@ export class LiveAssetPerformance implements OnInit, OnDestroy {
   portfolioActivityService = inject(PortfolioActivityService);
 
   userId: InputSignal<number> = input.required<number>();
-  portfolioId: InputSignal<number | null> = input.required<number | null>();
+  portfolioName: InputSignal<string | null> = input.required<string | null>();
 
   dataSource: MatTableDataSource<LivePortfolioPerformanceInterface> =
     new MatTableDataSource();
@@ -56,29 +56,32 @@ export class LiveAssetPerformance implements OnInit, OnDestroy {
   }
 
   ngOnChanges(): void {
-    this.getPortfolioActivityContent(this.portfolioId());
+    this.getPortfolioActivityContent(this.portfolioName());
 
   }
 
-  getPortfolioActivityContent(portfolioId: number | null) {
-    if (portfolioId) {
+  getPortfolioActivityContent(portfolioName: string | null) {
+    if (portfolioName) {
       // this.spinnerFlagIsSet = true;
       this.portfolioActivityService
-        .getActivityForPortfolio(this.userId(), portfolioId)
+        .getActivityForPortfolio(this.userId(), portfolioName)
         .subscribe({
           next: (response: PortfolioActivityModel[]) => {
+            console.log(`responsekkkkkkkkkkkkkkkkk: ${JSON.stringify(response)}`)
 
-            // builds list of symbols to send to performance table component
+            // builds list of assets to send to performance table component
             const symbols: string[] = [];
             response.forEach((item) => {
-              symbols.push(item.symbol);
+              symbols.push(item.asset);
             });
 
             symbols.forEach((symbol) => {
+              console.log(`symbol: ${symbol}`)
+              this.streamService.closeConnection(symbol);
               this.registerToIBLivePrice(symbol);
             });
             this.tmytsService
-              .getPortfolioPerformance(this.userId(), portfolioId, symbols)
+              .getPortfolioPerformance(this.userId(), portfolioName as string, symbols)
               .subscribe({
                 next: (response) => {
                   this.dataSource.data = response;
@@ -116,12 +119,12 @@ export class LiveAssetPerformance implements OnInit, OnDestroy {
   }
 
   registerToIBLivePrice(symbol: string) {
-    // Subscribe to the specific stream for THIS symbol
+    // Subscribe to the specific stream for THIS asset
     this.subscription = this.streamService.getPriceStream(symbol).subscribe({
       next: (message) => {
         // The API message structure is {"symbol": "...", "price": ...}
         this.dataSource.data.forEach((item) => {
-          if (item.symbol === symbol) {
+          if (item.asset === symbol) {
             item.rt_price = message.price;
             item.gain_loss = item.rt_price - item.weighted_average_purchase_price;
             item.percent = (item.gain_loss / item.weighted_average_purchase_price);

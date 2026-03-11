@@ -41,9 +41,9 @@ export class Portfolios implements OnInit {
   portfolioList: PortfolioModel[] = [];
   dialog = inject(MatDialog);
   private _snackBar = inject(MatSnackBar);
-  selectedPortfolio: number | null = 0;
+  selectedPortfolio: string | null = '';
 
-  dataExchangeToChild = PortfolioComponentsDataExchange.create(0, 0, []);
+  dataExchangeToChild = PortfolioComponentsDataExchange.create(0, '', []);
 
   constructor() {
     this.portfolioService.dialogTypes().find((portfolio) => {
@@ -63,7 +63,7 @@ export class Portfolios implements OnInit {
       )
       .subscribe({
         next: (response: UserModel) => {
-          this.selectedPortfolio = response.portfolio_id;
+          this.selectedPortfolio = response.portfolio_name;
           this.updatePortfolioList();
         },
         error: (error) => {
@@ -90,7 +90,7 @@ export class Portfolios implements OnInit {
 
     dialogRef.afterClosed().subscribe((response) => {
       const createdPortfolio: PortfolioModel = response as PortfolioModel;
-      this.selectedPortfolio = createdPortfolio.portfolio_id;
+      this.selectedPortfolio = createdPortfolio.portfolio_name;
       this.updatePortfolioList();
     });
   }
@@ -113,8 +113,8 @@ export class Portfolios implements OnInit {
 
           /* upon this component init selectedPortfolio is zero, 
             thus it selects automatically the first portfolio in portfolioList*/
-          if (this.selectedPortfolio == 0) {
-            this.selectedPortfolio = firstPortfolio.portfolio_id;
+          if (!this.selectedPortfolio) {
+            this.selectedPortfolio = firstPortfolio.portfolio_name;
           }
         },
         error: (error) => {
@@ -131,7 +131,7 @@ export class Portfolios implements OnInit {
   receiveMessage(event: PortfolioComponentsDataExchange) {
     this.dataExchangeToChild = event;
     const partialUser: Partial<UserModel> | null = {
-      portfolio_id: event.portfolio_id,
+      portfolio_name: event.portfolio_name as string,
     };
     this.userService
       .updateUser(this.user_id, partialUser)
@@ -149,6 +149,6 @@ export class Portfolios implements OnInit {
           // Handle error response
         },
       });
-    // console.log(event.portfolio_id);
+    // console.log(event.portfolio_name);
   }
 }

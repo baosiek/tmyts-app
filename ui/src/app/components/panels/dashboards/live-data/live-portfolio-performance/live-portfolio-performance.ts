@@ -26,7 +26,7 @@ export class LivePortfolioPerformance implements OnChanges, OnInit {
   // inputs userId and portfolio Id to be retriece from this 
   // component's parent
   userId: InputSignal<number> = input.required<number>();
-  portfolioId: InputSignal<number | null> = input.required<number | null>();
+  portfolioName: InputSignal<string | null> = input.required<string | null>();
 
   // the initial amount invested
   initialAmount: number = 19406.35;
@@ -46,11 +46,11 @@ export class LivePortfolioPerformance implements OnChanges, OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ('portfolioId' in changes) {
-      console.log(this.portfolioId());
+    if ('portfolioName' in changes) {
+      console.log(this.portfolioName());
       console.log(this.userId());
       this.tmytsPriceHistoryService
-        .getPortfolioDailtPerformance(this.userId(), this.portfolioId(), 19406.35)
+        .getPortfolioDailtPerformance(this.userId(), this.portfolioName(), 19406.35)
         .subscribe({
           next: (response: PortfolioCashflowInterface[]) => {
             this.dataSource.data = response;

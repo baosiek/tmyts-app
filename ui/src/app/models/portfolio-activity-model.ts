@@ -1,7 +1,7 @@
 export type PortfolioActivityMode = {
     user_id: number;
-    portfolio_id: number;
-    symbol: string;
+    portfolio_name: string;
+    asset: string;
     quantity: number;
     purchase_price: number;
     purchase_date: Date;
@@ -11,21 +11,20 @@ export type PortfolioActivityMode = {
 // Factory function to create a new PortfolioModel object
 export const createPortfolio = (): PortfolioActivityMode => ({
     user_id: 0,
-    portfolio_id: 0,
-    symbol: '',
+    portfolio_name: '',
+    asset: '',
     quantity: 0.0,
     purchase_date: new Date(),
     purchase_price: 0.0,
-    broker_id: 0 
+    broker_id: 0
 });
 
 export type PortfolioActivityModel = {
     user_id: number;
     user_name: string;
-    portfolio_id: number;
     portfolio_name: string;
-    symbol: string;
-    symbol_name: string;
+    asset: string;
+    asset_name: string;
     quantity: number;
     cash_in: number;
     fees: number;
@@ -38,23 +37,22 @@ export type PortfolioActivityModel = {
 export const createPortfolio_view = (): PortfolioActivityModel => ({
     user_id: 0,
     user_name: '',
-    portfolio_id: 0,
     portfolio_name: '',
-    symbol: '',
-    symbol_name: '',
+    asset: '',
+    asset_name: '',
     quantity: 0.0,
     cash_in: 0.0,
     fees: 0.0,
     purchase_date: new Date(),
     purchase_price: 0.0,
-    broker_id: 0 
+    broker_id: 0
 });
 
-export type SymbolByPortfolioTotalsModel = {
+export type AssetByPortfolioTotalsModel = {
     user_id: number;
-    portfolio_id: number;
-    symbol: string;
-    symbol_name: string;
+    portfolio_name: string;
+    asset: string;
+    asset_name: string;
     broker_id: number;
     broker_name: string;
     total_quantity: number;

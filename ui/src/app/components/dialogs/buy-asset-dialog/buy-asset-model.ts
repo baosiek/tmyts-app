@@ -1,17 +1,17 @@
-export type SymbolDataModel = {
-    symbol: string;
-    price_close: number;
-    price_open: number;
-    price_high: number;
-    price_low: number;
-    difference: number;
-    percent: number;
-    volume: number;
+export type AssetDataModel = {
+  asset: string;
+  price_close: number;
+  price_open: number;
+  price_high: number;
+  price_low: number;
+  difference: number;
+  percent: number;
+  volume: number;
 }
 
-// Factory function to create a new PortfolioModel object
-export const createNewSymbolData = (): SymbolDataModel => ({
-  symbol: '',
+// Factory function to create a new AssetDataModel object
+export const createNewAssetData = (): AssetDataModel => ({
+  asset: '',
   price_close: 0,
   price_open: 0,
   price_high: 0,

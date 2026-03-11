@@ -43,6 +43,7 @@ export class LiveData implements OnInit {
   protected id: string = 'live_data';
 
   user_id: number = 1;
+  // legacy unused variable
   portfilioId: number = 0;
   userService = inject(UserService);
 
@@ -51,9 +52,9 @@ export class LiveData implements OnInit {
   data: ITmytsToolBar | undefined;
 
   portfolioList: PortfolioModel[] = [];
-  selectedPortfolio: number | null = 0;
+  selectedPortfolio: string | null = '';
 
-  dataExchangeToChild = PortfolioComponentsDataExchange.create(0, 0, []);
+  dataExchangeToChild = PortfolioComponentsDataExchange.create(0, '', []);
 
   constructor(private _snackBar: MatSnackBar) {
     this.toolbarService.dialogTypes().find((dashboard) => {
@@ -74,7 +75,7 @@ export class LiveData implements OnInit {
       .subscribe({
         next: (response: UserModel) => {
           // Handle successful response)
-          this.selectedPortfolio = response.portfolio_id;
+          this.selectedPortfolio = response.portfolio_name as string;
           this.updatePortfolioList();
         },
         error: (error) => {
@@ -105,8 +106,8 @@ export class LiveData implements OnInit {
 
           /* upon this component init selectedPortfolio is zero, 
             thus it selects automatically the first portfolio in portfolioList*/
-          if (this.selectedPortfolio == 0) {
-            this.selectedPortfolio = firstPortfolio.portfolio_id;
+          if (!this.selectedPortfolio) {
+            this.selectedPortfolio = firstPortfolio.portfolio_name;
           }
         },
         error: (error) => {

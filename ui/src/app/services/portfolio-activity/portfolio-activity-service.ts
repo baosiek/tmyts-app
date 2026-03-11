@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { PortfolioActivityMode, PortfolioActivityModel, SymbolByPortfolioTotalsModel } from '../../models/portfolio-activity-model';
 import { Observable } from 'rxjs';
+import { AssetByPortfolioTotalsModel, PortfolioActivityMode, PortfolioActivityModel } from '../../models/portfolio-activity-model';
 import { ReturnMessage } from '../../models/return-message';
 
 @Injectable({
@@ -10,14 +10,14 @@ import { ReturnMessage } from '../../models/return-message';
 export class PortfolioActivityService {
 
   http = inject(HttpClient)
-  apiUrl = 'http://localhost:8000/portfolio_activity';
+  apiUrl = 'http://localhost:8000/portfolio-transactions';
 
-  constructor() {}
+  constructor() { }
 
   insertNewActivity(portfolio_activity_data: PortfolioActivityMode): Observable<ReturnMessage> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const apiMethod = 'create';
-    const body = portfolio_activity_data ;
+    const body = portfolio_activity_data;
 
     return this.http.post<ReturnMessage>(`${this.apiUrl}/${apiMethod}/`, body, { headers })
   }
@@ -25,19 +25,20 @@ export class PortfolioActivityService {
   addSellTransaction(portfolio_activity_data: Partial<PortfolioActivityModel>): Observable<ReturnMessage> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const apiMethod = 'create';
-    const body = portfolio_activity_data ;
+    const body = portfolio_activity_data;
 
     return this.http.post<ReturnMessage>(`${this.apiUrl}/${apiMethod}/`, body, { headers })
-  } 
-
-  getActivityForPortfolio(user_id: number, portfolio_id: number): Observable<PortfolioActivityModel[]> {
-    const apiMethod = 'get_all';
-    return this.http.get<PortfolioActivityModel[]>(`${this.apiUrl}/${apiMethod}/?user_id=${user_id}&portfolio_id=${portfolio_id}`)
   }
 
-  getSymbolsTotalsByPortfolio(user_id: number, portfolio_id: number) : Observable<SymbolByPortfolioTotalsModel[]> {
-    const apiMethod = 'get_symbols_by_portfolio';
-    return this.http.get<SymbolByPortfolioTotalsModel[]>(`${this.apiUrl}/${apiMethod}/?user_id=${user_id}&portfolio_id=${portfolio_id}`)
+  getActivityForPortfolio(user_id: number, portfolio_name: string): Observable<PortfolioActivityModel[]> {
+    const apiMethod = 'get_all';
+    // backend should now accept portfolio_name instead of id
+    return this.http.get<PortfolioActivityModel[]>(`${this.apiUrl}/${apiMethod}/${user_id}/${portfolio_name}`)
+  }
+
+  getAssetsTotalsByPortfolio(user_id: number, portfolio_name: string): Observable<AssetByPortfolioTotalsModel[]> {
+    const apiMethod = 'get_assets_by_portfolio';
+    return this.http.get<AssetByPortfolioTotalsModel[]>(`${this.apiUrl}/${apiMethod}/?user_id=${user_id}&portfolio_name=${portfolio_name}`)
   }
 
   deleteActivityForPortfolio(id: number) {

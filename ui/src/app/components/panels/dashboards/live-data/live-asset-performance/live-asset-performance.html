@@ -6,16 +6,16 @@
   <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
 
-  <!-- Symbol column -->
-  <ng-container matColumnDef="symbol">
-    <th mat-header-cell *matHeaderCellDef>Symbol</th>
-    <td mat-cell *matCellDef="let element">{{ element.symbol }}</td>
+  <!-- Asset column -->
+  <ng-container matColumnDef="asset">
+    <th mat-header-cell *matHeaderCellDef>Asset</th>
+    <td mat-cell *matCellDef="let element">{{ element.asset }}</td>
   </ng-container>
 
-  <!-- Symbol name column -->
-  <ng-container matColumnDef="symbol_name">
+  <!-- Asset name column -->
+  <ng-container matColumnDef="asset_name">
     <th mat-header-cell *matHeaderCellDef>Name</th>
-    <td mat-cell *matCellDef="let element">{{ element.symbol_name }}</td>
+    <td mat-cell *matCellDef="let element">{{ element.asset_name }}</td>
   </ng-container>
 
     <!-- Quantity column -->

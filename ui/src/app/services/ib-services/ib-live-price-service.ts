@@ -18,6 +18,7 @@ export class IBLivePriceService {
    * Creates a new connection if one does not already exist for that symbol.
    */
   public getPriceStream(symbol: string): Observable<PriceUpdateMessage> {
+    console.log(`Getting stream for ${symbol}`);
     if (!this.sockets.has(symbol)) {
       const url = `${this.baseUrl}/${symbol}`;
       const socket = webSocket<PriceUpdateMessage>(url);

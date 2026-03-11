@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { catchError, of } from 'rxjs';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
-import { PortfolioActivityModel, SymbolByPortfolioTotalsModel } from '../../../models/portfolio-activity-model';
+import { AssetByPortfolioTotalsModel, PortfolioActivityModel } from '../../../models/portfolio-activity-model';
 import { ReturnMessage } from '../../../models/return-message';
 import { PortfolioActivityService } from '../../../services/portfolio-activity/portfolio-activity-service';
 import { TmytsSnackbar } from '../../reusable-components/tmyts-snackbar/tmyts-snackbar';
@@ -24,7 +24,7 @@ import { DialogData } from '../general-dialog/general-dialog';
   templateUrl: './sell-asset-dialog.html',
   styleUrl: './sell-asset-dialog.scss'
 })
-export class SellAssetDialog implements OnInit{
+export class SellAssetDialog implements OnInit {
 
   // Injects the formbuilder to create the forms
   private _formBuilder = inject(FormBuilder);
@@ -36,8 +36,8 @@ export class SellAssetDialog implements OnInit{
   // Term to perform quick search
   term: string | null | undefined = ''
   userId: number = 0;
-  portfolioId: number = 0;
-  selectedSymbol: SymbolByPortfolioTotalsModel | null = null;
+  portfolioName: string = '';
+  selectedSymbol: AssetByPortfolioTotalsModel | null = null;
   maxQuantityToSell: number = 0;
   spinnerFlagIsSet: boolean = false;
 
@@ -47,57 +47,57 @@ export class SellAssetDialog implements OnInit{
   dialogData = input.required<DialogData>()
 
   // Initializes the table datasource
-  displayedColumns: string[] = ['symbol', 'symbol_name', 'broker_name', 'total_quantity', 'total_fees', 'average_purchase_price', 'current_price', 'sell'];
-  dataSource: MatTableDataSource<SymbolByPortfolioTotalsModel> = new MatTableDataSource();
-  
-  constructor(public dialogRef: MatDialogRef<SellAssetDialog>, private _snackBar: MatSnackBar) {}
+  displayedColumns: string[] = ['asset', 'asset_name', 'broker_name', 'total_quantity', 'total_fees', 'average_purchase_price', 'current_price', 'sell'];
+  dataSource: MatTableDataSource<AssetByPortfolioTotalsModel> = new MatTableDataSource();
+
+  constructor(public dialogRef: MatDialogRef<SellAssetDialog>, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.userId = this.dialogData().data.get('userId');
-    this.portfolioId = this.dialogData().data.get('portfolioId');
+    this.portfolioName = this.dialogData().data.get('portfolioName');
     this.spinnerFlagIsSet = true;
-    this.portfolioActivityService.getSymbolsTotalsByPortfolio(this.userId, this.portfolioId)
-    .pipe(
-      catchError(
-        (error) => {
-          // Renders error snack-bar
-          this._snackBar.openFromComponent(
-            TmytsSnackbar, {
-              data: {'message': JSON.stringify(error), 'action': 'Close'},
+    this.portfolioActivityService.getAssetsTotalsByPortfolio(this.userId, this.portfolioName)
+      .pipe(
+        catchError(
+          (error) => {
+            // Renders error snack-bar
+            this._snackBar.openFromComponent(
+              TmytsSnackbar, {
+              data: { 'message': JSON.stringify(error), 'action': 'Close' },
               panelClass: ['error-snackbar-theme']
             }
-          );
-          return of([]);
+            );
+            return of([]);
+          }
+        )
+      )
+      .subscribe(
+        {
+          next: (response: AssetByPortfolioTotalsModel[]) => {
+            this.dataSource.data = response;
+          },
+          complete: () => {
+            this.spinnerFlagIsSet = false;
+          }
         }
       )
-    )
-    .subscribe(
-      { 
-        next: (response: SymbolByPortfolioTotalsModel[]) => {
-          this.dataSource.data = response;
-        },
-        complete: () => {
-           this.spinnerFlagIsSet = false;
-        }
-      }
-    )
   }
 
-  selectRow(row: SymbolByPortfolioTotalsModel) {
+  selectRow(row: AssetByPortfolioTotalsModel) {
     this.selectedSymbol = row;
     this.maxQuantityToSell = this.selectedSymbol.total_quantity
     console.log(this.maxQuantityToSell)
   }
 
-  sell(element: SymbolByPortfolioTotalsModel) {
-    const selected = this.dataSource.data.find(el => el.symbol === element.symbol)
+  sell(element: AssetByPortfolioTotalsModel) {
+    const selected = this.dataSource.data.find(el => el.asset === element.asset)
     if (selected && (this.maxQuantityToSell >= selected.total_quantity)) {
       // console.log(selected)
       console.log(this.selectedSymbol)
       const activity: Partial<PortfolioActivityModel> = {
         user_id: selected.user_id,
-        portfolio_id: selected.portfolio_id,
-        symbol: selected.symbol,
+        portfolio_name: selected.portfolio_name,
+        asset: selected.asset,
         quantity: selected.total_quantity * -1,
         purchase_price: selected.current_price,
         purchase_date: new Date(),
@@ -107,52 +107,52 @@ export class SellAssetDialog implements OnInit{
       }
 
       this.portfolioActivityService.addSellTransaction(activity)
-      .pipe(
-        catchError(
-          (error) => {
-            throw error;
-          }
+        .pipe(
+          catchError(
+            (error) => {
+              throw error;
+            }
+          )
         )
-      )
-      .subscribe(
-        {
-          next: (response: ReturnMessage) => {
-            // Handle successful response
-            // Sends the response obtained from the service to [portfolios] component
-            this.dialogRef.close(response)
-  
-            // Renders success snack-bar
-            const message: string = `Asset[${response.message}] was sold`;
-            this._snackBar.openFromComponent(
-              TmytsSnackbar, {
-                data: {'message': message, 'action': 'dismiss'},
+        .subscribe(
+          {
+            next: (response: ReturnMessage) => {
+              // Handle successful response
+              // Sends the response obtained from the service to [portfolios] component
+              this.dialogRef.close(response)
+
+              // Renders success snack-bar
+              const message: string = `Asset[${response.message}] was sold`;
+              this._snackBar.openFromComponent(
+                TmytsSnackbar, {
+                data: { 'message': message, 'action': 'dismiss' },
                 panelClass: ['success-snackbar-theme']
               }
-            );
-          },
-          error: (error) => {
-            // Handle error response
-            const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
-  
-            // Renders error snack-bar
-            this._snackBar.openFromComponent(
-              TmytsSnackbar, {
-                data: {'message': message, 'action': 'Close'},
+              );
+            },
+            error: (error) => {
+              // Handle error response
+              const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
+
+              // Renders error snack-bar
+              this._snackBar.openFromComponent(
+                TmytsSnackbar, {
+                data: { 'message': message, 'action': 'Close' },
                 panelClass: ['error-snackbar-theme']
               }
-            );
+              );
+            }
           }
-        }
-      );
+        );
     } else {
       // Renders error snack-bar
       const message: string = "Selling quantity is bigger than owned quantity";
       this._snackBar.openFromComponent(
         TmytsSnackbar, {
-          data: {'message': message, 'action': 'Close'},
-          panelClass: ['error-snackbar-theme']
-        }
+        data: { 'message': message, 'action': 'Close' },
+        panelClass: ['error-snackbar-theme']
+      }
       );
-    }    
+    }
   }
 }

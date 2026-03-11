@@ -28,7 +28,7 @@ export class PortfolioPerformanceTable implements OnChanges {
   liveDataService = inject(LiveDataService);
 
   displayedColumns: string[] = [
-    'symbol',
+    'asset',
     'quantity',
     'average_price',
     'actual_price',
@@ -44,17 +44,17 @@ export class PortfolioPerformanceTable implements OnChanges {
   constructor(private _snackBar: MatSnackBar) { }
 
   ngOnChanges(): void {
-    if (this.dataExchangeFromParent.symbol_list.length > 0) {
-      if (this.dataExchangeFromParent.portfolio_id) {
-        const uniqueSimbols = [
-          ...new Set(this.dataExchangeFromParent.symbol_list),
+    if (this.dataExchangeFromParent.asset_list.length > 0) {
+      if (this.dataExchangeFromParent.portfolio_name) {
+        const uniqueAssets = [
+          ...new Set(this.dataExchangeFromParent.asset_list),
         ];
         this.spinnerFlagIsSet = true;
         this.liveDataService
           .getDetailedPortfolioActivity(
             this.dataExchangeFromParent.user_id,
-            this.dataExchangeFromParent.portfolio_id,
-            uniqueSimbols,
+            this.dataExchangeFromParent.portfolio_name as string,
+            uniqueAssets,
           )
           .subscribe({
             next: (response: PortfolioPerformanceModel[]) => {
