@@ -54,6 +54,8 @@ export class Portfolios implements OnInit {
       }
     });
 
+    // The following code is meant to find the last portfolio 
+    // selected by the user. 
     this.userService
       .getUser(this.user_id)
       .pipe(
@@ -64,10 +66,15 @@ export class Portfolios implements OnInit {
       .subscribe({
         next: (response: UserModel) => {
           this.selectedPortfolio = response.portfolio_name;
+
+          // Now the app finds all portfolios associated with this user
+          // enabling selecting another one.
           this.updatePortfolioList();
         },
         error: (error) => {
-          // Handle error response
+          console.log(`Error at user init: ${JSON.stringify(error)}`)
+
+          // Handle error response via snack bar
         },
       });
   }
@@ -109,13 +116,13 @@ export class Portfolios implements OnInit {
           this.portfolioList = [...response];
 
           // typescript syntax to get the first element
-          const [firstPortfolio] = this.portfolioList;
+          // const [firstPortfolio] = this.portfolioList;
 
           /* upon this component init selectedPortfolio is zero, 
             thus it selects automatically the first portfolio in portfolioList*/
-          if (!this.selectedPortfolio) {
-            this.selectedPortfolio = firstPortfolio.portfolio_name;
-          }
+          // if (!this.selectedPortfolio) {
+          //   this.selectedPortfolio = firstPortfolio.portfolio_name;
+          // }
         },
         error: (error) => {
           // Handle error response
@@ -130,6 +137,7 @@ export class Portfolios implements OnInit {
 
   receiveMessage(event: PortfolioComponentsDataExchange) {
     this.dataExchangeToChild = event;
+    console.log(`Event received from child: ${JSON.stringify(event)}`)
     const partialUser: Partial<UserModel> | null = {
       portfolio_name: event.portfolio_name as string,
     };
@@ -142,7 +150,7 @@ export class Portfolios implements OnInit {
       )
       .subscribe({
         next: (response: ReturnMessage) => {
-          // console.log(response);
+          console.log(`This response is logged upon default portfolio updted for user: ${JSON.stringify(response)}`);
           this._snackBar.open(response.message, 'Close');
         },
         error: (error) => {

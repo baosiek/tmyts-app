@@ -5,7 +5,7 @@ export type UserModel = {
   email: string | null;
   theme: string | null;
   portfolio_name: string | null;
-};
+}
 
 // Factory function to create a new PortfolioModel object
 export const createNewUser = (): UserModel => ({
