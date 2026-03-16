@@ -16,17 +16,17 @@ import { AddPortfolioDialog } from '../../../dialogs/add-portfolio-dialog/add-po
 import { GeneraliDialog } from '../../../dialogs/general-dialog/general-dialog';
 import { TmytsToolbar } from '../../../reusable-components/tmyts-toolbar/tmyts-toolbar';
 import { IndexesCards } from '../../indexes-cards/indexes-cards';
+import { PortfolioHoldingsTable } from "./portfolio-tables/portfolio-holdings-table/portfolio-holdings-table";
 import { PortfolioPerformanceTable } from './portfolio-tables/portfolio-performance-table/portfolio-performance-table';
-import { PortfolioTableRud } from './portfolio-tables/portfolio-table-rud/portfolio-table-rud';
 @Component({
   selector: 'app-portfolios',
   imports: [
     ...MATERIAL_IMPORTS,
     TmytsToolbar,
-    PortfolioTableRud,
     FormsModule,
     PortfolioPerformanceTable,
     IndexesCards,
+    PortfolioHoldingsTable
   ],
   templateUrl: './portfolios.html',
   styleUrl: './portfolios.scss',

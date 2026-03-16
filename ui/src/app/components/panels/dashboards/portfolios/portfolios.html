@@ -27,8 +27,7 @@
         </div>
         <div class="content-wrapper">
             <div>
-                <app-portfolio-table-rud [userId]="user_id" [portfolioName]="selectedPortfolio"
-                    (portfolioExchangeData)="receiveMessage($event)"></app-portfolio-table-rud>
+                <app-portfolio-holdings-table></app-portfolio-holdings-table>
             </div>
             <div>
                 <app-portfolio-performance-table

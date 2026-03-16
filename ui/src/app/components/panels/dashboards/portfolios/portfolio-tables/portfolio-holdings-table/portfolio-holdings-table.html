@@ -1,0 +1,123 @@
+<div class="table-container">
+  <h2>Portfolio Holdings</h2>
+  @if (spinnerFlagIsSet) {
+    <div class="spinner-container">
+      <mat-spinner class="spinner-container"></mat-spinner>
+    </div>
+  } @else {
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+
+    <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- Position Price Date -->
+    <ng-container matColumnDef="price_date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.price_date | date:'shortDate'}} </td>
+    </ng-container>
+
+    <!-- Name Asset name -->
+    <ng-container matColumnDef="asset">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Asset </th>
+      <td mat-cell *matCellDef="let element"> {{element.asset}} </td>
+    </ng-container>
+
+    <!-- Name Asset name -->
+    <ng-container matColumnDef="asset_name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Asset Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.asset_name}} </td>
+    </ng-container>
+
+        <!-- Weight Column -->
+    <ng-container matColumnDef="weight">
+      <th mat-header-cell *matHeaderCellDef> Weight </th>
+      <td mat-cell *matCellDef="let element"> {{element.weight }} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef> Quantity </th>
+      <td mat-cell *matCellDef="let element"> {{element.quantity }} </td>
+    </ng-container>
+
+    <!-- Purchase price Column -->
+    <ng-container matColumnDef="cost_basis_price">
+      <th mat-header-cell *matHeaderCellDef> Avg. Price </th>
+      <td mat-cell *matCellDef="let element"> {{element.cost_basis_price | currency }} </td>
+    </ng-container>
+
+    <!-- Purchase price Column -->
+    <ng-container matColumnDef="total_cost_basis">
+      <th mat-header-cell *matHeaderCellDef> Total Cost </th>
+      <td mat-cell *matCellDef="let element"> {{element.total_cost_basis | currency }} </td>
+    </ng-container>
+
+    <!-- Quantity Column -->
+    <!-- <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef> Quantity </th>
+      <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+    </ng-container> -->
+
+    <!-- Cash_in Column -->
+    <!-- <ng-container matColumnDef="cash_in">
+      <th mat-header-cell *matHeaderCellDef> Dividends/Interest </th>
+      <td mat-cell *matCellDef="let element"> {{element.cash_in}} </td>
+    </ng-container> -->
+
+    <!-- Fees Column -->
+    <!-- <ng-container matColumnDef="fees">
+      <th mat-header-cell *matHeaderCellDef> Fees </th>
+      <td mat-cell *matCellDef="let element"> {{element.fees}} </td>
+    </ng-container> -->
+
+    <!-- Purchase date Column -->
+    <!-- <ng-container matColumnDef="purchase_date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Purchase date </th>
+      <td mat-cell *matCellDef="let element"> {{element.purchase_date | date:'shortDate'}} </td>
+    </ng-container> -->
+
+    <!-- Broker Column -->
+    <!-- <ng-container matColumnDef="broker_name">
+      <th mat-header-cell *matHeaderCellDef> Broker </th>
+      <td mat-cell *matCellDef="let element"> {{element.broker_name}} </td>
+    </ng-container> -->
+
+    <!-- Delete Column -->
+    <!-- <ng-container matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef> Delete </th>
+      <td mat-cell *matCellDef="let element">
+        <button style="color: red;" mat-icon-button (click)="deleteRow(element.id)">
+          <mat-icon fontSet="material-symbols-outlined">delete</mat-icon>
+        </button>
+      </td>
+    </ng-container> -->
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  }
+  <mat-paginator [pageSizeOptions]="[10, 15, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+  </mat-paginator>
+  <!-- <div class="actions">
+    <div>
+      <button mat-raised-button (click)="buyAsset()">
+        Buy asset
+          <mat-icon fontSet="material-symbols-outlined">add_shopping_cart</mat-icon>
+      </button>
+    </div>
+    <div>
+        <button mat-raised-button (click)="sellAsset()">
+        Sell asset
+          <mat-icon fontSet="material-symbols-outlined">sell</mat-icon>
+      </button>
+    </div>
+    <div>
+        <button mat-raised-button (click)="addIncome()">
+        Add income
+          <mat-icon fontSet="material-symbols-outlined">attach_money</mat-icon>
+      </button>
+    </div>
+  </div> -->
+</div>
