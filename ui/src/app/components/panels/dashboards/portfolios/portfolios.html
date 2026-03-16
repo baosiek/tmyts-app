@@ -27,7 +27,10 @@
         </div>
         <div class="content-wrapper">
             <div>
-                <app-portfolio-holdings-table></app-portfolio-holdings-table>
+                <app-portfolio-holdings-table
+                  [userId]="user_id"
+                  [portfolioName]="selectedPortfolio"
+                ></app-portfolio-holdings-table>
             </div>
             <div>
                 <app-portfolio-performance-table
