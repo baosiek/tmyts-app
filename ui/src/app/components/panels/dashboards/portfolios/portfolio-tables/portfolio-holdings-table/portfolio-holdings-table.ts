@@ -1,8 +1,9 @@
 import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
-import { Component, inject, input, InputSignal, OnChanges, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, input, InputSignal, OnChanges, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { PortfolioComponentsDataExchange } from '../../../../../../interfaces/portfolio-components-data-exchange';
 import { MATERIAL_IMPORTS } from '../../../../../../material-imports';
 import { PortfolioHoldingsModel } from '../../../../../../models/portfolio_holdings_model';
 import { TmytsHoldingsService } from '../../../../../../services/tmyts-holdings/tmyts-holdings-service';
@@ -14,9 +15,10 @@ import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar
   templateUrl: './portfolio-holdings-table.html',
   styleUrl: './portfolio-holdings-table.scss'
 })
-export class PortfolioHoldingsTable implements OnInit, OnChanges {
+export class PortfolioHoldingsTable implements OnChanges {
 
-
+  @Output() portfolioExchangeData =
+    new EventEmitter<PortfolioComponentsDataExchange>();
   spinnerFlagIsSet: boolean = false;
 
   userId: InputSignal<number> = input.required<number>();
@@ -40,12 +42,7 @@ export class PortfolioHoldingsTable implements OnInit, OnChanges {
 
   constructor(private _snackBar: MatSnackBar) { }
 
-  ngOnInit(): void {
-    console.log(`ONINIT this.dataExchangeFromParent: userId: ${this.userId} | portfolioName: ${this.portfolioName}`)
-  }
-
   ngOnChanges(): void {
-    console.log(`ONINIT this.dataExchangeFromParent: userId: ${this.userId} | portfolioName: ${this.portfolioName}`)
     if (this.userId() && this.portfolioName()) {
       this.spinnerFlagIsSet = true;
       this.portfolioHoldingsService
@@ -55,8 +52,17 @@ export class PortfolioHoldingsTable implements OnInit, OnChanges {
         )
         .subscribe({
           next: (response: PortfolioHoldingsModel[]) => {
-            console.log(`Response: ${JSON.stringify(response)}`)
             this.dataSource.data = response;
+            const assets: string[] = [];
+            response.forEach((item) => {
+              assets.push(item.asset);
+            });
+            const dataExchange = PortfolioComponentsDataExchange.create(
+              this.userId(),
+              this.portfolioName(),
+              assets,
+            );
+            this.portfolioExchangeData.emit(dataExchange);
           },
           error: (error) => {
             // Handle error response

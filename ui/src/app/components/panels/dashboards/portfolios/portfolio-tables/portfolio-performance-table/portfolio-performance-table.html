@@ -62,31 +62,19 @@
     <!-- Quantity Column -->
     <ng-container matColumnDef="quantity">
       <th mat-header-cell *matHeaderCellDef> Total Quantity </th>
-      <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.quantity | number:'1.2-2'}} </td>
     </ng-container>
 
     <!-- Cash in Column -->
-    <ng-container matColumnDef="cash_in">
-      <th mat-header-cell *matHeaderCellDef> Total Dividends/Interest </th>
-      <td mat-cell *matCellDef="let element"> {{element.cash_in}} </td>
+    <ng-container matColumnDef="cost_basis_price"> 
+      <th mat-header-cell *matHeaderCellDef> Purchase Price </th>
+      <td mat-cell *matCellDef="let element"> {{element.cost_basis_price | currency:'USD':'symbol':'1.2-2'}} </td>
     </ng-container>
 
     <!-- Quantity Column -->
-    <ng-container matColumnDef="fees">
-      <th mat-header-cell *matHeaderCellDef> Total Fees </th>
-      <td mat-cell *matCellDef="let element"> {{element.fees}} </td>
-    </ng-container>
-
-    <!-- Average Price Column -->
-    <ng-container matColumnDef="average_price">
-      <th mat-header-cell *matHeaderCellDef> Average Price </th>
-      <td mat-cell *matCellDef="let element"> {{element.average_price | currency}} </td>
-    </ng-container>
-
-    <!-- Average Price Column -->
-    <ng-container matColumnDef="actual_price">
-      <th mat-header-cell *matHeaderCellDef> Current Price </th>
-      <td mat-cell *matCellDef="let element"> {{element.actual_price | currency}} </td>
+    <ng-container matColumnDef="close">
+      <th mat-header-cell *matHeaderCellDef> Close Price </th>
+      <td mat-cell *matCellDef="let element"> {{element.close  | currency:'USD':'symbol':'1.2-2'}} </td>
     </ng-container>
 
     <!-- Variation Column -->
@@ -98,15 +86,15 @@
     </ng-container>
 
     <!-- Percent Column -->
-    <ng-container matColumnDef="percent">
+    <ng-container matColumnDef="weighted_percent">
       <th mat-header-cell *matHeaderCellDef> ROI </th>
       <td mat-cell style="padding: 0;" *matCellDef="let element">
-        @if (element.percent >= 0) {
-        <app-tmyts-chip iconName="arrow_upward_alt" classType="success-container" backgroundColorColor="#7ff593">{{element.percent
+        @if (element.weighted_percent >= 0) {
+        <app-tmyts-chip iconName="arrow_upward_alt" classType="success-container" backgroundColorColor="#7ff593">{{element.weighted_percent
           | percent:'1.2-2'}}
         </app-tmyts-chip>
         } @else {
-        <app-tmyts-chip iconName="arrow_downward_alt" classType="error-container">{{element.percent | percent:'1.2-2'}}
+        <app-tmyts-chip iconName="arrow_downward_alt" classType="error-container">{{element.weighted_percent | percent:'1.2-2'}}
         </app-tmyts-chip>
         }
       </td>

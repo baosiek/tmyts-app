@@ -137,7 +137,6 @@ export class Portfolios implements OnInit {
 
   receiveMessage(event: PortfolioComponentsDataExchange) {
     this.dataExchangeToChild = event;
-    console.log(`Event received from child: ${JSON.stringify(event)}`)
     const partialUser: Partial<UserModel> | null = {
       portfolio_name: event.portfolio_name as string,
     };
@@ -150,7 +149,6 @@ export class Portfolios implements OnInit {
       )
       .subscribe({
         next: (response: ReturnMessage) => {
-          console.log(`This response is logged upon default portfolio updted for user: ${JSON.stringify(response)}`);
           this._snackBar.open(response.message, 'Close');
         },
         error: (error) => {

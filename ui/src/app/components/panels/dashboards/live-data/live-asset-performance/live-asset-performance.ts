@@ -67,8 +67,6 @@ export class LiveAssetPerformance implements OnInit, OnDestroy {
         .getActivityForPortfolio(this.userId(), portfolioName)
         .subscribe({
           next: (response: PortfolioActivityModel[]) => {
-            console.log(`responsekkkkkkkkkkkkkkkkk: ${JSON.stringify(response)}`)
-
             // builds list of assets to send to performance table component
             const symbols: string[] = [];
             response.forEach((item) => {
@@ -76,7 +74,6 @@ export class LiveAssetPerformance implements OnInit, OnDestroy {
             });
 
             symbols.forEach((symbol) => {
-              console.log(`symbol: ${symbol}`)
               this.streamService.closeConnection(symbol);
               this.registerToIBLivePrice(symbol);
             });

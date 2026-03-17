@@ -30,10 +30,13 @@
                 <app-portfolio-holdings-table
                   [userId]="user_id"
                   [portfolioName]="selectedPortfolio"
+                  (portfolioExchangeData)="receiveMessage($event)"
                 ></app-portfolio-holdings-table>
             </div>
             <div>
                 <app-portfolio-performance-table
+                  [userId]="user_id"
+                  [portfolioName]="selectedPortfolio"
                     [dataExchangeFromParent]="dataExchangeToChild"></app-portfolio-performance-table>
             </div>
         </div>

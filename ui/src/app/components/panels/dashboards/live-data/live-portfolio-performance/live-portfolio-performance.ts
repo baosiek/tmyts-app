@@ -47,8 +47,6 @@ export class LivePortfolioPerformance implements OnChanges, OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('portfolioName' in changes) {
-      console.log(this.portfolioName());
-      console.log(this.userId());
       this.tmytsPriceHistoryService
         .getPortfolioDailtPerformance(this.userId(), this.portfolioName(), 19406.35)
         .subscribe({

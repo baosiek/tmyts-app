@@ -26,6 +26,14 @@ export class LiveDataService {
     const apiMethod = 'portfolio_performance';
     const body = symbols;
 
+    return this.http.post<PortfolioPerformanceModel[]>(`${this.apiUrl}/${apiMethod}/${user_id}/${portfolio_name}`, body, { headers })
+  }
+
+  getPortfolioHoldingsPerformance(user_id: number, portfolio_name: string, symbols: string[]): Observable<PortfolioPerformanceModel[]> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const apiMethod = 'portfolio_holdings_performance';
+    const body = symbols;
+
     return this.http.post<PortfolioPerformanceModel[]>(`${this.apiUrl}/${apiMethod}/?user_id=${user_id}&portfolio_name=${portfolio_name}`, body, { headers })
   }
 

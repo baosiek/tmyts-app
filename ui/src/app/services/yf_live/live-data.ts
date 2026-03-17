@@ -54,12 +54,12 @@ export class LivePerformanceDataService {
 
               const combined = partialChunk + chunk;
 
-              console.log(
-                `[Stream Debug] Buffer Size: ${combined.length} bytes | New Lines Found: ${lines.length - 1}`,
-              );
-              console.log(
-                `Chunks: ${lines.length}. Remaining buffer size: ${partialChunk.length}`,
-              );
+              // console.log(
+              //   `[Stream Debug] Buffer Size: ${combined.length} bytes | New Lines Found: ${lines.length - 1}`,
+              // );
+              // console.log(
+              //   `Chunks: ${lines.length}. Remaining buffer size: ${partialChunk.length}`,
+              // );
 
               // The last element of .split is always the "incomplete" part
               // (or an empty string if it ended perfectly with \n)
