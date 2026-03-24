@@ -22,18 +22,18 @@
       }
     </mat-select>
   </mat-form-field>
-  <div class="content-wrapper">
-    <div>
+  <div class="content-wrapper" style="display: flex; gap: 1rem;">
+    <div style="flex: 2;">
       <app-live-asset-performance
         [userId]="user_id"
         [portfolioName]="selectedPortfolio"
       ></app-live-asset-performance>
     </div>
-    <div>
-      <!-- <app-live-portfolio-performance
+    <div style="flex: 1;">
+      <app-live-portfolio-performance
       [userId]="user_id"
       [portfolioName]="selectedPortfolio"
-      ></app-live-portfolio-performance> -->
+      ></app-live-portfolio-performance>
     </div>
   </div>
 </div>
