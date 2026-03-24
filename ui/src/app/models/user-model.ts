@@ -4,7 +4,7 @@ export type UserModel = {
   user_password: string | null;
   email: string | null;
   theme: string | null;
-  portfolio_name: string | null;
+  portfolio_name: string;
 }
 
 // Factory function to create a new PortfolioModel object

@@ -33,6 +33,17 @@ export type PortfolioActivityModel = {
     broker_id: number
 }
 
+export type PortfolioTransactionModel = {
+    purchase_date: Date;
+    quantity: number;
+    asset: string;
+    asset_name: string;
+    total_quantity: number;
+    total_commission: number;
+    average_price: number;
+    broker_name: string
+}
+
 // Factory function to create a new PortfolioModel object
 export const createPortfolio_view = (): PortfolioActivityModel => ({
     user_id: 0,

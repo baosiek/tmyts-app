@@ -17,17 +17,16 @@ export class IBLivePriceService {
    * Retrieves an observable stream for a specific stock symbol.
    * Creates a new connection if one does not already exist for that symbol.
    */
-  public getPriceStream(symbol: string): Observable<PriceUpdateMessage> {
-    console.log(`Getting stream for ${symbol}`);
-    if (!this.sockets.has(symbol)) {
-      const url = `${this.baseUrl}/${symbol}`;
+  public getPriceStream(portfolio_name: string, asset: string): Observable<PriceUpdateMessage> {
+    console.log(`Getting stream for ${asset}`);
+    if (!this.sockets.has(asset)) {
+      const url = `${this.baseUrl}/${portfolio_name}/${asset}`;
       const socket = webSocket<PriceUpdateMessage>(url);
-      this.sockets.set(symbol, socket);
-      console.log(`Establishing new connection for ${symbol} at ${url}`);
+      this.sockets.set(asset, socket);
+      console.log(`Established new connection for ${asset} at ${url}`);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.sockets.get(symbol)!.asObservable();
+    return this.sockets.get(asset)!.asObservable();
   }
 
   /**

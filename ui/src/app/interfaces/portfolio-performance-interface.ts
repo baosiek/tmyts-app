@@ -14,7 +14,7 @@ export interface LivePortfolioPerformanceInterface {
     total_cash_out: number;
     total_fees: number;
     total_value: number;
-    weighted_average_purchase_price: number;
+    average_price: number;
     rt_price: number;
     adj_price_close: number; // last close price
     portfolio_value: number; // real time portfolio value

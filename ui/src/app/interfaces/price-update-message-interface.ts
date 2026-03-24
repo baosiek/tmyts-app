@@ -1,5 +1,6 @@
 interface PriceUpdateMessage {
+    type: string;
     tstamp: number;
-    symbol: string;
-    price: number;
+    asset: string;
+    last_price: number;
 }

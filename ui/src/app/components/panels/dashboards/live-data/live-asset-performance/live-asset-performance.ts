@@ -11,12 +11,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { LivePortfolioPerformanceInterface } from '../../../../../interfaces/portfolio-performance-interface';
-import { PortfolioActivityModel } from '../../../../../models/portfolio-activity-model';
+import { PortfolioTransactionModel } from '../../../../../models/portfolio-activity-model';
+import { AssetsPriceHistoryService } from '../../../../../services/assets-price-history/assets-price-history-service';
 import { IBLivePriceService } from '../../../../../services/ib-services/ib-live-price-service';
 import { PortfolioActivityService } from '../../../../../services/portfolio-activity/portfolio-activity-service';
 import { TmytsPricesHistoryService } from '../../../../../services/tmyts-prices-history/tmyts-prices-history';
 import { TmytsChip } from '../../../../reusable-components/tmyts-chip/tmyts-chip';
-import { TmytsSnackbar } from '../../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 
 @Component({
   selector: 'app-live-asset-performance',
@@ -29,7 +29,7 @@ export class LiveAssetPerformance implements OnInit, OnDestroy {
     'asset',
     'asset_name',
     'total_quantity',
-    'weighted_average_purchase_price',
+    'average_price',
     'rt_price',
     'gain_loss',
     'percent',
@@ -39,13 +39,14 @@ export class LiveAssetPerformance implements OnInit, OnDestroy {
   ];
 
   private streamService = inject(IBLivePriceService);
+  private assetsPriceHistoryService = inject(AssetsPriceHistoryService);
   private tmytsService = inject(TmytsPricesHistoryService)
   private subscription?: Subscription;
 
-  portfolioActivityService = inject(PortfolioActivityService);
+  portfolioTransactionService = inject(PortfolioActivityService);
 
   userId: InputSignal<number> = input.required<number>();
-  portfolioName: InputSignal<string | null> = input.required<string | null>();
+  portfolioName: InputSignal<string> = input.required<string>();
 
   dataSource: MatTableDataSource<LivePortfolioPerformanceInterface> =
     new MatTableDataSource();
@@ -56,77 +57,82 @@ export class LiveAssetPerformance implements OnInit, OnDestroy {
   }
 
   ngOnChanges(): void {
-    this.getPortfolioActivityContent(this.portfolioName());
-
+    this.getPortfolioTransactions();
   }
 
-  getPortfolioActivityContent(portfolioName: string | null) {
-    if (portfolioName) {
-      // this.spinnerFlagIsSet = true;
-      this.portfolioActivityService
-        .getActivityForPortfolio(this.userId(), portfolioName)
-        .subscribe({
-          next: (response: PortfolioActivityModel[]) => {
-            // builds list of assets to send to performance table component
-            const symbols: string[] = [];
-            response.forEach((item) => {
-              symbols.push(item.asset);
-            });
+  getPortfolioTransactions() {
+    if (this.portfolioName()) {
+      this.portfolioTransactionService.getTransactionsForPortfolio(this.userId(), this.portfolioName())
+        .subscribe(
+          {
+            next: (response: PortfolioTransactionModel[]) => {
+              this.dataSource.data = response.map(item => ({
+                asset: item.asset,
+                asset_name: item.asset_name,
+                total_quantity: item.total_quantity,
+                average_price: item.average_price,
+                rt_price: 0,
+                gain_loss: 0,
+                percent: 0,
+                adj_price_close: 0,
+                total_cash_in: 0,
+                total_cash_out: 0,
+                total_fees: 0,
+                total_value: 0,
+                portfolio_value: 0,
+                last_gain_loss: 0,
+                last_percent: 0
+              }));
 
-            symbols.forEach((symbol) => {
-              this.streamService.closeConnection(symbol);
-              this.registerToIBLivePrice(symbol);
-            });
-            this.tmytsService
-              .getPortfolioPerformance(this.userId(), portfolioName as string, symbols)
-              .subscribe({
-                next: (response) => {
-                  this.dataSource.data = response;
-                },
-                error: (error) => {
-                  // Handle error response
-                  const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
-
-                  // Renders error snack-bar
-                  this._snackBar.openFromComponent(TmytsSnackbar, {
-                    data: { message: message, action: 'Close' },
-                    panelClass: ['error-snackbar-theme'],
-                  });
-                },
-                complete: () => {
-                  // this.spinnerFlagIsSet = false;
-                },
+              response.forEach((item) => {
+                this.streamService.closeConnection(item.asset);
+                this.registerToIBLivePrice(item.asset);
               });
+            },
+            error: (error) => { },
+            complete: () => {
+              this.getAssetsLatestPrices();
+            }
+          }
+        )
+    }
+  }
+
+  getAssetsLatestPrices() {
+    this.assetsPriceHistoryService.getAssetsLatestPrices(this.dataSource.data.map(item => item.asset))
+      .subscribe(
+        {
+          next: (response) => {
+            response.forEach((item) => {
+              this.dataSource.data.forEach((element) => {
+                if (element.asset === item.asset) {
+                  element.adj_price_close = item.adj_price_close;
+                }
+              });
+            });
           },
           error: (error) => {
-            // Handle error response
-            const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
-
-            // Renders error snack-bar
-            this._snackBar.openFromComponent(TmytsSnackbar, {
-              data: { message: message, action: 'Close' },
-              panelClass: ['error-snackbar-theme'],
-            });
+            console.log(`error: ${JSON.stringify(error)}`)
           },
-          complete: () => {
-            // this.spinnerFlagIsSet = false;
-          },
-        });
-    }
+          complete: () => { }
+        }
+      )
   }
 
   registerToIBLivePrice(symbol: string) {
     // Subscribe to the specific stream for THIS asset
-    this.subscription = this.streamService.getPriceStream(symbol).subscribe({
+    this.subscription = this.streamService.getPriceStream(this.portfolioName(), symbol).subscribe({
       next: (message) => {
         // The API message structure is {"symbol": "...", "price": ...}
         this.dataSource.data.forEach((item) => {
           if (item.asset === symbol) {
-            item.rt_price = message.price;
-            item.gain_loss = item.rt_price - item.weighted_average_purchase_price;
-            item.percent = (item.gain_loss / item.weighted_average_purchase_price);
-            item.last_gain_loss = item.rt_price - item.adj_price_close;
-            item.last_percent = (item.last_gain_loss / item.adj_price_close);
+            if (message.type === 'tick') {
+              item.rt_price = message.last_price;
+              item.gain_loss = (item.rt_price - item.average_price) * item.total_quantity;
+              item.percent = (item.gain_loss / (item.average_price * Math.abs(item.total_quantity)));
+              item.last_gain_loss = (item.rt_price - item.adj_price_close) * item.total_quantity;
+              item.last_percent = (item.last_gain_loss / (item.adj_price_close * Math.abs(item.total_quantity)));
+            }
           }
         });
         this.dataSource._updateChangeSubscription()

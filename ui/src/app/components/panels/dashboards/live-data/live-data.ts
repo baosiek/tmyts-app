@@ -52,7 +52,7 @@ export class LiveData implements OnInit {
   data: ITmytsToolBar | undefined;
 
   portfolioList: PortfolioModel[] = [];
-  selectedPortfolio: string | null = '';
+  selectedPortfolio: string = '';
 
   dataExchangeToChild = PortfolioComponentsDataExchange.create(0, '', []);
 

@@ -41,7 +41,7 @@ export class Portfolios implements OnInit {
   portfolioList: PortfolioModel[] = [];
   dialog = inject(MatDialog);
   private _snackBar = inject(MatSnackBar);
-  selectedPortfolio: string | null = '';
+  selectedPortfolio: string = '';
 
   dataExchangeToChild = PortfolioComponentsDataExchange.create(0, '', []);
 
@@ -66,7 +66,6 @@ export class Portfolios implements OnInit {
       .subscribe({
         next: (response: UserModel) => {
           this.selectedPortfolio = response.portfolio_name;
-
           // Now the app finds all portfolios associated with this user
           // enabling selecting another one.
           this.updatePortfolioList();
@@ -114,6 +113,7 @@ export class Portfolios implements OnInit {
         next: (response: PortfolioModel[]) => {
           // Handle successful response updating portfolio list
           this.portfolioList = [...response];
+          console.log(`portfolio list: ${JSON.stringify(this.portfolioList)}`)
 
           // typescript syntax to get the first element
           // const [firstPortfolio] = this.portfolioList;

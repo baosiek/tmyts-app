@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AssetByPortfolioTotalsModel, PortfolioActivityMode, PortfolioActivityModel } from '../../models/portfolio-activity-model';
+import { AssetByPortfolioTotalsModel, PortfolioActivityMode, PortfolioActivityModel, PortfolioTransactionModel } from '../../models/portfolio-activity-model';
 import { ReturnMessage } from '../../models/return-message';
 
 @Injectable({
@@ -34,6 +34,11 @@ export class PortfolioActivityService {
     const apiMethod = 'get_all';
     // backend should now accept portfolio_name instead of id
     return this.http.get<PortfolioActivityModel[]>(`${this.apiUrl}/${apiMethod}/${user_id}/${portfolio_name}`)
+  }
+
+  getTransactionsForPortfolio(user_id: number, portfolio_name: string): Observable<PortfolioTransactionModel[]> {
+    const apiMethod = 'get_all_transactions';
+    return this.http.get<PortfolioTransactionModel[]>(`${this.apiUrl}/${apiMethod}/${user_id}/${portfolio_name}`)
   }
 
   getAssetsTotalsByPortfolio(user_id: number, portfolio_name: string): Observable<AssetByPortfolioTotalsModel[]> {

@@ -22,7 +22,7 @@ export class PortfolioHoldingsTable implements OnChanges {
   spinnerFlagIsSet: boolean = false;
 
   userId: InputSignal<number> = input.required<number>();
-  portfolioName: InputSignal<string | null> = input.required<string | null>();
+  portfolioName: InputSignal<string> = input.required<string>();
 
   portfolioHoldingsService: TmytsHoldingsService = inject(TmytsHoldingsService);
 
@@ -43,6 +43,7 @@ export class PortfolioHoldingsTable implements OnChanges {
   constructor(private _snackBar: MatSnackBar) { }
 
   ngOnChanges(): void {
+    console.log(`this.userId(), this.portfolioName()`)
     if (this.userId() && this.portfolioName()) {
       this.spinnerFlagIsSet = true;
       this.portfolioHoldingsService
