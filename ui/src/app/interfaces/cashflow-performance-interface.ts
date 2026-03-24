@@ -5,9 +5,8 @@
  */
 export interface PortfolioCashflowInterface {
     price_date: Date;
-    cash: number;
     market_value: number;
-    nav: number;
-    daily_return: number;
-    cumulative_return: number;
+    cash_flow: number;
+    daily_return_pct: number;
+    cumulative_twr_pct: number;
 }

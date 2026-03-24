@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, input, InputSignal, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { PortfolioCashflowInterface } from '../../../../../interfaces/cashflow-performance-interface';
-import { TmytsPricesHistoryService } from '../../../../../services/tmyts-prices-history/tmyts-prices-history';
+import { PortfolioPerformanceService } from '../../../../../services/portfolios/portfolio-performance-service';
 
 
 @Component({
@@ -16,24 +16,23 @@ export class LivePortfolioPerformance implements OnChanges, OnInit {
   // defines the columns to be rendered
   displayedColumns: string[] = [
     'price_date',
-    'cash',
     'market_value',
-    'nav',
-    'daily_return',
-    'cumulative_return'
+    'cash_flow',
+    'daily_return_pct',
+    'cumulative_twr_pct',
   ];
 
   // inputs userId and portfolio Id to be retriece from this 
   // component's parent
   userId: InputSignal<number> = input.required<number>();
-  portfolioName: InputSignal<string | null> = input.required<string | null>();
+  portfolioName: InputSignal<string> = input.required<string>();
 
   // the initial amount invested
   initialAmount: number = 19406.35;
 
 
   // injects the service to retrive portfolio daily performance
-  private tmytsPriceHistoryService = inject(TmytsPricesHistoryService)
+  private portfolioPerformanceService = inject(PortfolioPerformanceService)
 
   // intializes the datasource that contains the portfolio's
   // cash flow data
@@ -46,11 +45,11 @@ export class LivePortfolioPerformance implements OnChanges, OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ('portfolioName' in changes) {
-      this.tmytsPriceHistoryService
-        .getPortfolioDailtPerformance(this.userId(), this.portfolioName(), 19406.35)
+    if (this.portfolioName()) {
+      this.portfolioPerformanceService.getPortfolioTwr(this.portfolioName())
         .subscribe({
           next: (response: PortfolioCashflowInterface[]) => {
+            console.log(`response: ${response}`);
             this.dataSource.data = response;
           },
           error: (error) => {
