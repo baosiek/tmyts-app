@@ -30,7 +30,6 @@ export class LivePortfolioPerformance implements OnChanges, OnInit {
   // the initial amount invested
   initialAmount: number = 19406.35;
 
-
   // injects the service to retrive portfolio daily performance
   private portfolioPerformanceService = inject(PortfolioPerformanceService)
 
