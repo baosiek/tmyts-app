@@ -11,7 +11,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -28,7 +28,13 @@ import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar
 
 @Component({
   selector: 'app-portfolio-table-rud',
-  imports: [...MATERIAL_IMPORTS, MatSortModule, DatePipe, CurrencyPipe],
+  imports: [
+    ...MATERIAL_IMPORTS,
+    MatSortModule,
+    MatPaginatorModule,
+    DatePipe,
+    CurrencyPipe
+  ],
   templateUrl: './portfolio-table-rud.html',
   styleUrl: './portfolio-table-rud.scss',
 })
@@ -65,8 +71,14 @@ export class PortfolioTableRud implements OnChanges, AfterViewInit {
   constructor(private _snackBar: MatSnackBar) { }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.attachTableFeatures();
+  }
+
+  private attachTableFeatures() {
+    if (this.paginator) this.dataSource.paginator = this.paginator;
+    if (this.sort) this.dataSource.sort = this.sort;
+
+    this.dataSource._updateChangeSubscription();
   }
 
   ngOnChanges(): void {
@@ -95,6 +107,7 @@ export class PortfolioTableRud implements OnChanges, AfterViewInit {
               assets,
             );
             this.portfolioExchangeData.emit(dataExchange);
+            this.attachTableFeatures();
           },
           error: (error) => {
             // Handle error response

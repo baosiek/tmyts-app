@@ -1,12 +1,17 @@
 import { CommonModule } from '@angular/common';
 import {
+  AfterViewInit,
   Component,
   inject,
   input,
   InputSignal,
+  OnChanges,
   OnDestroy,
-  OnInit
+  OnInit,
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -21,11 +26,11 @@ import { TmytsChip } from '../../../../reusable-components/tmyts-chip/tmyts-chip
 
 @Component({
   selector: 'app-live-asset-performance',
-  imports: [MatTableModule, CommonModule, TmytsChip],
+  imports: [MatTableModule, MatPaginatorModule, CommonModule, TmytsChip],
   templateUrl: './live-asset-performance.html',
   styleUrl: './live-asset-performance.scss',
 })
-export class LiveAssetPerformance implements OnInit, OnDestroy {
+export class LiveAssetPerformance implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   displayedColumns: string[] = [
     'asset',
     'asset_name',
@@ -48,6 +53,8 @@ export class LiveAssetPerformance implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private assetMap = new Map<string, any>();
 
+  @ViewChild(MatPaginator) paginator?: MatPaginator;
+
   userId: InputSignal<number> = input.required<number>();
   portfolioName: InputSignal<string> = input.required<string>();
 
@@ -59,8 +66,21 @@ export class LiveAssetPerformance implements OnInit, OnDestroy {
     this.getPortfolioTransactions();
   }
 
-  ngOnChanges(): void {
-    this.getPortfolioTransactions();
+  ngAfterViewInit(): void {
+    this.attachPaginator();
+  }
+
+  private attachPaginator(): void {
+    if (this.paginator) {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource._updateChangeSubscription();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if ((changes['portfolioName'] && this.portfolioName()) || (changes['userId'] && this.userId())) {
+      this.getPortfolioTransactions();
+    }
   }
 
   private calculatePerformanceMetrics(element: any, closePrice: number, adjPriceClose?: number): void {
@@ -152,6 +172,7 @@ export class LiveAssetPerformance implements OnInit, OnDestroy {
             this.registerToIBLivePrice(item.asset);
           });
 
+          this.attachPaginator();
           this.getAssetsLatestPrices();
         },
         error: (error: any) => {

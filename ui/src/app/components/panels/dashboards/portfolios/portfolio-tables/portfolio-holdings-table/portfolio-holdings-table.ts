@@ -1,7 +1,18 @@
 import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
-import { Component, EventEmitter, inject, input, InputSignal, OnChanges, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  inject,
+  input,
+  InputSignal,
+  OnChanges,
+  Output,
+  ViewChild
+} from '@angular/core';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatSortModule } from '@angular/material/sort';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { PortfolioComponentsDataExchange } from '../../../../../../interfaces/portfolio-components-data-exchange';
 import { MATERIAL_IMPORTS } from '../../../../../../material-imports';
@@ -11,11 +22,18 @@ import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar
 
 @Component({
   selector: 'app-portfolio-holdings-table',
-  imports: [...MATERIAL_IMPORTS, MatSortModule, DatePipe, CurrencyPipe, DecimalPipe],
+  imports: [
+    ...MATERIAL_IMPORTS,
+    MatSortModule,
+    MatPaginatorModule,
+    DatePipe,
+    CurrencyPipe,
+    DecimalPipe
+  ],
   templateUrl: './portfolio-holdings-table.html',
   styleUrl: './portfolio-holdings-table.scss'
 })
-export class PortfolioHoldingsTable implements OnChanges {
+export class PortfolioHoldingsTable implements OnChanges, AfterViewInit {
 
   @Output() portfolioExchangeData =
     new EventEmitter<PortfolioComponentsDataExchange>();
@@ -23,6 +41,9 @@ export class PortfolioHoldingsTable implements OnChanges {
 
   userId: InputSignal<number> = input.required<number>();
   portfolioName: InputSignal<string> = input.required<string>();
+
+  @ViewChild(MatPaginator) paginator?: MatPaginator;
+  @ViewChild(MatSort) sort?: MatSort;
 
   portfolioHoldingsService: TmytsHoldingsService = inject(TmytsHoldingsService);
 
@@ -41,6 +62,16 @@ export class PortfolioHoldingsTable implements OnChanges {
   ];
 
   constructor(private _snackBar: MatSnackBar) { }
+
+  ngAfterViewInit(): void {
+    this.attachTableFeatures();
+  }
+
+  private attachTableFeatures(): void {
+    if (this.paginator) this.dataSource.paginator = this.paginator;
+    if (this.sort) this.dataSource.sort = this.sort;
+    this.dataSource._updateChangeSubscription();
+  }
 
   ngOnChanges(): void {
     console.log(`this.userId(), this.portfolioName()`)
@@ -64,6 +95,7 @@ export class PortfolioHoldingsTable implements OnChanges {
               assets,
             );
             this.portfolioExchangeData.emit(dataExchange);
+            this.attachTableFeatures();
           },
           error: (error) => {
             // Handle error response

@@ -28,13 +28,25 @@
   <!-- Symbol Column -->
   <ng-container matColumnDef="daily_return_pct">
     <th mat-header-cell *matHeaderCellDef> Daily Return </th>
-    <td mat-cell *matCellDef="let element"> {{element.daily_return_pct | percent: '1.2-2'}} </td>
+    <td mat-cell *matCellDef="let element">
+      <span 
+        class="performance-value"
+        [ngClass]="element.daily_return_pct > 0 ? 'positive' : element.daily_return_pct < 0 ? 'negative' : 'neutral'">
+        {{element.daily_return_pct | percent: '1.2-2'}}
+      </span>
+    </td>
   </ng-container>
 
    <!-- Symbol Column -->
   <ng-container matColumnDef="cumulative_twr_pct">
     <th mat-header-cell *matHeaderCellDef> Cummulative Return </th>
-    <td mat-cell *matCellDef="let element"> {{element.cumulative_twr_pct | percent: "1.2-2"}} </td>
+    <td mat-cell *matCellDef="let element">
+      <span 
+        class="performance-value"
+        [ngClass]="element.cumulative_twr_pct > 0 ? 'positive' : element.cumulative_twr_pct < 0 ? 'negative' : 'neutral'">
+        {{element.cumulative_twr_pct | percent: "1.2-2"}}
+      </span>
+    </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

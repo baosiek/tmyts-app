@@ -15,3 +15,60 @@
         font-size: 1.5rem; // Adjust as needed
     }
 }
+
+// Modern performance indicator styles
+.performance-value {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+
+    &.positive {
+        background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
+        color: #0d5e0a;
+        border-left: 3px solid #0d9e03;
+
+        &::before {
+            content: '↑';
+            font-weight: bold;
+            color: #0d9e03;
+        }
+
+        &:hover {
+            background: linear-gradient(135deg, #86efac 0%, #86efac 100%);
+            box-shadow: 0 4px 12px rgba(13, 158, 3, 0.3);
+        }
+    }
+
+    &.negative {
+        background: linear-gradient(135deg, #fca5a5 0%, #f8b3b3 100%);
+        color: #732f2f;
+        border-left: 3px solid #732f2f;
+
+        &::before {
+            content: '↓';
+            font-weight: bold;
+            color: #732f2f;
+        }
+
+        &:hover {
+            background: linear-gradient(135deg, #f8b3b3 0%, #f4a1a1 100%);
+            box-shadow: 0 4px 12px rgba(115, 47, 47, 0.3);
+        }
+    }
+
+    &.neutral {
+        background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+        color: #6b7280;
+        border-left: 3px solid #e5e7eb;
+
+        &:hover {
+            background: linear-gradient(135deg, #f5f5f5 0%, #eeeeee 100%);
+            box-shadow: 0 4px 12px rgba(107, 114, 128, 0.15);
+        }
+    }
+}

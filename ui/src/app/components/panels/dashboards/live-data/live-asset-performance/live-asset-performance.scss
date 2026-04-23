@@ -58,3 +58,20 @@
     color: #732f2f;
   }
 }
+
+.asset-performance-table {
+  width: 100%;
+  overflow-x: auto;
+  padding-right: 1rem;
+}
+
+.asset-performance-table table {
+  min-width: 1000px;
+  width: 100%;
+  box-sizing: border-box;
+  padding-right: 1rem;
+}
+
+.asset-performance-table .mat-paginator {
+  margin-top: 0.75rem;
+}

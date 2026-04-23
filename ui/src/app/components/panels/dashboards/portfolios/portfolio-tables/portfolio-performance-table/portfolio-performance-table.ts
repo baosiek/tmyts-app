@@ -1,6 +1,17 @@
 import { CurrencyPipe, DecimalPipe, NgClass, NgStyle, PercentPipe } from '@angular/common';
-import { Component, inject, input, Input, InputSignal, OnChanges } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  inject,
+  input,
+  Input,
+  InputSignal,
+  OnChanges,
+  ViewChild
+} from '@angular/core';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { PortfolioComponentsDataExchange } from '../../../../../../interfaces/portfolio-components-data-exchange';
 import { MATERIAL_IMPORTS } from '../../../../../../material-imports';
@@ -13,6 +24,8 @@ import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar
   selector: 'app-portfolio-performance-table',
   imports: [
     ...MATERIAL_IMPORTS,
+    MatPaginatorModule,
+    MatSortModule,
     CurrencyPipe,
     PercentPipe,
     DecimalPipe,
@@ -23,13 +36,15 @@ import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar
   templateUrl: './portfolio-performance-table.html',
   styleUrl: './portfolio-performance-table.scss',
 })
-export class PortfolioPerformanceTable implements OnChanges {
+export class PortfolioPerformanceTable implements OnChanges, AfterViewInit {
   @Input() dataExchangeFromParent!: PortfolioComponentsDataExchange;
 
   liveDataService = inject(LiveDataService);
 
   userId: InputSignal<number> = input.required<number>();
   portfolioName: InputSignal<string | null> = input.required<string | null>();
+
+  @ViewChild(MatPaginator) paginator?: MatPaginator;
 
   displayedColumns: string[] = [
     'asset',
@@ -44,6 +59,17 @@ export class PortfolioPerformanceTable implements OnChanges {
   spinnerFlagIsSet: boolean = false;
 
   constructor(private _snackBar: MatSnackBar) { }
+
+  ngAfterViewInit(): void {
+    this.attachTableFeatures();
+  }
+
+  private attachTableFeatures(): void {
+    if (this.paginator) {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource._updateChangeSubscription();
+    }
+  }
 
   ngOnChanges(): void {
     if (this.dataExchangeFromParent && this.dataExchangeFromParent.portfolio_name) {
@@ -66,6 +92,7 @@ export class PortfolioPerformanceTable implements OnChanges {
               weighted_percent: item.cost_basis_price > 0 ? ((item.close - item.cost_basis_price) / item.cost_basis_price) : 0
             }));
             this.dataSource.data = processedData;
+            this.attachTableFeatures();
           },
           error: (error) => {
             // Handle error response
