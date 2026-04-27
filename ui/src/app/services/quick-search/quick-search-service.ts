@@ -9,7 +9,7 @@ import { AssetModel } from '../../models/asset-model';
 export class QuickSearchService {
 
   http = inject(HttpClient)
-  apiUrl = 'http://localhost:8000/symbols';
+  apiUrl = 'http://localhost:8000/assets';
 
   quickSearch(searchTerm: string): Observable<AssetModel[]> {
     const apiMethod = 'quick_search';

@@ -1,7 +1,7 @@
 export type AssetModel = {
   asset: string;
   asset_name: string;
-  exchange: string;
+  venue: string;
   priority: number;
   last_download?: Date | null
 }
@@ -10,6 +10,6 @@ export type AssetModel = {
 export const createNewAsset = (): AssetModel => ({
   asset: '',
   asset_name: '',
-  exchange: '',
+  venue: '',
   priority: -1
 });

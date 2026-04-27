@@ -1,16 +1,16 @@
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, inject, signal } from '@angular/core';
-import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
-import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar-service';
-import { TmytsToolbar } from '../../../reusable-components/tmyts-toolbar/tmyts-toolbar';
-import { MATERIAL_IMPORTS } from '../../../../material-imports';
-import { TmytsWidget } from "../../../reusable-components/tmyts-widget/tmyts-widget";
-import { IWidgetConfig } from '../../../../interfaces/widget-config-interface';
-import { AssetsAnalysisDashboardService } from '../../../../services/assets-analysis-dashboard/assets-analysis-dashboard-service';
-import { UserPreferencesService } from '../../../../services/user-preferences/user-preferences-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError } from 'rxjs';
+import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
+import { IWidgetConfig } from '../../../../interfaces/widget-config-interface';
+import { MATERIAL_IMPORTS } from '../../../../material-imports';
+import { AssetsAnalysisDashboardService } from '../../../../services/assets-analysis-dashboard/assets-analysis-dashboard-service';
+import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar-service';
+import { UserPreferencesService } from '../../../../services/user-preferences/user-preferences-service';
 import { TmytsSnackbar } from '../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
-import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { TmytsToolbar } from '../../../reusable-components/tmyts-toolbar/tmyts-toolbar';
+import { TmytsWidget } from "../../../reusable-components/tmyts-widget/tmyts-widget";
 
 @Component({
   selector: 'app-assets-analysis',
@@ -21,10 +21,10 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk
     TmytsWidget,
     CdkDropList,
     CdkDrag
-],
-providers: [
-  AssetsAnalysisDashboardService // this service is required only here
-],
+  ],
+  providers: [
+    AssetsAnalysisDashboardService // this service is required only here
+  ],
   templateUrl: './assets-analysis.html',
   styleUrl: './assets-analysis.scss'
 })
@@ -35,7 +35,7 @@ export class AssetsAnalysis {
   toolbarService = inject(ToolbarService);
   data: ITmytsToolBar | undefined;
   result = signal<Map<String, any>>(new Map())
-  symbol = signal<string>('');
+  asset = signal<string>('');
 
   widgetConfigService = inject(AssetsAnalysisDashboardService);
   userPreferenceService = inject(UserPreferencesService)
@@ -45,56 +45,58 @@ export class AssetsAnalysis {
     this.toolbarService.dialogTypes().find(
       (dashboard) => {
         if (dashboard) {
-          if (dashboard.id === this.id){
+          if (dashboard.id === this.id) {
             this.data = dashboard;
-          }          
-        }        
-      }
-    );
-
-    this.userPreferenceService.getAllWidgets(this.user_id, this.id)
-    .pipe(
-      catchError(
-        (error) => {
-          // Handle error response
-          const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
-
-          // Renders error snack-bar
-          this._snackBar.openFromComponent(
-            TmytsSnackbar, {
-              data: {'message': message, 'action': 'Close'},
-              panelClass: ['error-snackbar-theme']
-            }
-          );
-          throw error;
-        }
-      )
-    )
-    .subscribe(
-      {
-        next: (response: IWidgetConfig[]) => {
-          this.widgetConfigService.reInsertContentIntoWidget(response);
-          if (this.widgetConfigService.widgetsInDashboard().length > 0){
-            const w: IWidgetConfig | undefined = this.widgetConfigService.widgetsInDashboard().at(0);
-            if (w) {
-              this.symbol.set(w.symbol);
-            }            
-          } else {
-             this.symbol.set('');
           }
         }
       }
     );
+
+    this.userPreferenceService.getAllWidgets(this.user_id, this.id)
+      .pipe(
+        catchError(
+          (error) => {
+            // Handle error response
+            const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
+
+            // Renders error snack-bar
+            this._snackBar.openFromComponent(
+              TmytsSnackbar, {
+              data: { 'message': message, 'action': 'Close' },
+              panelClass: ['error-snackbar-theme']
+            }
+            );
+            throw error;
+          }
+        )
+      )
+      .subscribe(
+        {
+          next: (response: IWidgetConfig[]) => {
+            this.widgetConfigService.reInsertContentIntoWidget(response);
+            if (this.widgetConfigService.widgetsInDashboard().length > 0) {
+              const w: IWidgetConfig | undefined = this.widgetConfigService.widgetsInDashboard().at(0);
+              if (w) {
+                this.asset.set(w.symbol);
+              }
+            } else {
+              this.asset.set('');
+            }
+          }
+        }
+      );
   }
 
-  parentNotified(value: Map<String, any>){
-    this.result.set(value)    
-    this.symbol.set(this.result().get('symbol').symbol);
+  parentNotified(value: Map<String, any>) {
+    this.result.set(value)
+    console.log(this.result());
+
+    this.asset.set(this.result().get('asset').asset);
 
     const tempWidget = this.widgetConfigService.widgetsInDashboard();
     tempWidget.forEach(
       (w) => {
-        w.symbol = this.symbol();
+        w.symbol = this.asset();
       }
     );
     this.updateUserPreferences(tempWidget);
@@ -108,30 +110,30 @@ export class AssetsAnalysis {
 
   updateUserPreferences(widgets: IWidgetConfig[]) {
     this.userPreferenceService.updateWidgets(this.user_id, this.id, widgets)
-    .pipe(
-      catchError(
-        (error) => {
-          // Handle error response
-          const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
+      .pipe(
+        catchError(
+          (error) => {
+            // Handle error response
+            const message: string = `Error: ${JSON.stringify(error.error.detail)}`;
 
-          // Renders error snack-bar
-          this._snackBar.openFromComponent(
-            TmytsSnackbar, {
-              data: {'message': message, 'action': 'Close'},
+            // Renders error snack-bar
+            this._snackBar.openFromComponent(
+              TmytsSnackbar, {
+              data: { 'message': message, 'action': 'Close' },
               panelClass: ['error-snackbar-theme']
             }
-          );
-          throw error;
-        }
+            );
+            throw error;
+          }
+        )
       )
-    )
-    .subscribe(
-      {
-        next: (response: IWidgetConfig[]) => {
-          this.widgetConfigService.reInsertContentIntoWidget(response);
+      .subscribe(
+        {
+          next: (response: IWidgetConfig[]) => {
+            this.widgetConfigService.reInsertContentIntoWidget(response);
+          }
         }
-      }
-    );
+      );
 
   }
 }
