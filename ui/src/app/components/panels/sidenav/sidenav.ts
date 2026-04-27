@@ -28,17 +28,17 @@ export class Sidenav {
         route: "/portfolio_management"
       },
       {
-        icon: "finance_mode",
+        icon: "finance_chip",
         label: "Live Prices",
         route: "/live-data"
       },
       {
         icon: "finance_mode",
         label: "Live Tracker",
-        route: "/live-data"
+        route: "/live-tracker"
       },
       {
-        icon: "finance_mode",
+        icon: "finance",
         label: "Assets analysis",
         route: "/assets_analysis"
       },

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LiveTrackerComponent } from './live-tracker-component';
+import { LiveTracker } from './live-tracker';
 
-describe('LiveTrackerComponent', () => {
-  let component: LiveTrackerComponent;
-  let fixture: ComponentFixture<LiveTrackerComponent>;
+describe('LiveTracker', () => {
+  let component: LiveTracker;
+  let fixture: ComponentFixture<LiveTracker>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LiveTrackerComponent]
+      imports: [LiveTracker]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(LiveTrackerComponent);
+    fixture = TestBed.createComponent(LiveTracker);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
