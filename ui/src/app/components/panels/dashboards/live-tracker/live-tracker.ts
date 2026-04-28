@@ -6,15 +6,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError } from 'rxjs';
 import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
 import { PortfolioModel } from '../../../../models/portfolio-model';
+import { PortfolioHoldingsModel } from '../../../../models/portfolio_holdings_model';
 import { UserModel } from '../../../../models/user-model';
 import { PortfolioDatabaseService } from '../../../../services/portfolio-database/portfolio-database-service';
 import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar-service';
 import { UserService } from '../../../../services/user-service/user-service';
 import { TmytsToolbar } from "../../../reusable-components/tmyts-toolbar/tmyts-toolbar";
+import { AssetCard } from "./asset-card/asset-card";
 
 @Component({
   selector: 'app-live-tracker',
-  imports: [TmytsToolbar, MatSelectModule, FormsModule, MatGridListModule],
+  imports: [TmytsToolbar, MatSelectModule, FormsModule, MatGridListModule, AssetCard],
   templateUrl: './live-tracker.html',
   styleUrl: './live-tracker.scss'
 })
@@ -28,6 +30,7 @@ export class LiveTracker implements OnInit {
   user_id: number = 1; // there is no user functionality, so user_id is fixed. Needs to change in the future
   selectedPortfolio: string = ''; // holds the user selected portfolio
   portfolioList: PortfolioModel[] = []; // a list containing all portfolios registered to the user
+  assetsList: PortfolioHoldingsModel[] = []; // a list containing all assets in the seleted portfolio
 
 
   /*
@@ -104,7 +107,11 @@ export class LiveTracker implements OnInit {
   there is no need to associate $event to selectedPortfolio
   */
   onPortfolioChange($event: any) {
-    console.log(`selectedPortfolio: ${this.selectedPortfolio}`);
+    /*
+    Once the selected portfolio changes, the next step is to 
+    get all its assets.
+    */
+    this.getPortfolioAssets()
   }
 
   /*
@@ -134,6 +141,12 @@ export class LiveTracker implements OnInit {
           if (!this.selectedPortfolio) {
             this.selectedPortfolio = firstPortfolio.portfolio_name;
           }
+
+          /*
+          Once the portfolio is selected, the next step is to 
+          get all its assets.
+          */
+          this.getPortfolioAssets()
         },
         error: (error) => {
           // Handle error response
@@ -144,5 +157,18 @@ export class LiveTracker implements OnInit {
           );
         },
       });
+  }
+
+  getPortfolioAssets() {
+    console.log(`Will get assets to portfolio: ${this.selectedPortfolio}`)
+    this.portfilioDbService.getPortfolioHoldings(this.user_id, this.selectedPortfolio)
+      .subscribe(
+        {
+          next: (response: PortfolioHoldingsModel[]) => {
+            console.log(`number of assets in ${this.selectedPortfolio} is: ${response.length}`);
+            this.assetsList = [...response];
+          }
+        }
+      );
   }
 }

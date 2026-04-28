@@ -26,16 +26,12 @@
   </mat-form-field>
 
   <div>
-    <mat-grid-list cols="4" rowHeight="2:1">
-        <mat-grid-tile>1</mat-grid-tile>
-        <mat-grid-tile>2</mat-grid-tile>
-        <mat-grid-tile>3</mat-grid-tile>
-        <mat-grid-tile>4</mat-grid-tile>
-        <mat-grid-tile>5</mat-grid-tile>
-        <mat-grid-tile>6</mat-grid-tile>
-        <mat-grid-tile>7</mat-grid-tile>
-        <mat-grid-tile>8</mat-grid-tile>
-        <mat-grid-tile>9</mat-grid-tile>
+    <mat-grid-list cols="4" rowHeight="2:1" gutterSize="5px">
+        @for (asset of assetsList; track asset.asset){
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
+                <app-asset-card [asset]="asset">{{asset.asset}}</app-asset-card>
+            </mat-grid-tile>
+        }
     </mat-grid-list>
   </div>
 </div>
