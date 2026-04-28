@@ -1,5 +1,21 @@
-.full-size-card {
+:host {
+    display: block;
     width: 100%;
     height: 100%;
-    box-sizing: border-box; /* Ensures padding/borders don't exceed 100% */
+}
+
+.full-size-card {
+    background-color: var(--mat-sys-surface);
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+.chart-container {
+    width: 100%;
+    height: 100%;
+    display: block;
 }
