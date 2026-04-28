@@ -15,7 +15,7 @@ export type PortfolioHoldingsModel = {
 }
 
 // Factory function to create a new PortfolioModel object
-export const createPortfolio = (): PortfolioHoldingsModel => ({
+export const createPortfolioHolding = (): PortfolioHoldingsModel => ({
     holding_id: 0,
     price_date: new Date(),
     user_id: 0,
