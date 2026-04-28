@@ -28,12 +28,17 @@ export class Sidenav {
         route: "/portfolio_management"
       },
       {
-        icon: "finance_mode",
-        label: "Live Data",
+        icon: "finance_chip",
+        label: "Live Prices",
         route: "/live-data"
       },
       {
         icon: "finance_mode",
+        label: "Live Tracker",
+        route: "/live-tracker"
+      },
+      {
+        icon: "candlestick_chart",
         label: "Assets analysis",
         route: "/assets_analysis"
       },
@@ -44,7 +49,7 @@ export class Sidenav {
   button changed its status.*/
   collapsed = input.required()
 
-  
+
   /* once collapsed changes this value is compyted  */
   setImageSize = computed(
     () => {

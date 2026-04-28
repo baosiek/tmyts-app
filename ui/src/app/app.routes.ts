@@ -37,4 +37,13 @@ export const routes: Routes = [
             );
         },
     },
+    {
+        path: 'live-tracker',
+        pathMatch: 'full',
+        loadComponent: () => {
+            return import('./components/panels/dashboards/live-tracker/live-tracker').then(
+                (m) => m.LiveTracker
+            );
+        },
+    },
 ];
