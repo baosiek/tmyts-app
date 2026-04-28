@@ -1,1 +1,14 @@
-<p>{{asset().asset}}</p>
+<mat-card class="full-size-card">
+    <mat-card-header>
+        <mat-card-title-group>
+            <mat-card-title>{{asset().asset}}</mat-card-title>
+            <mat-card-subtitle></mat-card-subtitle>
+        </mat-card-title-group>
+    </mat-card-header>
+    <mat-card-content>
+    <highcharts-chart 
+      [options]="chartOptions">
+    </highcharts-chart>
+  </mat-card-content>
+</mat-card>
+
