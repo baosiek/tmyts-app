@@ -1,7 +1,7 @@
 import { Component, inject, Input, input, OnInit } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { createPortfolio, PortfolioModel } from '../../../models/portfolio-model';
 import { PortfolioDatabaseService } from '../../../services/portfolio-database/portfolio-database-service';
 import { catchError } from 'rxjs';
@@ -15,9 +15,8 @@ import { TmytsSnackbar } from '../../reusable-components/tmyts-snackbar/tmyts-sn
   selector: 'app-add-portfolio-dialog',
   imports: [
     ...MATERIAL_IMPORTS,
-    FormsModule,
-    CommonModule
-  ],
+    FormsModule
+],
   templateUrl: './add-portfolio-dialog.html',
   styleUrl: './add-portfolio-dialog.scss'
 })

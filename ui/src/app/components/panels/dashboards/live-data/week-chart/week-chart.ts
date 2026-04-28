@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import Highcharts from 'highcharts';
@@ -6,7 +6,7 @@ import { HighchartsChartDirective } from 'highcharts-angular';
 
 @Component({
   selector: 'app-week-chart',
-  imports: [CommonModule, MatCardModule, HighchartsChartDirective],
+  imports: [MatCardModule, HighchartsChartDirective],
   templateUrl: './week-chart.html',
   styleUrl: './week-chart.scss'
 })
