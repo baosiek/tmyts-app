@@ -8,34 +8,38 @@ import { ITmytsToolBar } from '../../interfaces/tmyts-toolbar-interface';
 })
 export class ToolbarService {
 
-    dialogTypes = signal<ITmytsToolBar[]>(
-      [
-        {
-          id: 'portfolio',
-          title: "Portfolios",
-        },
-        {
-          id: 'assets_analysis',
-          title: "Asset analysis",
-          dialog: {
-            dialog_title: 'Select asset',
-            button_text: 'Select',
-            button_icon: 'search_insights',
-            dialog_content: SelectAssetDialog
-          }
-        },
-        {
-          id: 'live_data',
-          title: "Live data",
-          toolbar_object: {
-            text: 'test',
-            object_content: OnlineSignal
-          }
-        },
-      ]
-  ); 
-  
-  getDialogType(id: string): ITmytsToolBar | undefined{
+  dialogTypes = signal<ITmytsToolBar[]>(
+    [
+      {
+        id: 'portfolio',
+        title: "Portfolios",
+      },
+      {
+        id: 'live_tracker',
+        title: "Live Tracker",
+      },
+      {
+        id: 'assets_analysis',
+        title: "Asset analysis",
+        dialog: {
+          dialog_title: 'Select asset',
+          button_text: 'Select',
+          button_icon: 'search_insights',
+          dialog_content: SelectAssetDialog
+        }
+      },
+      {
+        id: 'live_data',
+        title: "Live data",
+        toolbar_object: {
+          text: 'test',
+          object_content: OnlineSignal
+        }
+      },
+    ]
+  );
+
+  getDialogType(id: string): ITmytsToolBar | undefined {
     const found = this.dialogTypes().find(w => w.id === id);
     return found
   }
