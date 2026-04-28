@@ -1,1 +1,41 @@
-<p>live-tracker works!</p>
+<div>
+@if (toolbar) {
+    <div>
+      <app-tmyts-toolbar [data]="toolbar"></app-tmyts-toolbar>
+    </div>
+  }
+
+    <mat-form-field appearance="outline" style="width: 100%; margin-top: 1.5%">
+        @if (portfolioList.length > 0) {
+        <mat-label>Portfolio name</mat-label>
+        } @else {
+        <mat-label
+            >You have no saved portfolios. Click on the button to create
+            one</mat-label
+        >
+        }
+
+        <mat-select [(ngModel)]="selectedPortfolio" (ngModelChange)="onPortfolioChange($event)">
+            <mat-option [value]=""></mat-option>
+            @for (portfolio of portfolioList; track portfolio.portfolio_name) {
+                <mat-option [value]="portfolio.portfolio_name">{{
+                portfolio.portfolio_name
+                }}</mat-option>
+            }
+    </mat-select>
+  </mat-form-field>
+
+  <div>
+    <mat-grid-list cols="4" rowHeight="2:1">
+        <mat-grid-tile>1</mat-grid-tile>
+        <mat-grid-tile>2</mat-grid-tile>
+        <mat-grid-tile>3</mat-grid-tile>
+        <mat-grid-tile>4</mat-grid-tile>
+        <mat-grid-tile>5</mat-grid-tile>
+        <mat-grid-tile>6</mat-grid-tile>
+        <mat-grid-tile>7</mat-grid-tile>
+        <mat-grid-tile>8</mat-grid-tile>
+        <mat-grid-tile>9</mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</div>
