@@ -1,16 +1,23 @@
 import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { HighchartsChartDirective } from "highcharts-angular";
-import * as Highcharts from 'highcharts/highstock'; // Import Highstock specifically
+import * as Highcharts from 'highcharts';
+import { ChartConstructorType, HighchartsChartComponent, providePartialHighcharts } from 'highcharts-angular';
+import 'highcharts/modules/stock';
 import { OhlcvDataInterface } from '../../../../../interfaces/ohlcv-interface';
 import { PortfolioHoldingsModel } from '../../../../../models/portfolio_holdings_model';
 import { OhlcvData } from '../../../../../services/ohlcv-data/ohlcv-data';
 
+
 @Component({
   selector: 'app-asset-card',
-  imports: [MatCardModule, HighchartsChartDirective],
+  imports: [MatCardModule, HighchartsChartComponent],
   templateUrl: './asset-card.html',
-  styleUrl: './asset-card.scss'
+  styleUrl: './asset-card.scss',
+  providers: [
+    providePartialHighcharts(  // importing this module is crutial to enable stockChart
+      { modules: () => [import('highcharts/esm/modules/stock')] }
+    )
+  ]
 })
 export class AssetCard implements OnInit {
 
@@ -19,8 +26,10 @@ export class AssetCard implements OnInit {
    */
   asset = input.required<PortfolioHoldingsModel>(); // asset for this card
   Highcharts: typeof Highcharts = Highcharts; // Highcharts library boilerplate code
+  chartConstructor: ChartConstructorType = 'stockChart'; // Chart constructor type
   ohlc: any[] = []; // data structure to insert OHLCV prices
   volume: any[] = []; // data structure to insert OHLCV volume
+  chart?: Highcharts.StockChart;
 
   /**
    * componentColor gets the color of the background color of the card
@@ -32,7 +41,18 @@ export class AssetCard implements OnInit {
    */
   chartOptions = signal<Highcharts.Options>({
     title: { text: 'Live OHLCV Data' },
-    rangeSelector: { enabled: true },
+    time: {
+      timezone: 'America/New_York'
+    },
+    rangeSelector: {
+      enabled: true,
+      selected: 1
+    },
+    navigator: {
+      series: {
+        color: 'orange',
+      },
+    },
     chart: {
       backgroundColor: this.componentColor,
       styledMode: false,
@@ -40,30 +60,97 @@ export class AssetCard implements OnInit {
     },
     legend: { enabled: true },
     credits: { enabled: false },
-    tooltip: { enabled: false },
+    tooltip: { enabled: true },
     plotOptions: {
-      series: {
-        marker: { enabled: true },
-        lineWidth: 4,
-        states: { hover: { lineWidth: 4 } },
-        color: '#1976d2'
+      candlestick: {
+        color: 'pink',
+        lineColor: 'red',
+        upColor: 'green',
+        upLineColor: 'darkgreen',
+      },
+      column: {
+        color: 'blue',
       }
     },
-    series: [{
-      type: 'candlestick', // or 'ohlc'
-      name: 'Stock Price',
-      data: [
-        [1714291200000, 150.1, 155.4, 149.2, 153.8], // Sample point
-        [1714291200000, 150.1, 155.4, 149.2, 153.8], // Sample point
-        [1714291200000, 150.1, 155.4, 149.2, 153.8], // Sample point
-      ]
-    }]
+    series: [
+      {
+        type: 'candlestick',
+        name: 'Prices',
+        showInLegend: true,
+      },
+      {
+        type: 'column',
+        name: 'Volume',
+        showInLegend: true,
+        yAxis: 1
+      },
+    ],
+    xAxis: {
+      labels: {
+        style: {
+          color: '#000',
+        },
+        align: 'right',
+        x: -3,
+      },
+    },
+    yAxis: [
+      {
+        labels: {
+          style: {
+            color: '#000',
+          },
+          align: 'right',
+          x: -3,
+        },
+        title: {
+          text: 'OHLC',
+          align: 'high',
+          rotation: 90,
+          x: 5,
+          y: 10,
+        },
+        height: '60%',
+        lineWidth: 2,
+        offset: 20,
+        resize: {
+          enabled: true,
+        },
+      },
+      {
+        labels: {
+          style: {
+            color: '#000',
+          },
+          align: 'right',
+          x: -3,
+        },
+        title: {
+          text: 'Volume',
+          align: 'high',
+          rotation: 90,
+          x: 5,
+          y: 10,
+        },
+        top: '65%',
+        height: '35%',
+        offset: 20,
+        lineWidth: 2,
+        resize: {
+          enabled: true,
+        },
+      },
+    ]
   });
 
   /**
    * 2. Initialize services
    */
   ohlcvDataService = inject(OhlcvData);
+
+  constructor() {
+    // Candlestick module is initialized via import
+  }
 
   /**
    * 3. Class methods
@@ -72,7 +159,9 @@ export class AssetCard implements OnInit {
     this.ohlcvDataService.getLast100Entries(this.asset().asset)
       .subscribe({
         next: (response) => {
-          console.log(response);
+          console.log(`Response: ${JSON.stringify(response)}`);
+          this.dataIntoChartDataStructure(response);
+          this.updateChartData();
         }
       });
   }
@@ -83,7 +172,7 @@ export class AssetCard implements OnInit {
     for (const dataPoint of chartData) {
       this.ohlc.push(
         [
-          Number(dataPoint.timestamp),
+          Number(new Date(dataPoint.timestamp).getTime()),
           Number(dataPoint.open_price),
           Number(dataPoint.high_price),
           Number(dataPoint.low_price),
@@ -92,13 +181,30 @@ export class AssetCard implements OnInit {
       );
       this.volume.push(
         [
-          Number(dataPoint.timestamp),
+          Number(new Date(dataPoint.timestamp).getTime()),
           Number(dataPoint.volume)
         ]
       );
     }
-    // this.initializeChart()
+    this.updateChartData()
   }
 
-
+  updateChartData() {
+    this.chartOptions.update(options => ({
+      ...options,
+      series: [
+        {
+          type: 'candlestick',
+          name: 'Stock Prices',
+          data: this.ohlc
+        },
+        {
+          type: 'column',
+          name: 'Volume',
+          data: this.volume,
+          yAxis: 1
+        },
+      ]
+    }));
+  }
 }
