@@ -31,6 +31,18 @@
     <td mat-cell *matCellDef="let element">{{element.average_price | currency:'USD':'symbol':'1.2-2'}}</td>
   </ng-container>
 
+  <!-- Total commission -->
+  <ng-container matColumnDef="total_commission">
+    <th mat-header-cell *matHeaderCellDef>Total Commission</th>
+    <td mat-cell *matCellDef="let element">{{element.total_commission | currency:'USD':'symbol':'1.2-2'}}</td>
+  </ng-container>
+
+  <!-- Market value -->
+  <ng-container matColumnDef="market_value">
+    <th mat-header-cell *matHeaderCellDef>Market Value</th>
+    <td mat-cell *matCellDef="let element">{{element.market_value | currency:'USD':'symbol':'1.2-2'}}</td>
+  </ng-container>
+
   <!-- last price column in realtime-->
   <ng-container matColumnDef="rt_price">
     <th mat-header-cell *matHeaderCellDef>Real Time</th>

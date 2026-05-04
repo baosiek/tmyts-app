@@ -27,4 +27,13 @@ export class OhlcvData {
       { headers }
     );
   }
+
+  getLast100Entries(asset: string): Observable<OhlcvDataInterface[]> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.http.post<OhlcvDataInterface[]>(
+      `${this.apiUrl}/last_x_minutes_of_data_for_asset/?asset=${asset}&x=100`,
+      { headers }
+    );
+  }
 }

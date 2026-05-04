@@ -1,8 +1,10 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import * as Highcharts from 'highcharts';
 import { HighchartsChartDirective } from "highcharts-angular";
+import * as Highcharts from 'highcharts/highstock'; // Import Highstock specifically
+import { OhlcvDataInterface } from '../../../../../interfaces/ohlcv-interface';
 import { PortfolioHoldingsModel } from '../../../../../models/portfolio_holdings_model';
+import { OhlcvData } from '../../../../../services/ohlcv-data/ohlcv-data';
 
 @Component({
   selector: 'app-asset-card',
@@ -10,21 +12,27 @@ import { PortfolioHoldingsModel } from '../../../../../models/portfolio_holdings
   templateUrl: './asset-card.html',
   styleUrl: './asset-card.scss'
 })
-export class AssetCard {
+export class AssetCard implements OnInit {
 
   /**
-   * Class variables
+   * 1. Class variables
    */
-  asset = input.required<PortfolioHoldingsModel>();
-  updateFlag: boolean = false
+  asset = input.required<PortfolioHoldingsModel>(); // asset for this card
+  Highcharts: typeof Highcharts = Highcharts; // Highcharts library boilerplate code
+  ohlc: any[] = []; // data structure to insert OHLCV prices
+  volume: any[] = []; // data structure to insert OHLCV volume
 
-  Highcharts: typeof Highcharts = Highcharts;
-
+  /**
+   * componentColor gets the color of the background color of the card
+   */
   componentColor = getComputedStyle(document.documentElement).getPropertyValue('--mat-sys-surface').trim()
 
-  // Define chart options as a signal
+  /**
+   * Define chart options as a signal
+   */
   chartOptions = signal<Highcharts.Options>({
-    title: { text: undefined },
+    title: { text: 'Live OHLCV Data' },
+    rangeSelector: { enabled: true },
     chart: {
       backgroundColor: this.componentColor,
       styledMode: false,
@@ -42,9 +50,55 @@ export class AssetCard {
       }
     },
     series: [{
-      type: 'line',
-      data: [1, 3, 2, 4]
+      type: 'candlestick', // or 'ohlc'
+      name: 'Stock Price',
+      data: [
+        [1714291200000, 150.1, 155.4, 149.2, 153.8], // Sample point
+        [1714291200000, 150.1, 155.4, 149.2, 153.8], // Sample point
+        [1714291200000, 150.1, 155.4, 149.2, 153.8], // Sample point
+      ]
     }]
   });
+
+  /**
+   * 2. Initialize services
+   */
+  ohlcvDataService = inject(OhlcvData);
+
+  /**
+   * 3. Class methods
+   */
+  ngOnInit(): void {
+    this.ohlcvDataService.getLast100Entries(this.asset().asset)
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+        }
+      });
+  }
+
+  dataIntoChartDataStructure(chartData: OhlcvDataInterface[]) {
+    this.ohlc = []
+    this.volume = []
+    for (const dataPoint of chartData) {
+      this.ohlc.push(
+        [
+          Number(dataPoint.timestamp),
+          Number(dataPoint.open_price),
+          Number(dataPoint.high_price),
+          Number(dataPoint.low_price),
+          Number(dataPoint.close_price)
+        ]
+      );
+      this.volume.push(
+        [
+          Number(dataPoint.timestamp),
+          Number(dataPoint.volume)
+        ]
+      );
+    }
+    // this.initializeChart()
+  }
+
 
 }

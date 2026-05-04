@@ -40,6 +40,7 @@ export type PortfolioTransactionModel = {
     asset_name: string;
     total_quantity: number;
     total_commission: number;
+    market_value: number;
     average_price: number;
     broker_name: string
 }
