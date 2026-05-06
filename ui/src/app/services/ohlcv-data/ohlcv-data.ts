@@ -32,7 +32,7 @@ export class OhlcvData {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     return this.http.post<OhlcvDataInterface[]>(
-      `${this.apiUrl}/last_x_minutes_of_data_for_asset/?asset=${asset}&x=100`,
+      `${this.apiUrl}/last_x_minutes_of_data_for_asset/?asset=${asset}&x=240`,
       { headers }
     );
   }

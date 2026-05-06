@@ -2,15 +2,45 @@
     <mat-card-header style="margin-bottom: 20px;">
         <mat-card-title-group>
             <mat-card-title>{{asset().asset}}</mat-card-title>
-            <!-- <mat-card-subtitle>Daily</mat-card-subtitle> -->
+            <mat-card-subtitle>{{asset().asset_name}}</mat-card-subtitle>
         </mat-card-title-group>
     </mat-card-header>
     <mat-card-content>
-        <highcharts-chart id="container-live-tracker-{{asset().asset}}"
-            [options]="chartOptions()"
-            [constructorType]="chartConstructor"
-            class="chart-container">
-        </highcharts-chart>
-        
+        @if (rawData.isLoading()) {
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        } @else {
+            <highcharts-chart id="container-live-tracker-{{asset().asset}}"
+                [options]="chartOptions()"
+                [constructorType]="chartConstructor"
+                class="chart-container">
+            </highcharts-chart>
+        }        
   </mat-card-content>
-</mat-card>
+  <mat-card-footer class="asset-footer">
+    <div class="stats-container">
+      <div class="stat-item">
+        <div class="stat-info">
+            <span class="stat-label">Latest</span>
+            <span class="stat-value">{{latestPrice()?.price | currency:'USD':'symbol':'1.2-2'}}</span>
+        </div>
+        <span class="stat-date">{{latestPrice()?.date}}</span>
+      </div>
+      <mat-divider [vertical]="true" style="height: 32px; margin: 0 16px; align-self: center;"></mat-divider>
+      <div class="stat-item">
+        <div class="stat-info">
+            <span class="stat-label">High</span>
+            <span class="stat-value high">{{maxHigh()?.price | currency:'USD':'symbol':'1.2-2'}}</span>
+        </div>
+        <span class="stat-date">{{maxHigh()?.date}}</span>
+      </div>
+      <mat-divider [vertical]="true" style="height: 32px; margin: 0 16px; align-self: center;"></mat-divider>
+      <div class="stat-item">
+        <div class="stat-info">
+            <span class="stat-label">Low</span>
+            <span class="stat-value low">{{minLow()?.price | currency:'USD':'symbol':'1.2-2'}}</span>
+        </div>
+        <span class="stat-date">{{minLow()?.date}}</span>
+      </div>
+    </div>
+  </mat-card-footer>
+  </mat-card>
