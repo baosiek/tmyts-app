@@ -1,17 +1,20 @@
-import { CurrencyPipe } from '@angular/common';
-import { Component, computed, DestroyRef, effect, inject, input, InputSignal, signal } from '@angular/core';
+import { CurrencyPipe, DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Component, computed, DestroyRef, effect, inject, input, InputSignal, PLATFORM_ID, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
 import { MatDivider } from "@angular/material/divider";
 import { MatProgressBar } from "@angular/material/progress-bar";
-import * as Highcharts from 'highcharts';
 import { ChartConstructorType, HighchartsChartComponent, providePartialHighcharts } from 'highcharts-angular';
-import 'highcharts/modules/stock';
+import * as Highcharts from 'highcharts/highstock';
 import { interval, startWith, switchMap } from 'rxjs';
 import { OhlcvDataInterface } from '../../../../../interfaces/ohlcv-interface';
 import { PortfolioHoldingsModel } from '../../../../../models/portfolio_holdings_model';
+import { IndicatorTaService, RSIModel } from '../../../../../services/indicator-ta/indicator-ta-service';
 import { OhlcvData } from '../../../../../services/ohlcv-data/ohlcv-data';
 
+
+// import IndicatorsCore from 'highcharts/indicators/indicators';
+// import IndicatorRSI from "highcharts/indicators/rsi";
 
 @Component({
   selector: 'app-asset-card',
@@ -20,8 +23,8 @@ import { OhlcvData } from '../../../../../services/ohlcv-data/ohlcv-data';
   styleUrl: './asset-card.scss',
   providers: [
     providePartialHighcharts(  // importing this module is crutial to enable stockChart
-      { modules: () => [import('highcharts/esm/modules/stock')] }
-    )
+      { modules: () => [import('highcharts/esm/modules/stock')] },
+    ),
   ]
 })
 export class AssetCard {
@@ -31,23 +34,25 @@ export class AssetCard {
    */
   asset: InputSignal<PortfolioHoldingsModel> = input.required<PortfolioHoldingsModel>(); // asset for this card
   Highcharts: typeof Highcharts = Highcharts; // Highcharts library boilerplate code
+  // IndicatorsCore: typeof IndicatorsCore = IndicatorsCore
+  // IndicatorRSI: typeof IndicatorRSI = IndicatorRSI
   chartConstructor: ChartConstructorType = 'stockChart'; // Chart constructor type
   // ohlc: any[] = []; // data structure to insert OHLCV prices
-  volume: any[] = []; // data structure to insert OHLCV volume
+  // volume: any[] = []; // data structure to insert OHLCV volume
   chart?: Highcharts.StockChart;
   // highestClosePrice = computed<number>(() => this.getHighestClosePriceNumber());
 
   groupingUnits: [string, number[] | null][] = [
-    ['minute', [15, 30]],
-    // ['hour', [1, 2,]]
+    ['minute', [1, 5, 10, 15, 20, 30]],
+    // ['hour', [1, 2, 3, 4, 6]],
   ];
 
 
-
   /**
-   * componentColor gets the color of the background color of the card
+   * componentColor signal handles the background color of the card.
+   * Initialized as a signal to allow for safe DOM access and potential theme updates.
    */
-  componentColor = getComputedStyle(document.documentElement).getPropertyValue('--mat-sys-surface').trim()
+  componentColor = signal<string>('#ffffff');
 
   /**
    * Define chart options as a signal
@@ -59,7 +64,7 @@ export class AssetCard {
     },
     rangeSelector: {
       enabled: true,
-      selected: 3,
+      selected: 4,
       buttons: [
         {
           type: 'minute',
@@ -82,25 +87,40 @@ export class AssetCard {
           text: '2h'
         },
         {
+          type: 'hour',
+          count: 4,
+          text: '4h'
+        },
+        {
           type: 'all',
           text: 'All',
           title: 'View all'
         }
       ]
     },
+    accessibility: {
+      enabled: false,
+    },
     navigator: {
+      adaptToUpdatedData: false,
+      enabled: true,
       series: {
-        color: 'orange',
+        color: '#fc6603',
       },
+
     },
     chart: {
-      backgroundColor: this.componentColor,
+      backgroundColor: this.componentColor(),
       styledMode: false,
       height: null
     },
     legend: { enabled: true },
     credits: { enabled: false },
-    tooltip: { enabled: true },
+    tooltip: {
+      enabled: true,
+      split: true, // Best for multi-pane financial charts
+      shared: false
+    },
     plotOptions: {
       candlestick: {
         color: 'pink',
@@ -110,12 +130,21 @@ export class AssetCard {
       },
       column: {
         color: 'blue',
-      }
+        tooltip: {
+          valueDecimals: 2,
+          position: {
+            align: 'right',
+            relativeTo: 'chart',
+            verticalAlign: 'bottom'
+
+          }
+        }
+      },
     },
     series: [
       {
         type: 'candlestick',
-        name: 'Prices',
+        name: 'Stock Prices', // Standardized name
         showInLegend: true,
         dataGrouping: {
           units: this.groupingUnits,
@@ -129,6 +158,17 @@ export class AssetCard {
         yAxis: 1,
         dataGrouping: {
           approximation: 'sum',
+          units: this.groupingUnits,
+        },
+      },
+      {
+        type: 'line',
+        name: 'RSI',
+        color: '#048526',
+        showInLegend: true,
+        yAxis: 2,
+        dataGrouping: {
+          approximation: 'average',
           units: this.groupingUnits,
         },
       },
@@ -153,12 +193,8 @@ export class AssetCard {
         },
         title: {
           text: 'OHLC',
-          align: 'high',
-          rotation: 90,
-          x: 5,
-          y: 10,
         },
-        height: '60%',
+        height: '40%',
         lineWidth: 2,
         offset: 20,
         resize: {
@@ -175,13 +211,28 @@ export class AssetCard {
         },
         title: {
           text: 'Volume',
-          align: 'high',
-          rotation: 90,
-          x: 5,
-          y: 10,
         },
-        top: '65%',
-        height: '35%',
+        top: '42%',
+        height: '25%',
+        offset: 20,
+        lineWidth: 2,
+        resize: {
+          enabled: true,
+        },
+      },
+      {
+        labels: {
+          style: {
+            color: '#000',
+          },
+          align: 'right',
+          x: -3,
+        },
+        title: {
+          text: 'RSI',
+        },
+        top: '70%',
+        height: '32%',
         offset: 20,
         lineWidth: 2,
         resize: {
@@ -196,6 +247,10 @@ export class AssetCard {
    */
   ohlcvDataService = inject(OhlcvData); // service for aquiring OHLCV data
   destroyRef = inject(DestroyRef); // Modern cleanup in Angular
+  indicatorService = inject(IndicatorTaService)
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly document = inject(DOCUMENT);
+
 
   /**
    * Use rxResource to handle the reactive fetch.
@@ -215,8 +270,27 @@ export class AssetCard {
   // 3. Derived Chart Structure
   readonly chartData = computed(() => {
     const data = this.rawData.value() ?? [];
+    const cleanedPrices: OhlcvDataInterface[] = []; // this list will be the one used to populate chartData
+    let lastValidEntry: OhlcvDataInterface | null = null; // keeps record of the last valid entry
+
+    data.forEach(
+      (item) => {
+        const isInvalid: boolean = Number(item.open_price) === 0 || Number(item.high_price) === 0 ||
+          Number(item.low_price) === 0 || Number(item.close_price) === 0;
+        if (isInvalid && lastValidEntry) {
+          cleanedPrices.push({ ...lastValidEntry, timestamp: item.timestamp });
+        } else {
+          cleanedPrices.push(item);
+        }
+
+        if (!isInvalid) {
+          lastValidEntry = item;
+        }
+      }
+    )
+
     return {
-      ohlc: data.map(dp =>
+      ohlc: cleanedPrices.map(dp =>
         [
           new Date(dp.timestamp).getTime(),
           Number(dp.open_price),
@@ -256,7 +330,6 @@ export class AssetCard {
       dateStyle: "medium", // e.g., Jan 1, 2023
       timeStyle: "short"   // e.g., 4:00 PM
     });
-    console.log(nyDateTime);
 
     return { ...highestPriceObject, date: nyDateTime };
   });
@@ -306,11 +379,44 @@ export class AssetCard {
     return { ...lastClosePriceObject, date: nyDateTime };
   });
 
+  readonly rsiRawData = rxResource<RSIModel[], any>(
+    {
+      params: () => ({ id: this.asset().asset }), // renaming asset to assetId just to avoid potential naming conflict
+      stream: ({ params }) => this.indicatorService.getAssetsLatestPrices(params.id) // executes the service
+    }
+  );
+
+  readonly rsiData = computed(() => {
+    const data = this.rsiRawData.value() ?? [];
+
+    console.log(data)
+
+    return {
+      values: data.map(dp =>
+        [
+          new Date(dp.timestamp).getTime(),
+          Number(dp.RSI_14),
+        ]
+      )
+    };
+  })
+
   constructor() {
     // Use an effect to synchronize chart options with data updates.
     // This runs automatically whenever this.chartData() updates.
     effect(() => {
-      this.updateChartData();
+
+      if (isPlatformBrowser(this.platformId)) {
+        const color = getComputedStyle(this.document.documentElement)
+          .getPropertyValue('--mat-sys-surface')
+          .trim();
+        if (color && color !== this.componentColor()) {
+          this.componentColor.set(color);
+        }
+
+        // Only call update in the browser to ensure the debugger can catch it
+        this.updateChartData();
+      }
     });
   }
 
@@ -321,19 +427,53 @@ export class AssetCard {
   updateChartData() {
     this.chartOptions.update(options => ({
       ...options,
+      chart: {
+        ...options.chart,
+        backgroundColor: this.componentColor()
+      },
+      // navigator: {
+      //   ...options.navigator,
+      //   series: {
+      //     type: 'line',
+      //     data: this.rsiData().values,
+      //     color: 'black',
+      //   }
+      // },
       series: [
         {
           type: 'candlestick',
           name: 'Stock Prices',
-          data: this.chartData().ohlc
+          data: this.chartData().ohlc,
+          dataGrouping: {
+            units: this.groupingUnits,
+            approximation: 'ohlc',
+          },
         },
         {
           type: 'column',
           name: 'Volume',
           data: this.chartData().volume,
-          yAxis: 1
+          yAxis: 1,
+          // dataGrouping: {
+          //   approximation: 'sum',
+          //   units: this.groupingUnits,
+          // },
         },
+        {
+          type: 'line',
+          name: 'RSI',
+          data: this.rsiData().values,
+          color: '#048526',
+          yAxis: 2,
+        }
       ]
     }));
+    // this.indicatorService.getAssetsLatestPrices(this.asset().asset).subscribe(
+    //   {
+    //     next: (response: any) => {
+    //       console.log(response)
+    //     }
+    //   }
+    // );
   }
 }

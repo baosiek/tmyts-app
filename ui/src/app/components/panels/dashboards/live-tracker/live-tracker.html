@@ -26,11 +26,10 @@
   </mat-form-field>
 
   <div>
-    <mat-grid-list cols="2" rowHeight="2:1" gutterSize="5px">
+    <mat-grid-list cols="2" rowHeight="1:0.8" gutterSize="5px">
         @for (asset of assetsList; track asset.asset){
             <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <app-asset-card [asset]="asset">{{asset.asset}}</app-asset-card>
-                <!-- <p>cOISUQUINHA E PIMPI</p> -->
             </mat-grid-tile>
         }
     </mat-grid-list>

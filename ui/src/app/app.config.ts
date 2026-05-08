@@ -13,7 +13,18 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(),
-    provideHighcharts(),
+    provideHighcharts(
+
+      {
+        modules: () => {
+          return [
+            import('highcharts/indicators/indicators'),
+            import('highcharts/indicators/rsi')
+          ]
+        }
+      }
+
+    ),
     provideNativeDateAdapter(),
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false, maxWidth: '90vw', maxHeight: '90vh' } },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5000 } }
