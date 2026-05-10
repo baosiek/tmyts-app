@@ -5,16 +5,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDivider } from "@angular/material/divider";
 import { MatProgressBar } from "@angular/material/progress-bar";
 import { ChartConstructorType, HighchartsChartComponent, providePartialHighcharts } from 'highcharts-angular';
-import * as Highcharts from 'highcharts/highstock';
-import { interval, startWith, switchMap } from 'rxjs';
+import * as Highcharts from 'highcharts/highstock'; // Import Highcharts
+import { catchError, interval, of, startWith, switchMap } from 'rxjs'; // Import catchError and of
 import { OhlcvDataInterface } from '../../../../../interfaces/ohlcv-interface';
 import { PortfolioHoldingsModel } from '../../../../../models/portfolio_holdings_model';
-import { IndicatorTaService, RSIModel } from '../../../../../services/indicator-ta/indicator-ta-service';
+import { ALLModel, IndicatorTaService } from '../../../../../services/indicator-ta/indicator-ta-service';
 import { OhlcvData } from '../../../../../services/ohlcv-data/ohlcv-data';
-
-
-// import IndicatorsCore from 'highcharts/indicators/indicators';
-// import IndicatorRSI from "highcharts/indicators/rsi";
 
 @Component({
   selector: 'app-asset-card',
@@ -92,6 +88,16 @@ export class AssetCard {
           text: '4h'
         },
         {
+          type: 'hour',
+          count: 8,
+          text: '8h'
+        },
+        {
+          type: 'day',
+          count: 1,
+          text: '1d'
+        },
+        {
           type: 'all',
           text: 'All',
           title: 'View all'
@@ -163,8 +169,7 @@ export class AssetCard {
       },
       {
         type: 'line',
-        name: 'RSI',
-        color: '#048526',
+        name: 'ADX',
         showInLegend: true,
         yAxis: 2,
         dataGrouping: {
@@ -229,9 +234,28 @@ export class AssetCard {
           x: -3,
         },
         title: {
-          text: 'RSI',
+          text: 'ADX',
         },
         top: '70%',
+        height: '32%',
+        offset: 20,
+        lineWidth: 2,
+        resize: {
+          enabled: true,
+        },
+      },
+      {
+        labels: {
+          style: {
+            color: '#000',
+          },
+          align: 'right',
+          x: -3,
+        },
+        title: {
+          text: '',
+        },
+        top: '90%',
         height: '32%',
         offset: 20,
         lineWidth: 2,
@@ -262,7 +286,14 @@ export class AssetCard {
       params: () => ({ assetId: this.asset().asset }), // renaming asset to assetId just to avoid potential naming conflict
       stream: ({ params }) => interval(60000).pipe( // interval is in miliseconds
         startWith(0), // starts at milisecond 0
-        switchMap(() => this.ohlcvDataService.getLast100Entries(params.assetId)) // executes the service
+        switchMap(() => this.ohlcvDataService.getAllBars(params.assetId).pipe(
+          catchError(error => {
+            console.error(`Error fetching OHLCV data for asset ${params.assetId}:`, error);
+            // Return an empty array to allow the stream to continue without data for this specific poll.
+            // This prevents the interval from stopping and ensures the chart doesn't break.
+            return of([]);
+          })
+        ))
       )
     }
   );
@@ -379,25 +410,51 @@ export class AssetCard {
     return { ...lastClosePriceObject, date: nyDateTime };
   });
 
-  readonly rsiRawData = rxResource<RSIModel[], any>(
+
+  // Gets RSI data
+  readonly allRawData = rxResource<ALLModel[], any>(
     {
-      params: () => ({ id: this.asset().asset }), // renaming asset to assetId just to avoid potential naming conflict
-      stream: ({ params }) => this.indicatorService.getAssetsLatestPrices(params.id) // executes the service
+      params: () => ({ assetId: this.asset().asset }), // renaming asset to assetId just to avoid potential naming conflict
+      stream: ({ params }) => this.indicatorService.getAllIndicator(params.assetId).pipe(
+        catchError(error => {
+          console.error(`Error fetching indicators for asset ${params.id}:`, error);
+          // Return an empty array to allow the stream to continue without data for this specific poll.
+          // This prevents the interval from stopping and ensures the chart doesn't break.
+          return of([]);
+        })
+      ) // executes the servicegetAssetsLatestPrices(params.id) // executes the service
     }
   );
 
-  readonly rsiData = computed(() => {
-    const data = this.rsiRawData.value() ?? [];
-
-    console.log(data)
+  // Updates the RSI data structure
+  readonly allData = computed(() => {
+    const data = this.allRawData.value() ?? [];
 
     return {
-      values: data.map(dp =>
+      rsi: data.map(dp =>
         [
           new Date(dp.timestamp).getTime(),
-          Number(dp.RSI_14),
+          Number(dp.RSI),
         ]
-      )
+      ),
+      adx: data.map(dp =>
+        [
+          new Date(dp.timestamp).getTime(),
+          Number(dp.ADX),
+        ]
+      ),
+      plus_di: data.map(dp =>
+        [
+          new Date(dp.timestamp).getTime(),
+          Number(dp.DMP),
+        ]
+      ),
+      minus_di: data.map(dp =>
+        [
+          new Date(dp.timestamp).getTime(),
+          Number(dp.DMN),
+        ]
+      ),
     };
   })
 
@@ -431,14 +488,14 @@ export class AssetCard {
         ...options.chart,
         backgroundColor: this.componentColor()
       },
-      // navigator: {
-      //   ...options.navigator,
-      //   series: {
-      //     type: 'line',
-      //     data: this.rsiData().values,
-      //     color: 'black',
-      //   }
-      // },
+      navigator: {
+        ...options.navigator,
+        series: {
+          type: 'line',
+          data: this.allData().rsi,
+          color: '#fc6603',
+        }
+      },
       series: [
         {
           type: 'candlestick',
@@ -454,26 +511,34 @@ export class AssetCard {
           name: 'Volume',
           data: this.chartData().volume,
           yAxis: 1,
-          // dataGrouping: {
-          //   approximation: 'sum',
-          //   units: this.groupingUnits,
-          // },
+          dataGrouping: {
+            approximation: 'sum',
+            units: this.groupingUnits,
+          },
         },
         {
           type: 'line',
-          name: 'RSI',
-          data: this.rsiData().values,
+          name: 'ADX',
+          data: this.allData().adx,
+          color: '#a1066e',
+          yAxis: 2,
+        },
+        {
+          type: 'line',
+          name: '+DI',
+          data: this.allData().plus_di,
           color: '#048526',
+          yAxis: 2,
+        },
+        {
+          type: 'line',
+          name: '-DI',
+          data: this.allData().minus_di,
+          color: '#ec9410',
           yAxis: 2,
         }
       ]
     }));
-    // this.indicatorService.getAssetsLatestPrices(this.asset().asset).subscribe(
-    //   {
-    //     next: (response: any) => {
-    //       console.log(response)
-    //     }
-    //   }
-    // );
+    console.log('Chart updated for ', this.asset().asset);
   }
 }

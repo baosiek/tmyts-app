@@ -4,7 +4,15 @@ import { Observable } from 'rxjs';
 
 export interface RSIModel {
   timestamp: string;
-  RSI_14: number;
+  RSI: number;
+}
+
+export interface ALLModel {
+  timestamp: string;
+  RSI: number; // RSI
+  ADX: number; // ADX
+  DMP: number; // +DI
+  DMN: number; // -DI
 }
 
 @Injectable({
@@ -18,9 +26,9 @@ export class IndicatorTaService {
 
   // http://127.0.0.1:8000/indicators_ta/rsi/asset/C/period/240/lookback/14/
 
-  getAssetsLatestPrices(asset: string): Observable<RSIModel[]> {
-    const apiMethod = 'rsi';
 
-    return this.http.get<RSIModel[]>(`${this.apiUrl}/${apiMethod}/asset/${asset}/period/240/lookback/14/`)
+  getAllIndicator(asset: string): Observable<ALLModel[]> {
+    const apiMethod = 'all';
+    return this.http.get<ALLModel[]>(`${this.apiUrl}/${apiMethod}/asset/${asset}/lookback/14/`)
   }
 }
