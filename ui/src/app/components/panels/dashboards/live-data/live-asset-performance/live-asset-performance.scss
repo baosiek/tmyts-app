@@ -1,26 +1,85 @@
-.mat-column-symbol {
-  width: 32px;
-  // border-right: 1px solid currentColor;
-  padding-right: 24px;
-  text-align: center;
+@use '@angular/material' as mat;
+
+.asset-performance-table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 12px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  background-color: var(--mat-sys-surface);
+  overflow-x: auto;
+  padding: 8px 16px 16px;
 }
 
-.mat-column-gain_loss {
-  width: 128px;
-  padding-right: 24px;
-  text-align: center;
-}
+.asset-table {
+  @include mat.table-overrides((row-item-outline-color: var(--mat-sys-outline-variant)));
+  width: 100%;
+  min-width: 1100px;
 
-.mat-column-percent, .mat-column-last_percent {
-  padding: 0;
-}
+  th.mat-mdc-header-cell {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--mat-sys-on-surface-variant);
+    border-bottom: 2px solid var(--mat-sys-outline);
+  }
 
-.mat-column-header-group-2 {
-  padding-left: 200px;
-}
+  th.header-group {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--mat-sys-on-surface-variant);
+    background-color: var(--mat-sys-surface-container-low);
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
 
-.mat-column-header-group-3 {
-  padding-left: 70px;
+    &:empty {
+      background-color: transparent;
+      border-bottom-color: transparent;
+    }
+  }
+
+  td.mat-mdc-cell {
+    font-variant-numeric: tabular-nums;
+    color: var(--mat-sys-on-surface);
+  }
+
+  .mat-mdc-row {
+    transition: background-color 120ms ease-in-out;
+
+    &:nth-child(even) {
+      background-color: var(--mat-sys-surface-container-low);
+    }
+
+    &:hover {
+      background-color: var(--mat-sys-surface-container-high);
+    }
+  }
+
+  /* Numeric columns are right-aligned for easier scanning/comparison */
+  .mat-column-total_quantity,
+  .mat-column-average_price,
+  .mat-column-total_commission,
+  .mat-column-market_value,
+  .mat-column-rt_price,
+  .mat-column-gain_loss,
+  .mat-column-adj_price_close,
+  .mat-column-last_gain_loss {
+    text-align: right;
+  }
+
+  .mat-column-percent,
+  .mat-column-last_percent {
+    text-align: center;
+    padding: 0;
+  }
+
+  .mat-column-asset {
+    font-weight: 600;
+  }
 }
 
 @keyframes shine-right {
@@ -35,8 +94,9 @@
   -webkit-text-fill-color: transparent;
   animation: shine-right 1.5s ease-out forwards;
   display: inline-block;
-  font-weight: bold;
-  font-size: 18px;
+  font-weight: 600;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
 }
 
 .anim-text-up {
@@ -48,28 +108,15 @@
 }
 
 .gain-loss-cell {
-  font-weight: bold;
+  font-weight: 600;
 
   &.positive {
-    color: #0d9e03;
+    color: var(--mat-sys-primary);
   }
 
   &.negative {
-    color: #732f2f;
+    color: var(--mat-sys-error);
   }
-}
-
-.asset-performance-table {
-  width: 100%;
-  overflow-x: auto;
-  padding-right: 1rem;
-}
-
-.asset-performance-table table {
-  min-width: 1000px;
-  width: 100%;
-  box-sizing: border-box;
-  padding-right: 1rem;
 }
 
 .asset-performance-table .mat-paginator {
