@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { PriceUpdateMessage } from '../../interfaces/price-update-message-interface';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 
 @Injectable({

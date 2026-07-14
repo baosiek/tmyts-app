@@ -1,6 +1,8 @@
-interface PriceUpdateMessage {
-    type: string;
-    tstamp: number;
-    asset: string;
-    last_price: number;
+export interface PriceUpdateMessage {
+  type?: string;
+  asset?: string;
+  price?: number;
+  last_price?: number;
+  timestamp?: string;
+  [key: string]: unknown;
 }

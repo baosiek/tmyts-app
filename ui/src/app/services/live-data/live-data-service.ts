@@ -1,9 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AssetDataModel } from '../../components/dialogs/buy-asset-dialog/buy-asset-model';
 import { IndexCardInterface } from '../../components/panels/indexes-cards/indexes-cards';
 import { PortfolioPerformanceModel } from '../../models/portfolio-performance-model';
+
+interface AssetDataModel {
+  symbol?: string;
+  price?: number;
+  [key: string]: unknown;
+}
 
 @Injectable({
   providedIn: 'root'

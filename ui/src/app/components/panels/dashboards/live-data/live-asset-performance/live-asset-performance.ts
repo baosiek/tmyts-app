@@ -218,7 +218,7 @@ export class LiveAssetPerformance implements OnInit, AfterViewInit, OnChanges, O
           if (message.type === 'tick') {
             const element = this.assetMap.get(symbol);
             if (element) {
-              this.calculatePerformanceMetrics(element, message.last_price, element.adj_price_close);
+              this.calculatePerformanceMetrics(element, message.last_price ?? element.adj_price_close ?? 0, element.adj_price_close);
               this.dataSource._updateChangeSubscription();
             }
           }
