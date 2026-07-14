@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git log *)",
+      "Bash(mkdir -p /tmp/claude-1000/spec-quarantine)",
+      "Bash(mv /home/baosiek/Projects/tmyts-app/ui/src/app/services/ib-services/ib-live-price-service.spec.ts /tmp/claude-1000/spec-quarantine/)",
+      "Bash(mv /home/baosiek/Projects/tmyts-app/ui/src/app/services/tmyts-holdings/tmyts-holdings.spec.ts /tmp/claude-1000/spec-quarantine/)"
+    ]
+  }
+}
