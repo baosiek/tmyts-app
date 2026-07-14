@@ -13,6 +13,7 @@ export interface ALLModel {
   ADX: number; // ADX
   DMP: number; // +DI
   DMN: number; // -DI
+  ATR: number; // ATR
 }
 
 @Injectable({
@@ -23,8 +24,6 @@ export class IndicatorTaService {
   apiUrl = 'http://localhost:8000/indicators_ta';
 
   constructor() { }
-
-  // http://127.0.0.1:8000/indicators_ta/rsi/asset/C/period/240/lookback/14/
 
 
   getAllIndicator(asset: string): Observable<ALLModel[]> {

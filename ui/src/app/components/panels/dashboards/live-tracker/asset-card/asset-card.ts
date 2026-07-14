@@ -12,6 +12,7 @@ import { PortfolioHoldingsModel } from '../../../../../models/portfolio_holdings
 import { ALLModel, IndicatorTaService } from '../../../../../services/indicator-ta/indicator-ta-service';
 import { OhlcvData } from '../../../../../services/ohlcv-data/ohlcv-data';
 
+
 @Component({
   selector: 'app-asset-card',
   imports: [MatCardModule, HighchartsChartComponent, CurrencyPipe, MatProgressBar, MatDivider],
@@ -19,7 +20,7 @@ import { OhlcvData } from '../../../../../services/ohlcv-data/ohlcv-data';
   styleUrl: './asset-card.scss',
   providers: [
     providePartialHighcharts(  // importing this module is crutial to enable stockChart
-      { modules: () => [import('highcharts/esm/modules/stock')] },
+      { modules: () => [import('highcharts/esm/modules/stock'), import('highcharts/esm/highcharts-more')] },
     ),
   ]
 })
@@ -30,13 +31,8 @@ export class AssetCard {
    */
   asset: InputSignal<PortfolioHoldingsModel> = input.required<PortfolioHoldingsModel>(); // asset for this card
   Highcharts: typeof Highcharts = Highcharts; // Highcharts library boilerplate code
-  // IndicatorsCore: typeof IndicatorsCore = IndicatorsCore
-  // IndicatorRSI: typeof IndicatorRSI = IndicatorRSI
   chartConstructor: ChartConstructorType = 'stockChart'; // Chart constructor type
-  // ohlc: any[] = []; // data structure to insert OHLCV prices
-  // volume: any[] = []; // data structure to insert OHLCV volume
   chart?: Highcharts.StockChart;
-  // highestClosePrice = computed<number>(() => this.getHighestClosePriceNumber());
 
   groupingUnits: [string, number[] | null][] = [
     ['minute', [1, 5, 10, 15, 20, 30]],
@@ -185,7 +181,7 @@ export class AssetCard {
         },
         align: 'right',
         x: -3,
-      },
+      }
     },
     yAxis: [
       {
@@ -263,6 +259,14 @@ export class AssetCard {
           enabled: true,
         },
       },
+      {
+        // Index 1: The dummy axis for your vertical signals
+        title: { text: '' },
+        visible: false, // Hides the axis line, labels, and gridlines
+        min: 0,
+        max: 1,
+        opposite: true
+      }
     ]
   });
 
@@ -293,7 +297,8 @@ export class AssetCard {
             // This prevents the interval from stopping and ensures the chart doesn't break.
             return of([]);
           })
-        ))
+        )),
+        // switchMap()
       )
     }
   );
@@ -429,6 +434,7 @@ export class AssetCard {
   // Updates the RSI data structure
   readonly allData = computed(() => {
     const data = this.allRawData.value() ?? [];
+    console.log(data)
 
     return {
       rsi: data.map(dp =>
@@ -441,6 +447,12 @@ export class AssetCard {
         [
           new Date(dp.timestamp).getTime(),
           Number(dp.ADX),
+        ]
+      ),
+      atr: data.map(dp =>
+        [
+          new Date(dp.timestamp).getTime(),
+          Number(dp.ATR),
         ]
       ),
       plus_di: data.map(dp =>
@@ -500,6 +512,7 @@ export class AssetCard {
         {
           type: 'candlestick',
           name: 'Stock Prices',
+          id: 'main-series',
           data: this.chartData().ohlc,
           dataGrouping: {
             units: this.groupingUnits,
@@ -522,6 +535,10 @@ export class AssetCard {
           data: this.allData().adx,
           color: '#a1066e',
           yAxis: 2,
+          dataGrouping: {
+            approximation: 'average',
+            units: this.groupingUnits,
+          },
         },
         {
           type: 'line',
@@ -529,6 +546,10 @@ export class AssetCard {
           data: this.allData().plus_di,
           color: '#048526',
           yAxis: 2,
+          dataGrouping: {
+            approximation: 'average',
+            units: this.groupingUnits,
+          },
         },
         {
           type: 'line',
@@ -536,6 +557,40 @@ export class AssetCard {
           data: this.allData().minus_di,
           color: '#ec9410',
           yAxis: 2,
+          dataGrouping: {
+            approximation: 'average',
+            units: this.groupingUnits,
+          },
+        },
+        {
+          type: 'errorbar',
+          name: 'ATR %',
+          yAxis: 4,
+          data: this.allData().atr
+            .filter(([_, value]) => value > 0.18)
+            .map(([timestamp]) => [
+              timestamp, // X coordinate
+              0,         // Low Y-bound
+              1       // High Y-bound
+            ]),
+          linkedTo: 'main-series', // Links legend and zooming behavior
+          color: '#b4f306',             // Line color
+          lineWidth: 2,                 // Line thickness
+          whiskerLength: 0,             // Set to 0 to remove the horizontal T-bars
+          zIndex: -50,                    // Ensures lines sit on top of candles
+          states: {
+            hover: {
+              lineWidth: 2          // Thicker line on mouse hover
+            }
+          },
+          tooltip: {
+            pointFormat: 'ATR / Close > 0.18'
+          },
+          dataGrouping: {
+            enabled: true,
+            approximation: 'range',
+            forced: true
+          }
         }
       ]
     }));
