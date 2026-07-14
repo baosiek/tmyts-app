@@ -5,7 +5,7 @@
       <mat-spinner class="spinner-container"></mat-spinner>
     </div>
   } @else {
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+      <table mat-table [dataSource]="dataSource" class="holdings-table" matSort>
 
     <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
@@ -31,7 +31,7 @@
         <!-- Weight Column -->
     <ng-container matColumnDef="weight">
       <th mat-header-cell *matHeaderCellDef> Weight </th>
-      <td mat-cell *matCellDef="let element"> {{element.weight }} </td>
+      <td mat-cell *matCellDef="let element"> {{element.weight | percent:'1.2-2'}} </td>
     </ng-container>
 
     <!-- Weight Column -->
@@ -43,13 +43,13 @@
     <!-- Purchase price Column -->
     <ng-container matColumnDef="cost_basis_price">
       <th mat-header-cell *matHeaderCellDef> Avg. Price </th>
-      <td mat-cell *matCellDef="let element"> {{element.cost_basis_price | currency }} </td>
+      <td mat-cell *matCellDef="let element"> {{element.cost_basis_price | currency:'USD':'symbol':'1.2-2' }} </td>
     </ng-container>
 
     <!-- Purchase price Column -->
     <ng-container matColumnDef="total_cost_basis">
       <th mat-header-cell *matHeaderCellDef> Total Cost </th>
-      <td mat-cell *matCellDef="let element"> {{element.total_cost_basis | currency }} </td>
+      <td mat-cell *matCellDef="let element"> {{element.total_cost_basis | currency:'USD':'symbol':'1.2-2' }} </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

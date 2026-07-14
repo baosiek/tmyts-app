@@ -1,4 +1,4 @@
-import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
+import { CurrencyPipe, DatePipe, DecimalPipe, PercentPipe } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -28,7 +28,8 @@ import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar
     MatPaginatorModule,
     DatePipe,
     CurrencyPipe,
-    DecimalPipe
+    DecimalPipe,
+    PercentPipe
   ],
   templateUrl: './portfolio-holdings-table.html',
   styleUrl: './portfolio-holdings-table.scss'
