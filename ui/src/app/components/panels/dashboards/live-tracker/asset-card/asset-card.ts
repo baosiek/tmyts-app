@@ -39,6 +39,18 @@ export class AssetCard {
     // ['hour', [1, 2, 3, 4, 6]],
   ];
 
+  // Width of the live-following window, matching the "4h" rangeSelector button
+  // (buttons[4] below). Passing xAxis.min/max through chartOptions/chart.update()
+  // does NOT work here: axis.userMin/userMax (set once by rangeSelector.selected
+  // at chart creation) win over axis.options.min/max on every subsequent update,
+  // and chart.update() never re-triggers the rangeSelector click to refresh them
+  // (its own diffing drops unchanged rangeSelector options, and clickButton()
+  // caps its new max at the axis's current, stale max anyway). So the window is
+  // instead re-anchored directly via axis.setExtremes() from the 'redraw' event,
+  // see onChartInstance()/followLiveWindow() below.
+  private readonly visibleRangeMs = 4 * 60 * 60 * 1000;
+  private lastFollowedDataMax?: number;
+
 
   /**
    * componentColor signal handles the background color of the card.
@@ -104,7 +116,10 @@ export class AssetCard {
       enabled: false,
     },
     navigator: {
-      adaptToUpdatedData: false,
+      // Must stay true (Highcharts default) for a live-polling chart: it wires the
+      // 'updatedData' listener that extends the navigator/base X axis as new bars
+      // arrive. false is only correct for the lazy-loading-old-data-on-pan pattern.
+      adaptToUpdatedData: true,
       enabled: true,
       series: {
         color: '#fc6603',
@@ -595,5 +610,30 @@ export class AssetCard {
       ]
     }));
     console.log('Chart updated for ', this.asset().asset);
+  }
+
+  /**
+   * Captures the live chart instance once Highcharts creates it, and wires a
+   * 'redraw' listener that keeps the visible window following live data.
+   */
+  onChartInstance(chart: Highcharts.Chart): void {
+    this.chart = chart as Highcharts.StockChart;
+    Highcharts.addEvent(chart, 'redraw', () => this.followLiveWindow());
+  }
+
+  /**
+   * Re-anchors the X axis to [dataMax - visibleRangeMs, dataMax] whenever new
+   * data has actually landed (dataMax advanced since we last followed it).
+   * Only acting on a dataMax change means a user's manual zoom/pan (which also
+   * fires 'redraw' but doesn't change dataMax) is left untouched.
+   */
+  private followLiveWindow(): void {
+    const chart = this.chart;
+    const dataMax = chart ? (chart.xAxis[0] as unknown as { dataMax?: number }).dataMax : undefined;
+    if (!chart || dataMax == null || dataMax === this.lastFollowedDataMax) {
+      return;
+    }
+    this.lastFollowedDataMax = dataMax;
+    chart.xAxis[0].setExtremes(dataMax - this.visibleRangeMs, dataMax, true);
   }
 }
