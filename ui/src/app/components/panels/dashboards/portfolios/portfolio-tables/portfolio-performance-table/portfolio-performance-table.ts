@@ -1,4 +1,4 @@
-import { CurrencyPipe, DecimalPipe, NgClass, NgStyle, PercentPipe } from '@angular/common';
+import { CurrencyPipe, DecimalPipe, NgClass, PercentPipe } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -30,7 +30,6 @@ import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar
     PercentPipe,
     DecimalPipe,
     TmytsChip,
-    NgStyle,
     NgClass,
   ],
   templateUrl: './portfolio-performance-table.html',

@@ -12,6 +12,8 @@ export type IndexCardInterface = {
   points: number;
   variation: number;
   percent: number;
+  week_variation: number;
+  week_percent: number;
 };
 
 export type IndexNameType = {
@@ -36,6 +38,9 @@ export class IndexesCards implements OnInit {
     { id: '^IXIC', name: 'NASDAQ' },
     { id: '^GSPTSE', name: 'TSX' },
     { id: '^BVSP', name: 'IBOVESPA' },
+    { id: '^FTSE', name: 'FTSE 100' },
+    { id: '^IRX', name: 'US T-Bill' },
+    { id: '^GDAXI', name: 'DAX' },
   ];
 
   constructor(private _snackBar: MatSnackBar) { }
@@ -68,10 +73,14 @@ export class IndexesCards implements OnInit {
             if (match) {
               // If a match is found, replace the `value`
               item1.name = match.name;
-              return { ...item1 };
             }
 
-            // Otherwise, return the original item
+            // TODO: backend doesn't provide week performance yet, so mock
+            // it off the daily numbers until that field exists.
+            const weekMultiplier = 3 + Math.random() * 3;
+            item1.week_variation = item1.variation * weekMultiplier;
+            item1.week_percent = item1.percent * weekMultiplier;
+
             return item1;
           });
 

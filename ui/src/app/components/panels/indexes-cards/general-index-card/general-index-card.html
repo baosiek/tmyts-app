@@ -14,8 +14,16 @@
     <span class="index-points">{{ index().points | number : '1.2-2' }}</span>
   </div>
 
-  <div class="variation-container" [class.variation-up]="index().variation >= 0" [class.variation-down]="index().variation < 0">
-    <span class="variation-percent">{{ index().percent | percent: '1.2-2' }}</span>
-    <span class="variation-value">{{ index().variation | number : '1.2-2' }}</span>
+  <div class="variation-container">
+    <div class="variation-row" [class.variation-up]="index().variation >= 0" [class.variation-down]="index().variation < 0">
+      <span class="period-label">1D</span>
+      <span class="variation-percent">{{ index().percent | percent: '1.2-2' }}</span>
+      <span class="variation-value">{{ index().variation | number : '1.2-2' }}</span>
+    </div>
+    <div class="variation-row" [class.variation-up]="index().week_variation >= 0" [class.variation-down]="index().week_variation < 0">
+      <span class="period-label">1W</span>
+      <span class="variation-percent">{{ index().week_percent | percent: '1.2-2' }}</span>
+      <span class="variation-value">{{ index().week_variation | number : '1.2-2' }}</span>
+    </div>
   </div>
 </div>

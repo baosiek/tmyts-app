@@ -3,87 +3,125 @@
 .table-container {
   display: flex;
   flex-direction: column;
-  // border: 1px solid black;
-  border-radius: 8px;
-  // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  /* Adds a subtle drop shadow */
+  border-radius: 12px;
+  border: 1px solid var(--mat-sys-outline-variant);
   overflow: hidden;
-  padding: 16px;
+  padding: 8px 16px 16px;
+  background-color: var(--mat-sys-surface);
 }
 
-table {
-  @include mat.table-overrides((row-item-outline-color: var(--mat-sys-inverse-primary)));
-}
+.performance-table {
+  @include mat.table-overrides((row-item-outline-color: var(--mat-sys-outline-variant)));
+  width: 100%;
 
-/* In your component's CSS file */
-.mat-column-variation {
-  text-align: end;
-}
-
-.mat-column-percent {
-  text-align: start;
-}
-
-.icon-with-currency {
-  display: flex;
-  align-items: center; // Vertically aligns the icon and text
-  gap: 4px; // Adds some space between the icon and the text
-
-  mat-icon {
-    // Optional: Add specific styling for the icon if needed
-    font-size: 20px;
-    height: 20px;
-    width: 20px;
+  th.mat-mdc-header-cell {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--mat-sys-on-surface-variant);
+    border-bottom: 2px solid var(--mat-sys-outline);
   }
 
-  span {
-    // Optional: Add specific styling for the currency text if needed
-    font-weight: bold;
-    color: #333;
+  td.mat-mdc-cell {
+    font-variant-numeric: tabular-nums;
+    color: var(--mat-sys-on-surface);
   }
 
-  mat-chips {
-    @include mat.chips-overrides((flat-selected-outline-width: 10px));
+  .mat-mdc-row {
+    transition: background-color 120ms ease-in-out;
+
+    &:nth-child(even) {
+      background-color: var(--mat-sys-surface-container-low);
+    }
+
+    &:hover {
+      background-color: var(--mat-sys-surface-container-high);
+    }
   }
-}
 
-.header-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center; // Vertically aligns the icon and text
-  vertical-align: middle; // Adds some space between the icon and the text
+  /* Numeric columns are right-aligned for easier scanning/comparison */
+  .mat-column-quantity,
+  .mat-column-cost_basis_price,
+  .mat-column-close,
+  .mat-column-gain_loss {
+    text-align: right;
+  }
 
-  .header-cell {
-    width: 150px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  .mat-column-weighted_percent {
     text-align: center;
-    border: 1px solid black;
-    border-radius: 8px;
+  }
 
-    h4 {
-      margin: 3px;
+  .mat-column-asset {
+    font-weight: 600;
+  }
+}
+
+.gain-loss-cell {
+  font-weight: 600;
+
+  &.positive {
+    color: var(--mat-sys-primary);
+  }
+
+  &.negative {
+    color: var(--mat-sys-error);
+  }
+}
+
+.summary-bar {
+  display: flex;
+  gap: 12px;
+  padding: 4px 4px 16px;
+}
+
+.summary-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  background-color: var(--mat-sys-surface-container-low);
+
+  .summary-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  .summary-value {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--mat-sys-on-surface);
+  }
+
+  &.positive {
+    background-color: rgba(34, 197, 94, 0.14);
+    border-color: rgba(34, 197, 94, 0.35);
+
+    .summary-value {
+      color: #16a34a;
+    }
+  }
+
+  &.negative {
+    background-color: rgba(239, 68, 68, 0.14);
+    border-color: rgba(239, 68, 68, 0.35);
+
+    .summary-value {
+      color: #dc2626;
     }
   }
 }
 
-.green {
-  color: var(--mat-sys-on-primary-container);
-  background-color: var(--mat-sys-primary-container);
-  font-weight: bold;
-}
-
-.red {
-  color: var(--mat-sys-on-error-container);
-  background-color: var(--mat-sys-error-container);
-  font-weight: bold;
-}
-
 .spinner-container {
   display: flex;
-  justify-content: center; /* Horizontally centers the content */
-  align-items: center; /* Vertically centers the content */
-  height: 20vh; /* Example: Occupy full viewport height for centering on the page */
-  width: 100%; /* Example: Occupy full width */
+  justify-content: center;
+  align-items: center;
+  height: 20vh;
+  width: 100%;
 }

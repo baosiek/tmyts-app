@@ -16,15 +16,9 @@ export type ColorSet = {
   templateUrl: './tmyts-chip.html',
   styleUrl: './tmyts-chip.scss',
   styles: [
-    `:host { 
-      display: flex;
-      align-items: center;
-      font-weight: bold;
-      border-radius: 8px;
-      max-width: 100%; height: auto;
-      padding: 8px 8px;
-      gap: 0px
-    
+    `:host {
+      display: inline-flex;
+      max-width: 100%;
     }`
   ],
 

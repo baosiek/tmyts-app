@@ -39,6 +39,18 @@ export class AssetCard {
     // ['hour', [1, 2, 3, 4, 6]],
   ];
 
+  // Width of the live-following window, matching the "4h" rangeSelector button
+  // (buttons[4] below). Passing xAxis.min/max through chartOptions/chart.update()
+  // does NOT work here: axis.userMin/userMax (set once by rangeSelector.selected
+  // at chart creation) win over axis.options.min/max on every subsequent update,
+  // and chart.update() never re-triggers the rangeSelector click to refresh them
+  // (its own diffing drops unchanged rangeSelector options, and clickButton()
+  // caps its new max at the axis's current, stale max anyway). So the window is
+  // instead re-anchored directly via axis.setExtremes() from the 'redraw' event,
+  // see onChartInstance()/followLiveWindow() below.
+  private readonly visibleRangeMs = 4 * 60 * 60 * 1000;
+  private lastFollowedDataMax?: number;
+
 
   /**
    * componentColor signal handles the background color of the card.
@@ -104,7 +116,10 @@ export class AssetCard {
       enabled: false,
     },
     navigator: {
-      adaptToUpdatedData: false,
+      // Must stay true (Highcharts default) for a live-polling chart: it wires the
+      // 'updatedData' listener that extends the navigator/base X axis as new bars
+      // arrive. false is only correct for the lazy-loading-old-data-on-pan pattern.
+      adaptToUpdatedData: true,
       enabled: true,
       series: {
         color: '#fc6603',
@@ -315,9 +330,13 @@ export class AssetCard {
           Number(item.low_price) === 0 || Number(item.close_price) === 0;
         if (isInvalid && lastValidEntry) {
           cleanedPrices.push({ ...lastValidEntry, timestamp: item.timestamp });
-        } else {
+        } else if (!isInvalid) {
           cleanedPrices.push(item);
         }
+        // Invalid entries before the first valid one (e.g. an illiquid asset with
+        // no trades yet) are dropped rather than pushed as zero-price bars, which
+        // would otherwise corrupt the candlesticks and the high/low/average lines
+        // (a $0 "low" would always win against any real price).
 
         if (!isInvalid) {
           lastValidEntry = item;
@@ -344,9 +363,28 @@ export class AssetCard {
     };
   });
 
+  // 3b. Slice of chartData().ohlc within the same [dataMax - visibleRangeMs, dataMax]
+  // window the chart is actually showing (see followLiveWindow()). High/low/average
+  // must be computed from this, not the full loaded session: the Y axis auto-scales
+  // to only the visible candles, so a stat from outside that window (e.g. the
+  // opening-range high from hours ago) would fall outside the axis's range and its
+  // plot line would silently fail to render.
+  readonly windowedOhlc = computed(() => {
+    const ohlc = this.chartData().ohlc;
+    if (ohlc.length === 0) {
+      return ohlc;
+    }
+
+    const dataMax = ohlc[ohlc.length - 1][0];
+    const cutoff = dataMax - this.visibleRangeMs;
+    return ohlc.filter(point => point[0] >= cutoff);
+  });
+
   // 4. The Max Value (Reacts to the 60s poll)
   readonly maxHigh = computed(() => {
-    const prices = this.chartData().ohlc.map(p => ({ date: new Date(p[0]), price: p[2] })); // Index 2 is High
+    const prices = this.windowedOhlc()
+      .map(p => ({ date: new Date(p[0]), price: p[2] })) // Index 2 is High
+      .filter(p => Number.isFinite(p.price) && p.price > 0);
 
     if (prices.length === 0) {
       return null;
@@ -372,7 +410,9 @@ export class AssetCard {
 
   // 5. The Min Value (Reacts to the 60s poll)
   readonly minLow = computed(() => {
-    const prices = this.chartData().ohlc.map(p => ({ date: new Date(p[0]), price: p[3] })); // Index 3 is Low
+    const prices = this.windowedOhlc()
+      .map(p => ({ date: new Date(p[0]), price: p[3] })) // Index 3 is Low
+      .filter(p => Number.isFinite(p.price) && p.price > 0);
 
     if (prices.length === 0) {
       return null;
@@ -394,6 +434,21 @@ export class AssetCard {
     });
 
     return { ...lowestPriceObject, date: nyDateTime };
+  });
+
+  // 5b. The average close price over the visible window (Reacts to the 60s poll).
+  // Plotted as a horizontal line so it's easy to see whether price is trading
+  // above or below its mean - i.e. a quick mean-reversion read.
+  readonly avgPrice = computed(() => {
+    const closes = this.windowedOhlc()
+      .map(point => point[4]) // Index 4 is Close
+      .filter(price => Number.isFinite(price) && price > 0);
+
+    if (closes.length === 0) {
+      return null;
+    }
+
+    return closes.reduce((total, price) => total + price, 0) / closes.length;
   });
 
   // 6. The latest Close Price Value (Reacts to the 60s poll)
@@ -500,6 +555,9 @@ export class AssetCard {
         ...options.chart,
         backgroundColor: this.componentColor()
       },
+      yAxis: (options.yAxis as Highcharts.YAxisOptions[]).map((axis, i) =>
+        i === 0 ? { ...axis, plotLines: this.buildPriceLevelLines() } : axis
+      ),
       navigator: {
         ...options.navigator,
         series: {
@@ -595,5 +653,80 @@ export class AssetCard {
       ]
     }));
     console.log('Chart updated for ', this.asset().asset);
+  }
+
+  /**
+   * Horizontal reference lines for the price axis: high/low (same values shown
+   * in the card footer) and the average close, so it's visually obvious whether
+   * price is trading above or below its mean (mean-reversion cue).
+   */
+  private buildPriceLevelLines(): Highcharts.YAxisPlotLinesOptions[] {
+    const lines: Highcharts.YAxisPlotLinesOptions[] = [];
+    const high = this.maxHigh()?.price;
+    const low = this.minLow()?.price;
+    const avg = this.avgPrice();
+
+    // Labels are staggered (opposite horizontal alignment + vertical nudge) so
+    // that when high/low/avg sit close together (a quiet, low-volatility
+    // window) the three lines/labels stay legible instead of overlapping.
+    if (high !== undefined && high !== null) {
+      lines.push({
+        value: high,
+        color: '#0d9e03',
+        width: 1,
+        dashStyle: 'Dash',
+        zIndex: 5,
+        label: { text: `High ${high.toFixed(2)}`, align: 'right', y: -4, style: { color: '#0d9e03' } },
+      });
+    }
+
+    if (low !== undefined && low !== null) {
+      lines.push({
+        value: low,
+        color: '#c62828',
+        width: 1,
+        dashStyle: 'Dash',
+        zIndex: 5,
+        label: { text: `Low ${low.toFixed(2)}`, align: 'right', y: 12, style: { color: '#c62828' } },
+      });
+    }
+
+    if (avg !== null && avg !== undefined) {
+      lines.push({
+        value: avg,
+        color: '#1976d2',
+        width: 1,
+        dashStyle: 'ShortDot',
+        zIndex: 5,
+        label: { text: `Avg ${avg.toFixed(2)}`, align: 'left', y: -4, style: { color: '#1976d2' } },
+      });
+    }
+
+    return lines;
+  }
+
+  /**
+   * Captures the live chart instance once Highcharts creates it, and wires a
+   * 'redraw' listener that keeps the visible window following live data.
+   */
+  onChartInstance(chart: Highcharts.Chart): void {
+    this.chart = chart as Highcharts.StockChart;
+    Highcharts.addEvent(chart, 'redraw', () => this.followLiveWindow());
+  }
+
+  /**
+   * Re-anchors the X axis to [dataMax - visibleRangeMs, dataMax] whenever new
+   * data has actually landed (dataMax advanced since we last followed it).
+   * Only acting on a dataMax change means a user's manual zoom/pan (which also
+   * fires 'redraw' but doesn't change dataMax) is left untouched.
+   */
+  private followLiveWindow(): void {
+    const chart = this.chart;
+    const dataMax = chart ? (chart.xAxis[0] as unknown as { dataMax?: number }).dataMax : undefined;
+    if (!chart || dataMax == null || dataMax === this.lastFollowedDataMax) {
+      return;
+    }
+    this.lastFollowedDataMax = dataMax;
+    chart.xAxis[0].setExtremes(dataMax - this.visibleRangeMs, dataMax, true);
   }
 }

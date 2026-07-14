@@ -12,6 +12,7 @@
             <highcharts-chart id="container-live-tracker-{{asset().asset}}"
                 [options]="chartOptions()"
                 [constructorType]="chartConstructor"
+                (chartInstance)="onChartInstance($event)"
                 class="chart-container">
             </highcharts-chart>
         }        

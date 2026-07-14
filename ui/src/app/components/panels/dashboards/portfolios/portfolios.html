@@ -7,7 +7,7 @@
             <app-indexes-cards class="indexes-container"></app-indexes-cards>
         </div>
         <div class="custom-card-header">
-            <mat-form-field appearance="outline" style="width: 100%; margin-top: 1.5%;">
+            <mat-form-field appearance="outline" class="portfolio-select">
                 @if (portfolioList.length > 0) {
                 <mat-label>Portfolio name</mat-label>
                 } @else {
@@ -20,7 +20,7 @@
                     }
                 </mat-select>
             </mat-form-field>
-            <button mat-raised-button class="add-button" (click)="add()" style="max-width: fit-content;">
+            <button mat-raised-button class="add-button" (click)="add()">
                 Portfolio
                 <mat-icon>add</mat-icon>
             </button>
