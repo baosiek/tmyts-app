@@ -87,11 +87,11 @@ export class LiveAssetPerformance implements OnInit, AfterViewInit, OnChanges, O
 
   private calculatePerformanceMetrics(element: any, closePrice: number, adjPriceClose?: number): void {
     element.rt_price = closePrice;
-    element.gain_loss = element.rt_price * Math.abs(element.total_quantity) - (element.average_price * Math.abs(element.total_quantity) + element.total_commission);
+    element.gain_loss = (element.rt_price - element.average_price) * element.total_quantity - element.total_commission;
     element.percent = this.safePercent(element.gain_loss, element.average_price * Math.abs(element.total_quantity));
 
     if (adjPriceClose !== undefined) {
-      element.last_gain_loss = closePrice * Math.abs(element.total_quantity) - (adjPriceClose * Math.abs(element.total_quantity) + element.total_commission);
+      element.last_gain_loss = (closePrice - adjPriceClose) * element.total_quantity - element.total_commission;
       element.last_percent = this.safePercent(element.last_gain_loss, adjPriceClose * Math.abs(element.total_quantity));
     }
   }
