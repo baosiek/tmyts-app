@@ -22,14 +22,14 @@
       }
     </mat-select>
   </mat-form-field>
-  <div class="content-wrapper" style="display: flex; gap: 1rem;">
-    <div style="flex: 2;">
+  <div class="content-wrapper" style="display: flex; gap: 8px;">
+    <div style="flex: 2 1 0;">
       <app-live-asset-performance
         [userId]="user_id"
         [portfolioName]="selectedPortfolio"
       ></app-live-asset-performance>
     </div>
-    <div style="flex: 1;">
+    <div style="flex: 1 1 0;">
       <app-live-portfolio-performance
       [userId]="user_id"
       [portfolioName]="selectedPortfolio"

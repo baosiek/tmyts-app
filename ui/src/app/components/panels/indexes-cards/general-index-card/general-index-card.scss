@@ -8,8 +8,8 @@
   border: 1px solid var(--mat-sys-outline-variant, #e0e0e0);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  flex: 0 0 370px;
-  width: 370px;
+  flex: 0 0 400px;
+  width: 400px;
   user-select: none;
 
   &:hover {
@@ -80,7 +80,7 @@
     align-items: flex-end;
     gap: 2px;
     flex-shrink: 0;
-    width: 140px;
+    width: 170px;
 
     .variation-row {
       display: flex;
@@ -102,15 +102,16 @@
       }
 
       .variation-percent {
-        font-size: 1.2rem;
+        font-size: 1.05rem;
         font-weight: 700;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        flex-shrink: 0;
       }
 
       .variation-value {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         font-weight: 500;
         opacity: 0.8;
         white-space: nowrap;

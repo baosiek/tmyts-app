@@ -15,7 +15,6 @@
 .asset-table {
   @include mat.table-overrides((row-item-outline-color: var(--mat-sys-outline-variant)));
   width: 100%;
-  min-width: 1100px;
 
   th.mat-mdc-header-cell {
     font-size: 12px;
@@ -24,6 +23,9 @@
     text-transform: uppercase;
     color: var(--mat-sys-on-surface-variant);
     border-bottom: 2px solid var(--mat-sys-outline);
+    padding: 0 3px;
+    white-space: normal;
+    line-height: 1.15;
   }
 
   th.header-group {
@@ -45,6 +47,9 @@
   td.mat-mdc-cell {
     font-variant-numeric: tabular-nums;
     color: var(--mat-sys-on-surface);
+    font-size: 12px;
+    padding: 0 3px;
+    white-space: nowrap;
   }
 
   .mat-mdc-row {
@@ -71,14 +76,37 @@
     text-align: right;
   }
 
-  .mat-column-percent,
-  .mat-column-last_percent {
+  th.mat-mdc-header-cell.mat-column-percent,
+  th.mat-mdc-header-cell.mat-column-last_percent {
+    text-align: center;
+  }
+
+  td.mat-mdc-cell.mat-column-percent,
+  td.mat-mdc-cell.mat-column-last_percent {
     text-align: center;
     padding: 0;
   }
 
   .mat-column-asset {
     font-weight: 600;
+  }
+
+  .mat-column-asset_name {
+    width: 50px;
+    max-width: 50px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mat-column-average_price {
+    width: 64px;
+    max-width: 64px;
+  }
+
+  .mat-column-market_value {
+    width: 76px;
+    max-width: 76px;
   }
 }
 
