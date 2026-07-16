@@ -4,7 +4,15 @@
       "Bash(git log *)",
       "Bash(mkdir -p /tmp/claude-1000/spec-quarantine)",
       "Bash(mv /home/baosiek/Projects/tmyts-app/ui/src/app/services/ib-services/ib-live-price-service.spec.ts /tmp/claude-1000/spec-quarantine/)",
-      "Bash(mv /home/baosiek/Projects/tmyts-app/ui/src/app/services/tmyts-holdings/tmyts-holdings.spec.ts /tmp/claude-1000/spec-quarantine/)"
+      "Bash(mv /home/baosiek/Projects/tmyts-app/ui/src/app/services/tmyts-holdings/tmyts-holdings.spec.ts /tmp/claude-1000/spec-quarantine/)",
+      "Bash(node shot.js \"http://localhost:4300/live-data\" \"final_1920.png\" 1920)",
+      "Bash(timeout 90 bash -c 'until curl -sf http://localhost:4300 >/dev/null; do sleep 2; done')",
+      "Read(//tmp/**)",
+      "Bash(node shot.js \"http://localhost:4300/live-data\" \"natural_1440.png\" 1440)",
+      "Bash(node shot.js \"http://localhost:4300/live-data\" \"natural_1440_v2.png\" 1440)",
+      "Bash(node shot.js \"http://localhost:4300/live-data\" \"compact1_1440.png\" 1440)",
+      "Bash(node shot.js \"http://localhost:4300/live-data\" \"compact2_1440.png\" 1440)",
+      "Bash(node cols.js)"
     ]
   }
 }
