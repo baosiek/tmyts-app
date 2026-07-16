@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, SimpleChanges } from '@angular/core';
+import { Component, computed, effect, inject, input, SimpleChanges } from '@angular/core';
 import { IWidgetConfig } from '../../../../../../interfaces/widget-config-interface';
 import { DialogData } from '../../../../../dialogs/general-dialog/general-dialog';
 import { MATERIAL_IMPORTS } from '../../../../../../material-imports';
@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 import { catchError } from 'rxjs';
 import { IndicatorDataMapModel, IndicatorModel } from '../../../../../../models/indicator-model';
+import { ThemeService } from '../../../../../../services/theme-service/theme-service';
 import Highcharts from 'highcharts/highstock';
 import * as HIndicatorsAll from "highcharts/indicators/indicators-all";
 import * as HDragPanes from "highcharts/modules/drag-panes";
@@ -54,6 +55,7 @@ export class AroonWidget {
   );
 
   indicatorService = inject(IndicatorService)
+  private themeService = inject(ThemeService)
 
   chart?: Highcharts.StockChart;
   chartConstructor: ChartConstructorType = 'stockChart';
@@ -83,7 +85,29 @@ export class AroonWidget {
 
   constructor(
     private _snackBar: MatSnackBar
-  ) {}
+  ) {
+    // This chart is built imperatively via Highcharts.stockChart() (see
+    // initializeChart()) rather than through Angular's reactive
+    // <highcharts-chart> wrapper, so it never picks up CSS variable changes
+    // on its own - re-apply its colors whenever the app's theme toggles.
+    effect(() => {
+      this.themeService.isDark();
+      if (!this.chart) {
+        return;
+      }
+      const { background, text } = this.themeService.getChartColors();
+      this.chart.update({
+        chart: { backgroundColor: background },
+        title: { style: { color: text } },
+        legend: { itemStyle: { color: text } },
+        xAxis: { labels: { style: { color: text } } },
+        yAxis: [
+          { labels: { style: { color: text } } },
+          { labels: { style: { color: text } } },
+        ],
+      }, true);
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(`${this.resolvedData().label}`)
@@ -150,20 +174,20 @@ export class AroonWidget {
   }
   
   initializeChart() {
-      const componentColor = getComputedStyle(document.documentElement).getPropertyValue('--mat-sys-surface').trim()
+      const { background, text } = this.themeService.getChartColors();
       this.chartOptions = {
         chart: {
           styledMode: false,
-          backgroundColor: componentColor,
+          backgroundColor: background,
           style: {
-            color: '#000',
+            color: text,
           },
           height: this.chartHeight
         },
         title: {
           text: this.chartTitle,
           style: {
-            color: '#000',
+            color: text,
           },
         },
         rangeSelector: {
@@ -177,7 +201,7 @@ export class AroonWidget {
         xAxis: {
           labels: {
             style: {
-              color: '#000',
+              color: text,
             },
             align: 'right',
             x: -3,
@@ -187,7 +211,7 @@ export class AroonWidget {
           {
             labels: {
               style: {
-                color: '#000',
+                color: text,
               },
             },
             title: {
@@ -201,6 +225,9 @@ export class AroonWidget {
           },
           {
             labels: {
+              style: {
+                color: text,
+              },
               align: 'right',
               x: -3,
             },
@@ -215,7 +242,7 @@ export class AroonWidget {
         ],
         legend: {
           itemStyle: {
-            color: '#000',
+            color: text,
           },
           enabled: true
         },

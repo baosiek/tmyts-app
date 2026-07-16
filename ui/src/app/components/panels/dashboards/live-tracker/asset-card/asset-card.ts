@@ -1,4 +1,4 @@
-import { CurrencyPipe, DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { CurrencyPipe, isPlatformBrowser } from '@angular/common';
 import { Component, computed, DestroyRef, effect, inject, input, PLATFORM_ID, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,6 +14,7 @@ import { OhlcvDataInterface } from '../../../../../interfaces/ohlcv-interface';
 import { PortfolioHoldingsModel } from '../../../../../models/portfolio_holdings_model';
 import { ALLModel, IndicatorTaService } from '../../../../../services/indicator-ta/indicator-ta-service';
 import { OhlcvData } from '../../../../../services/ohlcv-data/ohlcv-data';
+import { ThemeService } from '../../../../../services/theme-service/theme-service';
 
 
 @Component({
@@ -68,10 +69,14 @@ export class AssetCard {
 
 
   /**
-   * componentColor signal handles the background color of the card.
-   * Initialized as a signal to allow for safe DOM access and potential theme updates.
+   * componentColor/textColor track the chart's background and text colors
+   * from the current Material theme (see the constructor's effect below,
+   * which re-derives them whenever ThemeService.isDark() toggles - Highcharts
+   * renders to its own <svg>, so it never picks up CSS variable changes on
+   * its own the way the rest of the app's DOM does).
    */
   componentColor = signal<string>('#ffffff');
+  textColor = signal<string>('#000000');
 
   /**
    * Define chart options as a signal
@@ -307,7 +312,7 @@ export class AssetCard {
   destroyRef = inject(DestroyRef); // Modern cleanup in Angular
   indicatorService = inject(IndicatorTaService)
   private readonly platformId = inject(PLATFORM_ID);
-  private readonly document = inject(DOCUMENT);
+  private readonly themeService = inject(ThemeService);
 
 
   /**
@@ -541,16 +546,21 @@ export class AssetCard {
   })
 
   constructor() {
-    // Use an effect to synchronize chart options with data updates.
-    // This runs automatically whenever this.chartData() updates.
+    // Use an effect to synchronize chart options with data updates. This runs
+    // automatically whenever this.chartData() updates, and - via the
+    // isDark() read below - whenever the app's dark/light theme toggles, so
+    // the chart (which renders to its own <svg> and never picks up CSS
+    // variable changes on its own) is kept in sync with the rest of the app.
     effect(() => {
+      this.themeService.isDark();
 
       if (isPlatformBrowser(this.platformId)) {
-        const color = getComputedStyle(this.document.documentElement)
-          .getPropertyValue('--mat-sys-surface')
-          .trim();
-        if (color && color !== this.componentColor()) {
-          this.componentColor.set(color);
+        const { background, text } = this.themeService.getChartColors();
+        if (background && background !== this.componentColor()) {
+          this.componentColor.set(background);
+        }
+        if (text && text !== this.textColor()) {
+          this.textColor.set(text);
         }
 
         // Only call update in the browser to ensure the debugger can catch it
@@ -594,15 +604,29 @@ export class AssetCard {
   }
 
   updateChartData() {
+    const textColor = this.textColor();
+
     this.chartOptions.update(options => ({
       ...options,
+      title: { ...options.title, style: { color: textColor } },
+      legend: { ...options.legend, itemStyle: { color: textColor } },
       chart: {
         ...options.chart,
         backgroundColor: this.componentColor()
       },
-      yAxis: (options.yAxis as Highcharts.YAxisOptions[]).map((axis, i) =>
-        i === 0 ? { ...axis, plotLines: this.buildPriceLevelLines() } : axis
-      ),
+      xAxis: {
+        ...options.xAxis,
+        labels: {
+          ...(options.xAxis as Highcharts.XAxisOptions).labels,
+          style: { ...(options.xAxis as Highcharts.XAxisOptions).labels?.style, color: textColor }
+        }
+      },
+      yAxis: (options.yAxis as Highcharts.YAxisOptions[]).map((axis, i) => ({
+        ...axis,
+        labels: { ...axis.labels, style: { ...axis.labels?.style, color: textColor } },
+        title: { ...axis.title, style: { ...axis.title?.style, color: textColor } },
+        ...(i === 0 ? { plotLines: this.buildPriceLevelLines() } : {})
+      })),
       navigator: {
         ...options.navigator,
         series: {

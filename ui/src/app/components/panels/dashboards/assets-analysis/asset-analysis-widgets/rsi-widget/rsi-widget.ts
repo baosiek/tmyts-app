@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, SimpleChanges } from '@angular/core';
+import { Component, computed, effect, inject, input, SimpleChanges } from '@angular/core';
 import { ChartConstructorType, HighchartsChartDirective } from 'highcharts-angular';
 import { MATERIAL_IMPORTS } from '../../../../../../material-imports';
 import * as Highcharts from 'highcharts/highstock';
@@ -16,6 +16,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError } from 'rxjs';
 import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
 import { IndicatorDataMapModel, IndicatorModel } from '../../../../../../models/indicator-model';
+import { ThemeService } from '../../../../../../services/theme-service/theme-service';
 
 @Component({
   selector: 'app-rsi-widget',
@@ -53,6 +54,7 @@ export class RsiWidget {
   );
 
   indicatorService = inject(IndicatorService)
+  private themeService = inject(ThemeService)
 
   chart?: Highcharts.StockChart;
   chartConstructor: ChartConstructorType = 'stockChart';
@@ -82,7 +84,29 @@ export class RsiWidget {
 
   constructor(
     private _snackBar: MatSnackBar
-  ) { }
+  ) {
+    // This chart is built imperatively via Highcharts.stockChart() (see
+    // initializeChart()) rather than through Angular's reactive
+    // <highcharts-chart> wrapper, so it never picks up CSS variable changes
+    // on its own - re-apply its colors whenever the app's theme toggles.
+    effect(() => {
+      this.themeService.isDark();
+      if (!this.chart) {
+        return;
+      }
+      const { background, text } = this.themeService.getChartColors();
+      this.chart.update({
+        chart: { backgroundColor: background },
+        title: { style: { color: text } },
+        legend: { itemStyle: { color: text } },
+        xAxis: { labels: { style: { color: text } } },
+        yAxis: [
+          { labels: { style: { color: text } } },
+          { labels: { style: { color: text } } },
+        ],
+      }, true);
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.getIndicatorData();
@@ -148,20 +172,20 @@ export class RsiWidget {
   }
 
   initializeChart() {
-    const componentColor = getComputedStyle(document.documentElement).getPropertyValue('--mat-sys-surface').trim()
+    const { background, text } = this.themeService.getChartColors();
     this.chartOptions = {
       chart: {
         styledMode: false,
-        backgroundColor: componentColor,
+        backgroundColor: background,
         style: {
-          color: '#000',
+          color: text,
         },
         height: this.chartHeight
       },
       title: {
         text: this.chartTitle,
         style: {
-          color: '#000',
+          color: text,
         },
       },
       rangeSelector: {
@@ -175,7 +199,7 @@ export class RsiWidget {
       xAxis: {
         labels: {
           style: {
-            color: '#000',
+            color: text,
           },
           align: 'right',
           x: -3,
@@ -185,7 +209,7 @@ export class RsiWidget {
         {
           labels: {
             style: {
-              color: '#000',
+              color: text,
             },
           },
           title: {
@@ -199,6 +223,9 @@ export class RsiWidget {
         },
         {
           labels: {
+            style: {
+              color: text,
+            },
             align: 'right',
             x: -3,
           },
@@ -226,7 +253,7 @@ export class RsiWidget {
       ],
       legend: {
         itemStyle: {
-          color: '#000',
+          color: text,
         },
         enabled: true
       },
