@@ -1,8 +1,11 @@
 import { CurrencyPipe, DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { Component, computed, DestroyRef, effect, inject, input, InputSignal, PLATFORM_ID, signal } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, input, PLATFORM_ID, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatDivider } from "@angular/material/divider";
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBar } from "@angular/material/progress-bar";
 import { ChartConstructorType, HighchartsChartComponent, providePartialHighcharts } from 'highcharts-angular';
 import * as Highcharts from 'highcharts/highstock'; // Import Highcharts
@@ -15,7 +18,7 @@ import { OhlcvData } from '../../../../../services/ohlcv-data/ohlcv-data';
 
 @Component({
   selector: 'app-asset-card',
-  imports: [MatCardModule, HighchartsChartComponent, CurrencyPipe, MatProgressBar, MatDivider],
+  imports: [MatCardModule, HighchartsChartComponent, CurrencyPipe, MatProgressBar, MatDivider, MatButtonModule, MatIconModule],
   templateUrl: './asset-card.html',
   styleUrl: './asset-card.scss',
   providers: [
@@ -29,7 +32,19 @@ export class AssetCard {
   /**
    * 1. Class variables
    */
-  asset: InputSignal<PortfolioHoldingsModel> = input.required<PortfolioHoldingsModel>(); // asset for this card
+  // Bound normally (`[asset]="..."`) when rendered in the live-tracker grid.
+  // Left unset when this component is instead opened as fullscreen dialog
+  // content (see toggleFullscreen()), where `dialogAsset` supplies it instead.
+  readonly assetInput = input<PortfolioHoldingsModel>(undefined, { alias: 'asset' });
+  private readonly dialogAsset = inject<PortfolioHoldingsModel | null>(MAT_DIALOG_DATA, { optional: true });
+  readonly asset = computed(() => this.dialogAsset ?? this.assetInput()!);
+
+  private readonly dialog = inject(MatDialog);
+  // Only set when THIS instance is the one running inside the fullscreen
+  // dialog (as opposed to the original instance still sitting in the grid).
+  private readonly dialogRef = inject(MatDialogRef<AssetCard>, { optional: true });
+  readonly isDialogInstance = !!this.dialogRef;
+
   Highcharts: typeof Highcharts = Highcharts; // Highcharts library boilerplate code
   chartConstructor: ChartConstructorType = 'stockChart'; // Chart constructor type
   chart?: Highcharts.StockChart;
@@ -542,11 +557,41 @@ export class AssetCard {
         this.updateChartData();
       }
     });
+
+    // When opened as the fullscreen dialog's content, Material's own open
+    // animation can still be resizing the panel by the time Highcharts first
+    // measures its container, so give it one more reflow once that settles.
+    if (this.dialogRef) {
+      this.dialogRef.afterOpened().subscribe(() => {
+        requestAnimationFrame(() => this.chart?.reflow());
+      });
+    }
   }
 
   /**
    * 3. Class methods
    */
+
+  /**
+   * If this instance IS the fullscreen dialog's content, the button closes
+   * it. Otherwise (the normal grid-tile instance) it opens a second AssetCard
+   * instance - for this same asset - as fullscreen dialog content.
+   */
+  toggleFullscreen(): void {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+      return;
+    }
+
+    this.dialog.open(AssetCard, {
+      data: this.asset(),
+      width: '100vw',
+      height: '100vh',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      panelClass: 'asset-card-fullscreen-dialog',
+    });
+  }
 
   updateChartData() {
     this.chartOptions.update(options => ({

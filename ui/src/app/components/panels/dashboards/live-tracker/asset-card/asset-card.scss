@@ -14,6 +14,11 @@
     margin: 0;
     overflow: hidden;
 
+    mat-card-header {
+        justify-content: space-between;
+        align-items: center;
+    }
+
     mat-card-content {
         flex: 1;
         min-height: 0; // Allows content to shrink/fit within flex container

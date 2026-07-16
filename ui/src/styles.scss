@@ -107,5 +107,28 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-color: #850223;
 }
 
+// Full-viewport dialog panel (e.g. AssetCard's fullscreen toggle). The
+// `:root` mat.dialog-overrides above sets a 1600px container-min-width for
+// every dialog in the app, which would otherwise force a horizontal
+// scrollbar on narrower screens here, so it's neutralized just for this
+// panel class.
+.asset-card-fullscreen-dialog {
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  min-width: 0 !important;
+}
+
+.asset-card-fullscreen-dialog .mat-mdc-dialog-container {
+  --mat-dialog-container-min-width: 0;
+}
+
+.asset-card-fullscreen-dialog .mdc-dialog__surface {
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  border-radius: 0;
+}
+
 
 
