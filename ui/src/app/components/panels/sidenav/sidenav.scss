@@ -31,10 +31,19 @@
 .unselected-menu-item {
     border-left: 5px solid;
     border-left-color: rgb(0,0,0,0);
+
+    mat-icon {
+        color: var(--mat-sys-primary);
+        filter: saturate(1.6) brightness(1.5);
+    }
 }
 
 .selected-menu-item {
-    border-left: 5px solid;   
+    border-left: 5px solid;
     border-left-color: var(--mat-sys-error);
-    background-color: var(--mat-sys-primary-container);  
+    background-color: var(--mat-sys-primary-container);
+
+    mat-icon {
+        color: var(--mat-sys-on-primary-container);
+    }
 }
