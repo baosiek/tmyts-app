@@ -13,6 +13,8 @@ import { TmytsChip } from '../../../../reusable-components/tmyts-chip/tmyts-chip
 const JOB_NAMES: string[] = [
   'daily_direction_inferencer',
   'price_history_downloader',
+  'momentum_strategy',
+  'train_industry_direction_classifier'
 ];
 
 // Job run statuses, grouped by the chip style they should render with.
