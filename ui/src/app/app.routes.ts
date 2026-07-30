@@ -46,4 +46,13 @@ export const routes: Routes = [
             );
         },
     },
+    {
+        path: 'control-panel',
+        pathMatch: 'full',
+        loadComponent: () => {
+            return import('./components/panels/dashboards/control-panel/control-panel').then(
+                (m) => m.ControlPanel
+            );
+        },
+    },
 ];

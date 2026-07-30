@@ -38,9 +38,14 @@ export class Sidenav {
         route: "/live-tracker"
       },
       {
-        icon: "candlestick_chart",
-        label: "Assets analysis",
+        icon: "analytics",
+        label: "Assets Analysis",
         route: "/assets_analysis"
+      },
+      {
+        icon: "widget_medium",
+        label: "Control Panel",
+        route: "/control-panel"
       },
     ]
   )
