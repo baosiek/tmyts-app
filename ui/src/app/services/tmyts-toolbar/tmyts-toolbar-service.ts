@@ -36,6 +36,10 @@ export class ToolbarService {
           object_content: OnlineSignal
         }
       },
+      {
+        id: 'control-panel',
+        title: "Control Panel",
+      },
     ]
   );
 
