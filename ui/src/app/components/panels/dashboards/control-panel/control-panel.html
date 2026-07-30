@@ -14,7 +14,7 @@
         >
         }
 
-        <mat-select [(ngModel)]="selectedPortfolio">
+        <mat-select [(ngModel)]="selectedPortfolio" (selectionChange)="onPortfolioChange()">
             <mat-option [value]=""></mat-option>
             @for (portfolio of portfolioList; track portfolio.portfolio_name) {
                 <mat-option [value]="portfolio.portfolio_name">{{
@@ -24,9 +24,14 @@
     </mat-select>
   </mat-form-field>
   }
+  <div class="content-wrapper">
+    <div>
+      <app-assets-price-update
+        [dataExchangeFromParent]="dataExchangeToChild"
+      ></app-assets-price-update>
+    </div>
+    <div>
+      <app-processing-status></app-processing-status>
+    </div>
+  </div>
 </div>
-
-
-
-
-<p>control-panel works!</p>

@@ -1,0 +1,60 @@
+@use '@angular/material' as mat;
+
+.table-container {
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  overflow: hidden;
+  padding: 8px 16px 16px;
+  background-color: var(--mat-sys-surface);
+}
+
+.holdings-table {
+  @include mat.table-overrides((row-item-outline-color: var(--mat-sys-outline-variant)));
+  width: 100%;
+
+  th.mat-mdc-header-cell {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--mat-sys-on-surface-variant);
+    border-bottom: 2px solid var(--mat-sys-outline);
+  }
+
+  td.mat-mdc-cell {
+    font-variant-numeric: tabular-nums;
+    color: var(--mat-sys-on-surface);
+  }
+
+  .mat-mdc-row {
+    transition: background-color 120ms ease-in-out;
+
+    &:nth-child(even) {
+      background-color: var(--mat-sys-surface-container-low);
+    }
+
+    &:hover {
+      background-color: var(--mat-sys-surface-container-high);
+    }
+  }
+
+  /* Numeric columns are right-aligned for easier scanning/comparison */
+  .mat-column-priority,
+  .mat-column-last_download {
+    text-align: right;
+  }
+
+  .mat-column-asset {
+    font-weight: 600;
+  }
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20vh;
+  width: 100%;
+}

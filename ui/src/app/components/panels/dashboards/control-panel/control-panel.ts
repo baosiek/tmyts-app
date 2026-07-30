@@ -1,20 +1,23 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError } from 'rxjs';
+import { PortfolioComponentsDataExchange } from '../../../../interfaces/portfolio-components-data-exchange';
 import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
 import { PortfolioModel } from '../../../../models/portfolio-model';
+import { PortfolioHoldingsModel } from '../../../../models/portfolio_holdings_model';
 import { UserModel } from '../../../../models/user-model';
 import { PortfolioDatabaseService } from '../../../../services/portfolio-database/portfolio-database-service';
 import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar-service';
 import { UserService } from '../../../../services/user-service/user-service';
 import { TmytsToolbar } from '../../../reusable-components/tmyts-toolbar/tmyts-toolbar';
+import { AssetsPriceUpdate } from "./assets-price-update/assets-price-update";
+import { ProcessingStatus } from "./processing-status/processing-status";
 
 @Component({
   selector: 'app-control-panel',
-  imports: [TmytsToolbar, MatSelectModule, FormsModule, MatGridListModule],
+  imports: [TmytsToolbar, MatSelectModule, FormsModule, AssetsPriceUpdate, ProcessingStatus],
   templateUrl: './control-panel.html',
   styleUrl: './control-panel.scss',
 })
@@ -23,11 +26,15 @@ export class ControlPanel {
   /*
     Define all class variables
     */
-  id: string = 'live_tracker'; // id of this component
+  id: string = 'control-panel'; // id of this component
   toolbar: ITmytsToolBar | undefined; // receives this component toolbar configuration
   user_id: number = 1; // there is no user functionality, so user_id is fixed. Needs to change in the future
   selectedPortfolio: string = ''; // holds the user selected portfolio
   portfolioList: PortfolioModel[] = []; // a list containing all portfolios registered to the user
+
+  // data exchanged with children so they can filter their content
+  // to the assets held by the selected portfolio
+  dataExchangeToChild = PortfolioComponentsDataExchange.create(this.user_id, '', []);
 
   /*
   1. Injects all required services
@@ -79,6 +86,9 @@ export class ControlPanel {
           // Handle successful response)
           this.selectedPortfolio = response.portfolio_name as string;
           this.updatePortfolioList();
+          if (this.selectedPortfolio) {
+            this.onPortfolioChange();
+          }
         },
         error: (error) => {
           // Handle error response
@@ -108,17 +118,61 @@ export class ControlPanel {
           // typescript syntax to get the first element
           const [firstPortfolio] = this.portfolioList;
 
-          /* upon this component init, selectedPortfolio is zero, 
+          /* upon this component init, selectedPortfolio is zero,
             thus it selects automatically the first portfolio in portfolioList*/
           if (!this.selectedPortfolio) {
             this.selectedPortfolio = firstPortfolio.portfolio_name;
+            this.onPortfolioChange();
           }
         },
         error: (error) => {
           // Handle error response
           this._snackBar.open(
-            `HTTPError:${error.status}: 
+            `HTTPError:${error.status}:
               No portfolios found for user_id ${this.user_id}.`,
+            'Close',
+          );
+        },
+      });
+  }
+
+  /*
+  Called whenever the selected portfolio changes (either by the user
+  via mat-select or programmatically upon init). It fetches the
+  portfolio's holdings and forwards the resulting asset list to the
+  children (e.g. AssetsPriceUpdate) so they can filter their content.
+  */
+  onPortfolioChange(): void {
+    if (!this.selectedPortfolio) {
+      this.dataExchangeToChild = PortfolioComponentsDataExchange.create(
+        this.user_id,
+        '',
+        [],
+      );
+      return;
+    }
+
+    this.portfilioDbService
+      .getPortfolioHoldings(this.user_id, this.selectedPortfolio)
+      .pipe(
+        catchError((error) => {
+          throw error;
+        }),
+      )
+      .subscribe({
+        next: (response: PortfolioHoldingsModel[]) => {
+          const assets = response.map((holding) => holding.asset);
+          this.dataExchangeToChild = PortfolioComponentsDataExchange.create(
+            this.user_id,
+            this.selectedPortfolio,
+            assets,
+          );
+        },
+        error: (error) => {
+          // Handle error response
+          this._snackBar.open(
+            `HTTPError:${error.status}:
+              No holdings found for portfolio ${this.selectedPortfolio}.`,
             'Close',
           );
         },
