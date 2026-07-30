@@ -34,7 +34,12 @@
     <!-- Last download -->
     <ng-container matColumnDef="last_download">
       <th mat-header-cell *matHeaderCellDef> Last Download </th>
-      <td mat-cell *matCellDef="let element"> {{element.last_download ? (element.last_download | date:'yyyy-MM-dd') : '—'}} </td>
+      <td mat-cell *matCellDef="let element">
+        <app-tmyts-chip
+          [iconName]="isUpToDate(element.last_download) ? 'check_circle' : 'error'"
+          [classType]="isUpToDate(element.last_download) ? 'success-container' : 'error-container'"
+        >{{element.last_download ? (element.last_download | date:'yyyy-MM-dd') : '—'}}</app-tmyts-chip>
+      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

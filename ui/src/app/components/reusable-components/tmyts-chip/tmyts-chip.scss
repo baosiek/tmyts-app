@@ -27,3 +27,8 @@
   color: var(--mat-sys-on-error-container);
   background-color: var(--mat-sys-error-container);
 }
+
+.neutral-container {
+  color: var(--mat-sys-on-secondary-container);
+  background-color: var(--mat-sys-secondary-container);
+}
