@@ -75,7 +75,6 @@ export class PortfolioHoldingsTable implements OnChanges, AfterViewInit {
   }
 
   ngOnChanges(): void {
-    console.log(`this.userId(), this.portfolioName()`)
     if (this.userId() && this.portfolioName()) {
       this.spinnerFlagIsSet = true;
       this.portfolioHoldingsService
