@@ -1,1 +1,32 @@
+<div>
+    @if (toolbar) {
+    <div>
+      <app-tmyts-toolbar [data]="toolbar"></app-tmyts-toolbar>
+    </div>
+
+    <mat-form-field appearance="outline" style="width: 100%; margin-top: 1.5%">
+        @if (portfolioList.length > 0) {
+        <mat-label>Portfolio name</mat-label>
+        } @else {
+        <mat-label
+            >You have no saved portfolios. Click on the button to create
+            one</mat-label
+        >
+        }
+
+        <mat-select [(ngModel)]="selectedPortfolio">
+            <mat-option [value]=""></mat-option>
+            @for (portfolio of portfolioList; track portfolio.portfolio_name) {
+                <mat-option [value]="portfolio.portfolio_name">{{
+                portfolio.portfolio_name
+                }}</mat-option>
+            }
+    </mat-select>
+  </mat-form-field>
+  }
+</div>
+
+
+
+
 <p>control-panel works!</p>
