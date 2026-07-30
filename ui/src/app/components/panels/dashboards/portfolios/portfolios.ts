@@ -113,7 +113,7 @@ export class Portfolios implements OnInit {
         next: (response: PortfolioModel[]) => {
           // Handle successful response updating portfolio list
           this.portfolioList = [...response];
-          console.log(`portfolio list: ${JSON.stringify(this.portfolioList)}`)
+          // console.log(`portfolio list: ${JSON.stringify(this.portfolioList)}`)
 
           // typescript syntax to get the first element
           // const [firstPortfolio] = this.portfolioList;
