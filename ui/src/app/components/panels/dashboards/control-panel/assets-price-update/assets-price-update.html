@@ -34,7 +34,7 @@
     <!-- Last download -->
     <ng-container matColumnDef="last_download">
       <th mat-header-cell *matHeaderCellDef> Last Download </th>
-      <td mat-cell *matCellDef="let element"> {{element.last_download ? (element.last_download | date:'short') : '—'}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.last_download ? (element.last_download | date:'yyyy-MM-dd') : '—'}} </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
