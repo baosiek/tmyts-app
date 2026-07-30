@@ -75,12 +75,6 @@ export class IndexesCards implements OnInit {
               item1.name = match.name;
             }
 
-            // TODO: backend doesn't provide week performance yet, so mock
-            // it off the daily numbers until that field exists.
-            const weekMultiplier = 3 + Math.random() * 3;
-            item1.week_variation = item1.variation * weekMultiplier;
-            item1.week_percent = item1.percent * weekMultiplier;
-
             return item1;
           });
 
