@@ -54,7 +54,7 @@ export class AssetsAnalysis {
       }
     );
 
-    this.userPreferenceService.getAllWidgets(this.user_id, this.id)
+    this.userPreferenceService.getAllWidgets(this.id)
       .pipe(
         catchError(
           (error) => {
@@ -111,7 +111,7 @@ export class AssetsAnalysis {
   }
 
   updateUserPreferences(widgets: IWidgetConfig[]) {
-    this.userPreferenceService.updateWidgets(this.user_id, this.id, widgets)
+    this.userPreferenceService.updateWidgets(this.id, widgets)
       .pipe(
         catchError(
           (error) => {

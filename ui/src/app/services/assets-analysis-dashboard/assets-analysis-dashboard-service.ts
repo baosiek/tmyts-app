@@ -175,10 +175,9 @@ export class AssetsAnalysisDashboardService {
       const tempWidgets = [...this.widgetsInDashboard()];
       tempWidgets[widgetIndex] = {...tempWidgets[widgetIndex], ...widget};
 
-      const user_id = tempWidgets[widgetIndex].user_id;
       const dashboard_id = tempWidgets[widgetIndex].dashboard_id;
 
-      this.userPreferenceService.updateWidgets(user_id, dashboard_id, tempWidgets)
+      this.userPreferenceService.updateWidgets(dashboard_id, tempWidgets)
       .pipe(
         catchError(
           (error) => {
@@ -208,10 +207,9 @@ export class AssetsAnalysisDashboardService {
 
   deleteWidgetFromDashboard(widget: IWidgetConfig){
     const id: number = widget.id;
-    const user_id: number = widget.user_id;
     const dashboard_id: string = widget.dashboard_id;
 
-    this.userPreferenceService.deleteWidget(id, user_id, dashboard_id)
+    this.userPreferenceService.deleteWidget(id, dashboard_id)
     .pipe(
       catchError(
           (error) => {

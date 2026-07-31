@@ -14,10 +14,10 @@ export class TmytsHoldingsService {
 
   constructor() { }
 
-  getHoldings(user_id: number, portfolio_name: string): Observable<PortfolioHoldingsModel[]> {
-    const apiMethod = 'holdings';
+  // No user_id: the backend derives the caller from the bearer token.
+  getHoldings(portfolio_name: string): Observable<PortfolioHoldingsModel[]> {
     return this.http.get<PortfolioHoldingsModel[]>(
-      `${this.apiUrl}/${apiMethod}/${user_id}/${portfolio_name}`,
+      `${this.apiUrl}/holdings/${portfolio_name}`,
     );
   }
 

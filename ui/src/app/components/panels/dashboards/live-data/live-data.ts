@@ -8,7 +8,7 @@ import { catchError } from 'rxjs';
 import { PortfolioComponentsDataExchange } from '../../../../interfaces/portfolio-components-data-exchange';
 import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
 import { PortfolioModel } from '../../../../models/portfolio-model';
-import { UserModel } from '../../../../models/user-model';
+import { AuthUserModel } from '../../../../models/auth-user-model';
 import { AuthService } from '../../../../services/auth/auth-service';
 import { PortfolioDatabaseService } from '../../../../services/portfolio-database/portfolio-database-service';
 import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar-service';
@@ -68,14 +68,14 @@ export class LiveData implements OnInit {
     });
 
     this.userService
-      .getUser(this.user_id)
+      .getUser()
       .pipe(
         catchError((error) => {
           throw error;
         }),
       )
       .subscribe({
-        next: (response: UserModel) => {
+        next: (response: AuthUserModel) => {
           // Handle successful response)
           this.selectedPortfolio = response.portfolio_name as string;
           this.updatePortfolioList();
@@ -92,7 +92,7 @@ export class LiveData implements OnInit {
 
   updatePortfolioList() {
     this.portfilioDbService
-      .readAllPortfolios(this.user_id)
+      .readAllPortfolios()
       .pipe(
         catchError((error) => {
           throw error;

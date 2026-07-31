@@ -28,28 +28,28 @@ export class LiveDataService {
     return this.http.get<AssetDataModel>(`${this.apiUrl}/${apiMethod}/?asset=${asset}`)
   }
 
-  getDetailedPortfolioActivity(user_id: number, portfolio_name: string, symbols: string[]): Observable<PortfolioPerformanceModel[]> {
+  // portfolio_id (not portfolio_name) and no user_id: the backend derives
+  // the caller from the bearer token. Unused anywhere in the app today.
+  getDetailedPortfolioActivity(portfolio_id: number, symbols: string[]): Observable<PortfolioPerformanceModel[]> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const apiMethod = 'portfolio_performance';
     const body = symbols;
 
-    return this.http.post<PortfolioPerformanceModel[]>(`${this.apiUrl}/${apiMethod}/${user_id}/${portfolio_name}`, body, { headers })
+    return this.http.post<PortfolioPerformanceModel[]>(`${this.apiUrl}/portfolio_performance/?portfolio_id=${portfolio_id}`, body, { headers })
   }
 
-  getPortfolioHoldingsPerformance(user_id: number, portfolio_name: string, symbols: string[]): Observable<PortfolioPerformanceModel[]> {
+  // No user_id: the backend derives the caller from the bearer token.
+  getPortfolioHoldingsPerformance(portfolio_name: string, symbols: string[]): Observable<PortfolioPerformanceModel[]> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const apiMethod = 'portfolio_holdings_performance';
     const body = symbols;
 
-    return this.http.post<PortfolioPerformanceModel[]>(`${this.apiUrl}/${apiMethod}/?user_id=${user_id}&portfolio_name=${portfolio_name}`, body, { headers })
+    return this.http.post<PortfolioPerformanceModel[]>(`${this.apiUrl}/portfolio_holdings_performance/?portfolio_name=${portfolio_name}`, body, { headers })
   }
 
   getIndexesData(indexIds: string[]): Observable<IndexCardInterface[]> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const apiMethod = 'indexes-data';
     const body = indexIds;
 
-    return this.http.post<IndexCardInterface[]>(`${this.apiUrl}/${apiMethod}`, body, { headers })
+    return this.http.post<IndexCardInterface[]>(`${this.apiUrl}/indexes-data/`, body, { headers })
   }
 
 }

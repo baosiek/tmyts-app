@@ -78,7 +78,6 @@ export class PortfolioPerformanceTable implements OnChanges, AfterViewInit {
       this.spinnerFlagIsSet = true;
       this.liveDataService
         .getPortfolioHoldingsPerformance(
-          this.dataExchangeFromParent.user_id,
           this.dataExchangeFromParent.portfolio_name as string,
           uniqueAssets,
         )

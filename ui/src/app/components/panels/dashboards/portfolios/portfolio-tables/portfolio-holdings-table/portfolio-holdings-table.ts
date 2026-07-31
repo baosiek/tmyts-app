@@ -79,7 +79,6 @@ export class PortfolioHoldingsTable implements OnChanges, AfterViewInit {
       this.spinnerFlagIsSet = true;
       this.portfolioHoldingsService
         .getHoldings(
-          this.userId(),
           this.portfolioName() as string,
         )
         .subscribe({

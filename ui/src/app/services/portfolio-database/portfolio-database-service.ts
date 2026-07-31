@@ -16,21 +16,20 @@ export class PortfolioDatabaseService {
 
   constructor() { }
 
+  // user_id is never sent to any of these three: the backend derives the
+  // caller from the bearer token for every one of them.
   createPortfolio(portfolio_data: Partial<PortfolioModel>): Observable<PortfolioModel> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const apiMethod = 'portfolios/create';
     const body = portfolio_data;
 
-    return this.http.post<PortfolioModel>(`${this.apiUrl}/${apiMethod}/`, body, { headers })
+    return this.http.post<PortfolioModel>(`${this.apiUrl}/portfolios/`, body, { headers })
   }
 
-  readAllPortfolios(user_id: number): Observable<PortfolioModel[]> {
-    const apiMethod = 'portfolios/get_all';
-    return this.http.get<PortfolioModel[]>(`${this.apiUrl}/${apiMethod}/${user_id}/`)
+  readAllPortfolios(): Observable<PortfolioModel[]> {
+    return this.http.get<PortfolioModel[]>(`${this.apiUrl}/portfolios/get_all/`)
   }
 
-  getPortfolioHoldings(user_id: number, portfolio_name: string): Observable<PortfolioHoldingsModel[]> {
-    const apiMethod = 'portfolio_holdings/holdings';
-    return this.http.get<PortfolioHoldingsModel[]>(`${this.apiUrl}/${apiMethod}/${user_id}/${portfolio_name}`)
+  getPortfolioHoldings(portfolio_name: string): Observable<PortfolioHoldingsModel[]> {
+    return this.http.get<PortfolioHoldingsModel[]>(`${this.apiUrl}/portfolio_holdings/holdings/${portfolio_name}`)
   }
 }

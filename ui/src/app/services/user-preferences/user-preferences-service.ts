@@ -23,22 +23,24 @@ export class UserPreferencesService {
     return this.http.post<IWidgetConfig>(`${this.apiUrl}/${apiMethod}/`, body, { headers })
   }  
 
-  getAllWidgets(user_id: number, dashboard_id: string): Observable<IWidgetConfig[]> {
+  // No user_id on any of these three: the backend derives the caller from
+  // the bearer token.
+  getAllWidgets(dashboard_id: string): Observable<IWidgetConfig[]> {
     const apiMethod = 'get_all';
-    return this.http.get<IWidgetConfig[]>(`${this.apiUrl}/${apiMethod}/?user_id=${user_id}&dashboard_id=${dashboard_id}`)
+    return this.http.get<IWidgetConfig[]>(`${this.apiUrl}/${apiMethod}/?dashboard_id=${dashboard_id}`)
   }
 
-  updateWidgets(user_id: number, dashboard_id: string, data: IWidgetConfig[]): Observable<IWidgetConfig[]> {
+  updateWidgets(dashboard_id: string, data: IWidgetConfig[]): Observable<IWidgetConfig[]> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const apiMethod = 'update';
     const body = data ;
 
-    return this.http.put<IWidgetConfig[]>(`${this.apiUrl}/${apiMethod}/?user_id=${user_id}&dashboard_id=${dashboard_id}`, body, { headers })
+    return this.http.put<IWidgetConfig[]>(`${this.apiUrl}/${apiMethod}/?dashboard_id=${dashboard_id}`, body, { headers })
   }
 
-  deleteWidget(id: number, user_id: number, dashboard_id: string): Observable<IWidgetConfig[]> {
+  deleteWidget(id: number, dashboard_id: string): Observable<IWidgetConfig[]> {
     const apiMethod = 'delete';
-    return this.http.delete<IWidgetConfig[]>(`${this.apiUrl}/${apiMethod}/?id=${id}&user_id=${user_id}&dashboard_id=${dashboard_id}`)
+    return this.http.delete<IWidgetConfig[]>(`${this.apiUrl}/${apiMethod}/?id=${id}&dashboard_id=${dashboard_id}`)
   }
   
 }

@@ -7,7 +7,7 @@ import { catchError } from 'rxjs';
 import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
 import { PortfolioModel } from '../../../../models/portfolio-model';
 import { PortfolioHoldingsModel } from '../../../../models/portfolio_holdings_model';
-import { UserModel } from '../../../../models/user-model';
+import { AuthUserModel } from '../../../../models/auth-user-model';
 import { AuthService } from '../../../../services/auth/auth-service';
 import { PortfolioDatabaseService } from '../../../../services/portfolio-database/portfolio-database-service';
 import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar-service';
@@ -79,14 +79,14 @@ export class LiveTracker implements OnInit {
     Loads user configuration whith his/her preferences
     */
     this.userService
-      .getUser(this.user_id)
+      .getUser()
       .pipe(
         catchError((error) => {
           throw error;
         }),
       )
       .subscribe({
-        next: (response: UserModel) => {
+        next: (response: AuthUserModel) => {
           // Handle successful response)
           this.selectedPortfolio = response.portfolio_name as string;
           this.updatePortfolioList();
@@ -124,7 +124,7 @@ export class LiveTracker implements OnInit {
   */
   updatePortfolioList() {
     this.portfilioDbService
-      .readAllPortfolios(this.user_id)
+      .readAllPortfolios()
       .pipe(
         catchError((error) => {
           throw error;
@@ -163,7 +163,7 @@ export class LiveTracker implements OnInit {
 
   getPortfolioAssets() {
     console.log(`Will get assets to portfolio: ${this.selectedPortfolio}`)
-    this.portfilioDbService.getPortfolioHoldings(this.user_id, this.selectedPortfolio)
+    this.portfilioDbService.getPortfolioHoldings(this.selectedPortfolio)
       .subscribe(
         {
           next: (response: PortfolioHoldingsModel[]) => {

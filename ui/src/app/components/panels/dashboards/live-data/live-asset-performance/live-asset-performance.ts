@@ -107,7 +107,7 @@ export class LiveAssetPerformance implements OnInit, AfterViewInit, OnChanges, O
     }
 
     this.portfolioHoldingsService
-      .getHoldings(this.userId(), this.portfolioName() as string)
+      .getHoldings(this.portfolioName() as string)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response: PortfolioHoldingsModel[]) => {
@@ -144,7 +144,7 @@ export class LiveAssetPerformance implements OnInit, AfterViewInit, OnChanges, O
     }
 
     this.portfolioTransactionService
-      .getTransactionsForPortfolio(this.userId(), this.portfolioName())
+      .getTransactionsForPortfolio(this.portfolioName())
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response: PortfolioTransactionModel[]) => {

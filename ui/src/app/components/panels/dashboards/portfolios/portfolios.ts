@@ -6,6 +6,7 @@ import { catchError } from 'rxjs';
 import { PortfolioComponentsDataExchange } from '../../../../interfaces/portfolio-components-data-exchange';
 import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
 import { MATERIAL_IMPORTS } from '../../../../material-imports';
+import { AuthUserModel } from '../../../../models/auth-user-model';
 import { PortfolioModel } from '../../../../models/portfolio-model';
 import { ReturnMessage } from '../../../../models/return-message';
 import { UserModel } from '../../../../models/user-model';
@@ -59,14 +60,14 @@ export class Portfolios implements OnInit {
     // The following code is meant to find the last portfolio 
     // selected by the user. 
     this.userService
-      .getUser(this.user_id)
+      .getUser()
       .pipe(
         catchError((error) => {
           throw error;
         }),
       )
       .subscribe({
-        next: (response: UserModel) => {
+        next: (response: AuthUserModel) => {
           this.selectedPortfolio = response.portfolio_name;
           // Now the app finds all portfolios associated with this user
           // enabling selecting another one.
@@ -105,7 +106,7 @@ export class Portfolios implements OnInit {
 
   updatePortfolioList() {
     this.portfilioDbService
-      .readAllPortfolios(this.user_id)
+      .readAllPortfolios()
       .pipe(
         catchError((error) => {
           throw error;
@@ -143,7 +144,7 @@ export class Portfolios implements OnInit {
       portfolio_name: event.portfolio_name as string,
     };
     this.userService
-      .updateUser(this.user_id, partialUser)
+      .updateUser(partialUser)
       .pipe(
         catchError((error) => {
           throw error;
