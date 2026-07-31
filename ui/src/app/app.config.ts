@@ -1,12 +1,14 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, ErrorHandler, inject, provideAppInitializer, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideRouter } from '@angular/router';
 import { provideHighcharts } from 'highcharts-angular';
 import { routes } from './app.routes';
+import { GlobalErrorHandler } from './error-handlers/global-error-handler';
 import { authInterceptor } from './interceptors/auth-interceptor';
+import { errorHandlingInterceptor } from './interceptors/error-handling-interceptor';
 import { AppConfigService } from './services/app-config/app-config-service';
 import { AuthService } from './services/auth/auth-service';
 
@@ -15,7 +17,13 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    // auth attaches the token (outer); error-handling wraps the actual
+    // send/retry/log closest to the backend (inner) - see
+    // error-handling-interceptor.ts for the retry policy.
+    provideHttpClient(withInterceptors([authInterceptor, errorHandlingInterceptor])),
+    // Safety net for anything not already caught by a component's own
+    // `error` callback or the interceptor above - see global-error-handler.ts.
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
     // Loads /config.json (runtime API URLs) before the app renders, so a
     // single built image can be promoted across environments in Kubernetes.
     // Angular runs multiple provideAppInitializer callbacks concurrently,
