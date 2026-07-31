@@ -13,6 +13,7 @@ import { catchError, interval, of, startWith, switchMap } from 'rxjs'; // Import
 import { OhlcvDataInterface } from '../../../../../interfaces/ohlcv-interface';
 import { PortfolioHoldingsModel } from '../../../../../models/portfolio_holdings_model';
 import { ALLModel, IndicatorTaService } from '../../../../../services/indicator-ta/indicator-ta-service';
+import { LoggingService } from '../../../../../services/logging/logging-service';
 import { OhlcvData } from '../../../../../services/ohlcv-data/ohlcv-data';
 import { ThemeService } from '../../../../../services/theme-service/theme-service';
 
@@ -314,6 +315,7 @@ export class AssetCard {
   indicatorService = inject(IndicatorTaService)
   private readonly platformId = inject(PLATFORM_ID);
   private readonly themeService = inject(ThemeService);
+  private readonly logging = inject(LoggingService);
 
 
   /**
@@ -328,7 +330,7 @@ export class AssetCard {
         startWith(0), // starts at milisecond 0
         switchMap(() => this.ohlcvDataService.getAllBars(params.assetId).pipe(
           catchError(error => {
-            console.error(`Error fetching OHLCV data for asset ${params.assetId}:`, error);
+            this.logging.logError(error, { component: 'AssetCard', method: 'getAllBars', asset: params.assetId });
             // Return an empty array to allow the stream to continue without data for this specific poll.
             // This prevents the interval from stopping and ensures the chart doesn't break.
             return of([]);
@@ -498,7 +500,7 @@ export class AssetCard {
       params: () => ({ assetId: this.asset().asset }), // renaming asset to assetId just to avoid potential naming conflict
       stream: ({ params }) => this.indicatorService.getAllIndicator(params.assetId).pipe(
         catchError(error => {
-          console.error(`Error fetching indicators for asset ${params.id}:`, error);
+          this.logging.logError(error, { component: 'AssetCard', method: 'getAllIndicator', asset: params.assetId });
           // Return an empty array to allow the stream to continue without data for this specific poll.
           // This prevents the interval from stopping and ensures the chart doesn't break.
           return of([]);
@@ -510,7 +512,6 @@ export class AssetCard {
   // Updates the RSI data structure
   readonly allData = computed(() => {
     const data = this.allRawData.value() ?? [];
-    console.log(data)
 
     return {
       rsi: data.map(dp =>
@@ -722,7 +723,6 @@ export class AssetCard {
         }
       ]
     }));
-    console.log('Chart updated for ', this.asset().asset);
   }
 
   /**

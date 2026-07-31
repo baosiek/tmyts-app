@@ -91,7 +91,6 @@ export class AssetsAnalysis {
 
   parentNotified(value: Map<string, any>) {
     this.result.set(value)
-    console.log(this.result());
 
     this.asset.set(this.result().get('asset').asset);
 

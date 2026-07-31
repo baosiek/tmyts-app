@@ -162,12 +162,10 @@ export class LiveTracker implements OnInit {
   }
 
   getPortfolioAssets() {
-    console.log(`Will get assets to portfolio: ${this.selectedPortfolio}`)
     this.portfilioDbService.getPortfolioHoldings(this.selectedPortfolio)
       .subscribe(
         {
           next: (response: PortfolioHoldingsModel[]) => {
-            console.log(`number of assets in ${this.selectedPortfolio} is: ${response.length}`);
             this.assetsList = [...response];
           }
         }

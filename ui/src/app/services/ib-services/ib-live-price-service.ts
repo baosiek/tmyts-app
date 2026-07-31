@@ -22,12 +22,10 @@ export class IBLivePriceService {
    * Creates a new connection if one does not already exist for that symbol.
    */
   public getPriceStream(portfolio_name: string, asset: string): Observable<PriceUpdateMessage> {
-    console.log(`Getting stream for ${asset}`);
     if (!this.sockets.has(asset)) {
       const url = `${this.baseUrl}/${portfolio_name}/${asset}`;
       const socket = webSocket<PriceUpdateMessage>(url);
       this.sockets.set(asset, socket);
-      console.log(`Established new connection for ${asset} at ${url}`);
     }
 
     return this.sockets.get(asset)!.asObservable();
@@ -41,7 +39,6 @@ export class IBLivePriceService {
     if (socket) {
       socket.complete(); // Closes the underlying WebSocket
       this.sockets.delete(symbol);
-      console.log(`Closed connection for ${symbol}`);
     }
   }
 

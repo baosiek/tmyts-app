@@ -22,6 +22,7 @@ import { IBLivePriceService } from '../../../../../services/ib-services/ib-live-
 import { OhlcvData } from '../../../../../services/ohlcv-data/ohlcv-data';
 import { PortfolioActivityService } from '../../../../../services/portfolio-activity/portfolio-activity-service';
 import { TmytsHoldingsService } from '../../../../../services/tmyts-holdings/tmyts-holdings-service';
+import { LoggingService } from '../../../../../services/logging/logging-service';
 import { TmytsChip } from '../../../../reusable-components/tmyts-chip/tmyts-chip';
 
 @Component({
@@ -51,6 +52,7 @@ export class LiveAssetPerformance implements OnInit, AfterViewInit, OnChanges, O
   private portfolioTransactionService = inject(PortfolioActivityService);
   private portfolioHoldingsService = inject(TmytsHoldingsService);
   private ohlcvService = inject(OhlcvData);
+  private logging = inject(LoggingService);
 
   private destroy$ = new Subject<void>();
   private assetMap = new Map<string, any>();
@@ -128,12 +130,12 @@ export class LiveAssetPerformance implements OnInit, AfterViewInit, OnChanges, O
                 });
               },
               error: (error: any) => {
-                console.error('Error fetching OHLCV data:', error);
+                this.logging.logError(error, { component: 'LiveAssetPerformance', method: 'getOhlcvData' });
               }
             });
         },
         error: (error: any) => {
-          console.error('Error fetching portfolio holdings:', error);
+          this.logging.logError(error, { component: 'LiveAssetPerformance', method: 'getPortfolioHoldings' });
         }
       });
   }
@@ -148,8 +150,6 @@ export class LiveAssetPerformance implements OnInit, AfterViewInit, OnChanges, O
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response: PortfolioTransactionModel[]) => {
-          console.log(`Portfolios assets: ${JSON.stringify(response)}`);
-
           this.dataSource.data = response.map(item => ({
             asset: item.asset,
             asset_name: item.asset_name,
@@ -182,7 +182,7 @@ export class LiveAssetPerformance implements OnInit, AfterViewInit, OnChanges, O
           this.getAssetsLatestPrices();
         },
         error: (error: any) => {
-          console.error('Error fetching portfolio transactions:', error);
+          this.logging.logError(error, { component: 'LiveAssetPerformance', method: 'getPortfolioTransactions' });
         }
       });
   }
@@ -204,7 +204,7 @@ export class LiveAssetPerformance implements OnInit, AfterViewInit, OnChanges, O
           this.getPortfolioHoldings();
         },
         error: (error: any) => {
-          console.error('Error fetching latest prices:', error);
+          this.logging.logError(error, { component: 'LiveAssetPerformance', method: 'getAssetsLatestPrices' });
         }
       });
   }
@@ -223,7 +223,7 @@ export class LiveAssetPerformance implements OnInit, AfterViewInit, OnChanges, O
             }
           }
         },
-        error: (err) => console.error(`Error with ${symbol} stream:`, err)
+        error: (err) => this.logging.logError(err, { component: 'LiveAssetPerformance', method: 'registerToIBLivePrice', symbol })
       });
   }
 

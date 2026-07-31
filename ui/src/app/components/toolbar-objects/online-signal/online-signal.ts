@@ -34,7 +34,6 @@ export class OnlineSignal implements OnInit {
     this.live_service.checkYFssLive().subscribe({
       next: (response: any) => {
         const statusCode = response['status_code'];
-        console.log(`HTTP Status Code: ${statusCode}`);
         if (statusCode === 200) {
           this.isHealthy = true;
         } else {

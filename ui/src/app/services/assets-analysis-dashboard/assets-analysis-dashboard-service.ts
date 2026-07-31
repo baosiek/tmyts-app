@@ -111,8 +111,6 @@ export class AssetsAnalysisDashboardService {
   constructor(private _snackBar: MatSnackBar){}
 
   addWidgetToDashboard(user_id: number, symbol: string, widget: IWidgetType) {
-
-    console.log(`widget to be updated into possql: ${JSON.stringify(widget)}`)
     const theWidget = new WidgetConfig(
       widget.id,
       user_id,

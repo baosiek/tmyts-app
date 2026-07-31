@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LivePerformanceInterface } from '../../interfaces/live-performance-interface';
 import { AppConfigService } from '../app-config/app-config-service';
+import { LoggingService } from '../logging/logging-service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,7 @@ export class LiveHealthCheck {
 })
 export class LivePerformanceDataService {
   private config = inject(AppConfigService);
+  private logging = inject(LoggingService);
   private get apiUrl() { return `${this.config.apiBaseUrl}/yf_live`; }
 
   getStream(url: string): Observable<LivePerformanceInterface> {
@@ -55,13 +57,6 @@ export class LivePerformanceDataService {
               const chunk = decoder.decode(value, { stream: true });
               const lines = (partialChunk + chunk).split(/\r?\n/);
 
-              // console.log(
-              //   `[Stream Debug] Buffer Size: ${combined.length} bytes | New Lines Found: ${lines.length - 1}`,
-              // );
-              // console.log(
-              //   `Chunks: ${lines.length}. Remaining buffer size: ${partialChunk.length}`,
-              // );
-
               // The last element of .split is always the "incomplete" part
               // (or an empty string if it ended perfectly with \n)
               partialChunk = lines.pop() ?? '';
@@ -71,8 +66,8 @@ export class LivePerformanceDataService {
                 if (trimmed) {
                   try {
                     observer.next(JSON.parse(trimmed));
-                  } catch {
-                    console.error('JSON Parse Error on line:', trimmed);
+                  } catch (error) {
+                    this.logging.logError(error, { component: 'LivePerformanceDataService', method: 'getStream', line: trimmed });
                   }
                 }
               }
@@ -84,8 +79,8 @@ export class LivePerformanceDataService {
               if (partialChunk.trim()) {
                 try {
                   observer.next(JSON.parse(partialChunk));
-                } catch {
-                  console.error('Final fragment parse error:', partialChunk);
+                } catch (error) {
+                  this.logging.logError(error, { component: 'LivePerformanceDataService', method: 'getStream', fragment: partialChunk });
                 }
               }
               break;

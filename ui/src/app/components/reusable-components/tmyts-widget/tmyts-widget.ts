@@ -74,11 +74,7 @@ export class TmytsWidget implements OnInit, OnChanges{
          width: '100%',
        }
     )
-    dialogRef.afterClosed().subscribe(
-      () => {
-        // console.log(`Dialog enlarged closed`)
-      }
-    )
+    dialogRef.afterClosed().subscribe(() => {})
    }
 
    openInfoContainer() {
@@ -96,11 +92,7 @@ export class TmytsWidget implements OnInit, OnChanges{
          height: '800px'
        }
     )
-    dialogRef.afterClosed().subscribe(
-      () => {
-        // console.log(`Dialog enlarged closed`)
-      }
-    )
+    dialogRef.afterClosed().subscribe(() => {})
    }
 }
 

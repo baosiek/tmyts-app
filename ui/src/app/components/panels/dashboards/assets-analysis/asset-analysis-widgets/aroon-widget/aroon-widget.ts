@@ -110,7 +110,6 @@ export class AroonWidget {
   }
 
   ngOnChanges(_changes: SimpleChanges): void {
-    console.log(`${this.resolvedData().label}`)
     this.getIndicatorData();
   }
 

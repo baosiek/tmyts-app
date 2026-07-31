@@ -11,6 +11,7 @@ import { PortfolioModel } from '../../../../models/portfolio-model';
 import { ReturnMessage } from '../../../../models/return-message';
 import { UserModel } from '../../../../models/user-model';
 import { AuthService } from '../../../../services/auth/auth-service';
+import { LoggingService } from '../../../../services/logging/logging-service';
 import { PortfolioDatabaseService } from '../../../../services/portfolio-database/portfolio-database-service';
 import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar-service';
 import { UserService } from '../../../../services/user-service/user-service';
@@ -44,6 +45,7 @@ export class Portfolios implements OnInit {
   portfolioList: PortfolioModel[] = [];
   dialog = inject(MatDialog);
   private _snackBar = inject(MatSnackBar);
+  private logging = inject(LoggingService);
   selectedPortfolio: string = '';
 
   dataExchangeToChild = PortfolioComponentsDataExchange.create(0, '', []);
@@ -74,9 +76,7 @@ export class Portfolios implements OnInit {
           this.updatePortfolioList();
         },
         error: (error) => {
-          console.log(`Error at user init: ${JSON.stringify(error)}`)
-
-          // Handle error response via snack bar
+          this.logging.logError(error, { component: 'Portfolios', method: 'getUser (init)' });
         },
       });
   }
@@ -116,7 +116,6 @@ export class Portfolios implements OnInit {
         next: (response: PortfolioModel[]) => {
           // Handle successful response updating portfolio list
           this.portfolioList = [...response];
-          // console.log(`portfolio list: ${JSON.stringify(this.portfolioList)}`)
 
           // typescript syntax to get the first element
           // const [firstPortfolio] = this.portfolioList;
@@ -158,6 +157,5 @@ export class Portfolios implements OnInit {
           // Handle error response
         },
       });
-    // console.log(event.portfolio_name);
   }
 }
