@@ -8,6 +8,7 @@ import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
 import { PortfolioModel } from '../../../../models/portfolio-model';
 import { PortfolioHoldingsModel } from '../../../../models/portfolio_holdings_model';
 import { UserModel } from '../../../../models/user-model';
+import { AuthService } from '../../../../services/auth/auth-service';
 import { PortfolioDatabaseService } from '../../../../services/portfolio-database/portfolio-database-service';
 import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar-service';
 import { UserService } from '../../../../services/user-service/user-service';
@@ -27,7 +28,8 @@ export class LiveTracker implements OnInit {
   */
   id: string = 'live_tracker'; // id of this component
   toolbar: ITmytsToolBar | undefined; // receives this component toolbar configuration
-  user_id: number = 1; // there is no user functionality, so user_id is fixed. Needs to change in the future
+  // Guaranteed non-null: authGuard blocks navigation to this route while unauthenticated.
+  user_id: number = inject(AuthService).userId()!;
   selectedPortfolio: string = ''; // holds the user selected portfolio
   portfolioList: PortfolioModel[] = []; // a list containing all portfolios registered to the user
   assetsList: PortfolioHoldingsModel[] = []; // a list containing all assets in the seleted portfolio

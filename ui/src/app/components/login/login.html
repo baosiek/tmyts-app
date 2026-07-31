@@ -1,0 +1,30 @@
+<div class="login-page">
+  <form class="login-card" [formGroup]="loginForm" (ngSubmit)="submit()">
+    <h1>TMYTS</h1>
+    <p class="subtitle">Sign in to continue</p>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="user_name" autocomplete="username" required />
+      @if (loginForm.get('user_name')?.invalid && loginForm.get('user_name')?.touched) {
+        <mat-error>Username is required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="user_password" autocomplete="current-password" required />
+      @if (loginForm.get('user_password')?.invalid && loginForm.get('user_password')?.touched) {
+        <mat-error>Password is required</mat-error>
+      }
+    </mat-form-field>
+
+    <button mat-raised-button type="submit" [disabled]="loginForm.invalid || submitting()">
+      @if (submitting()) {
+        <mat-spinner diameter="20"></mat-spinner>
+      } @else {
+        Sign in
+      }
+    </button>
+  </form>
+</div>

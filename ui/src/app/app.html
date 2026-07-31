@@ -1,21 +1,25 @@
-<mat-toolbar>
-  <button mat-icon-button (click)="collapsed.set(!collapsed())">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>{{ title() }}</span>
-  <button mat-icon-button class="theme-button" (click)="toggleDarkMode()">
-    @if(darkMode()){
-      <mat-icon>sunny</mat-icon>
-    } @else {
-      <mat-icon>dark_mode</mat-icon>
-    }    
-  </button>
-</mat-toolbar>
-<mat-sidenav-container>
-  <mat-sidenav opened mode="side" [style.width]="sideNavWidth()">
-    <app-sidenav [collapsed]="collapsed()"></app-sidenav>
-  </mat-sidenav>
-  <mat-sidenav-content class="dashboard-area" [style.margin-left]="sideNavWidth()">
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>  
-</mat-sidenav-container>
+@if (authService.isAuthenticated()) {
+  <mat-toolbar>
+    <button mat-icon-button (click)="collapsed.set(!collapsed())">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>{{ title() }}</span>
+    <button mat-icon-button class="theme-button" (click)="toggleDarkMode()">
+      @if(darkMode()){
+        <mat-icon>sunny</mat-icon>
+      } @else {
+        <mat-icon>dark_mode</mat-icon>
+      }
+    </button>
+  </mat-toolbar>
+  <mat-sidenav-container>
+    <mat-sidenav opened mode="side" [style.width]="sideNavWidth()">
+      <app-sidenav [collapsed]="collapsed()"></app-sidenav>
+    </mat-sidenav>
+    <mat-sidenav-content class="dashboard-area" [style.margin-left]="sideNavWidth()">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+} @else {
+  <router-outlet></router-outlet>
+}

@@ -6,6 +6,7 @@ import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
 import { IWidgetConfig } from '../../../../interfaces/widget-config-interface';
 import { MATERIAL_IMPORTS } from '../../../../material-imports';
 import { AssetsAnalysisDashboardService } from '../../../../services/assets-analysis-dashboard/assets-analysis-dashboard-service';
+import { AuthService } from '../../../../services/auth/auth-service';
 import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar-service';
 import { UserPreferencesService } from '../../../../services/user-preferences/user-preferences-service';
 import { TmytsSnackbar } from '../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
@@ -31,7 +32,8 @@ import { TmytsWidget } from "../../../reusable-components/tmyts-widget/tmyts-wid
 export class AssetsAnalysis {
 
   protected id: string = 'assets_analysis'
-  user_id: number = 1
+  // Guaranteed non-null: authGuard blocks navigation to this route while unauthenticated.
+  user_id: number = inject(AuthService).userId()!
   toolbarService = inject(ToolbarService);
   data: ITmytsToolBar | undefined;
   result = signal<Map<String, any>>(new Map())

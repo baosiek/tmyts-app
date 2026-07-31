@@ -1,10 +1,16 @@
-<div class="sidenav-header">
-    <img [width]="setImageSize()" [height]="setImageSize()" src="assets/bao.jpg">
+<div class="sidenav-header" [matMenuTriggerFor]="profileMenu">
+    <img [width]="setImageSize()" [height]="setImageSize()" [src]="photoSrc()">
     <div class="header-text" [class.hide-header-text]="collapsed()">
         <h2>Portfolio</h2>
-        <p>Bruno Adam Osiek</p>
+        <p>{{ displayName() }}</p>
     </div>
 </div>
+<mat-menu #profileMenu="matMenu">
+    <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+    </button>
+</mat-menu>
 <mat-nav-list>
     @for (item of menuItems(); track item.label)
     {

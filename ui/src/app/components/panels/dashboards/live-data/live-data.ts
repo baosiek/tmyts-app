@@ -9,6 +9,7 @@ import { PortfolioComponentsDataExchange } from '../../../../interfaces/portfoli
 import { ITmytsToolBar } from '../../../../interfaces/tmyts-toolbar-interface';
 import { PortfolioModel } from '../../../../models/portfolio-model';
 import { UserModel } from '../../../../models/user-model';
+import { AuthService } from '../../../../services/auth/auth-service';
 import { PortfolioDatabaseService } from '../../../../services/portfolio-database/portfolio-database-service';
 import { ToolbarService } from '../../../../services/tmyts-toolbar/tmyts-toolbar-service';
 import { UserService } from '../../../../services/user-service/user-service';
@@ -42,7 +43,8 @@ export interface Tile {
 export class LiveData implements OnInit {
   protected id: string = 'live_data';
 
-  user_id: number = 1;
+  // Guaranteed non-null: authGuard blocks navigation to this route while unauthenticated.
+  user_id: number = inject(AuthService).userId()!;
   // legacy unused variable
   portfilioId: number = 0;
   userService = inject(UserService);

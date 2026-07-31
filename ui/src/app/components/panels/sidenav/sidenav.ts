@@ -1,6 +1,7 @@
-import { Component, computed, input, signal } from '@angular/core';
-import { RouterLink, RouterModule } from '@angular/router';
+import { Component, computed, inject, input, signal } from '@angular/core';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
+import { AuthService } from '../../../services/auth/auth-service';
 
 export type MenuItemModel = {
   icon: string
@@ -61,4 +62,17 @@ export class Sidenav {
       return this.collapsed() ? '32' : '100';
     }
   );
+
+  authService = inject(AuthService);
+  private router = inject(Router);
+
+  // Falls back to the bundled placeholder when the logged-in user has no
+  // photo stored yet.
+  photoSrc = computed(() => this.authService.profile()?.user_photo ?? 'assets/bao.jpg');
+  displayName = computed(() => this.authService.profile()?.user_name ?? '');
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }
