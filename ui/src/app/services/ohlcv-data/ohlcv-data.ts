@@ -35,6 +35,7 @@ export class OhlcvData {
 
     return this.http.post<OhlcvDataInterface[]>(
       `${this.apiUrl}/last_x_minutes_of_data_for_asset/?asset=${asset}`,
+      null,
       { headers }
     );
   }
