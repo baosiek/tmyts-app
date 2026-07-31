@@ -1,5 +1,5 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { MATERIAL_IMPORTS } from './material-imports';
 import { Sidenav } from './components/panels/sidenav/sidenav';
 import { AuthService } from './services/auth/auth-service';
@@ -32,9 +32,15 @@ export class App {
 
   themeService = inject(ThemeService)
   authService = inject(AuthService)
+  private router = inject(Router)
 
-  toggleDarkMode() {    
+  toggleDarkMode() {
     this.darkMode.set(!this.darkMode())
     this.themeService.setTheme(this.darkMode())
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

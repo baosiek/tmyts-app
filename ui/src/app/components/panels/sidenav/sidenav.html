@@ -1,16 +1,16 @@
-<div class="sidenav-header" [matMenuTriggerFor]="profileMenu">
-    <img [width]="setImageSize()" [height]="setImageSize()" [src]="photoSrc()">
+<div class="sidenav-header">
+    <label class="avatar-wrapper" [class.uploading]="uploadingPhoto()" for="photo-upload" title="Change photo">
+        <img [width]="setImageSize()" [height]="setImageSize()" [src]="photoSrc()">
+        <span class="avatar-edit-badge">
+            <mat-icon>edit</mat-icon>
+        </span>
+    </label>
+    <input id="photo-upload" type="file" accept="image/*" hidden (change)="onPhotoSelected($event)">
     <div class="header-text" [class.hide-header-text]="collapsed()">
         <h2>Portfolio</h2>
         <p>{{ displayName() }}</p>
     </div>
 </div>
-<mat-menu #profileMenu="matMenu">
-    <button mat-menu-item (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        <span>Logout</span>
-    </button>
-</mat-menu>
 <mat-nav-list>
     @for (item of menuItems(); track item.label)
     {

@@ -1,9 +1,10 @@
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { App } from './app';
 import { AppConfigService } from './services/app-config/app-config-service';
+import { AuthService } from './services/auth/auth-service';
 
 describe('App', () => {
   beforeEach(async () => {
@@ -32,5 +33,19 @@ describe('App', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('mat-toolbar')).toBeNull();
+  });
+
+  it('logout() clears the session and redirects to /login', () => {
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+    const authService = TestBed.inject(AuthService);
+    const router = TestBed.inject(Router);
+    spyOn(authService, 'logout');
+    spyOn(router, 'navigate').and.resolveTo(true);
+
+    app.logout();
+
+    expect(authService.logout).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/login']);
   });
 });

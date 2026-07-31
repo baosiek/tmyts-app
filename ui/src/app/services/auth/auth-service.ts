@@ -61,6 +61,16 @@ export class AuthService {
     return this.token();
   }
 
+  // Updates the locally-held profile after the caller has already
+  // persisted the new photo via UserService.updateUser - avoids a round
+  // trip through /auth/me just to reflect a change we already know.
+  setProfilePhoto(user_photo: string | null): void {
+    const current = this.profileSignal();
+    if (current) {
+      this.profileSignal.set({ ...current, user_photo });
+    }
+  }
+
   private refreshProfile() {
     return this.http
       .get<AuthUserModel>(`${this.apiUrl}/me`)
