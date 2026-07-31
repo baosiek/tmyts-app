@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AssetByPortfolioTotalsModel, PortfolioActivityMode, PortfolioActivityModel, PortfolioTransactionModel } from '../../models/portfolio-activity-model';
 import { ReturnMessage } from '../../models/return-message';
+import { AppConfigService } from '../app-config/app-config-service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ import { ReturnMessage } from '../../models/return-message';
 export class PortfolioActivityService {
 
   http = inject(HttpClient)
-  apiUrl = 'http://localhost:8000/portfolio-transactions';
+  private config = inject(AppConfigService);
+  private get apiUrl() { return `${this.config.apiBaseUrl}/portfolio-transactions`; }
 
   constructor() { }
 

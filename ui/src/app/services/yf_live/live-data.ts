@@ -2,13 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LivePerformanceInterface } from '../../interfaces/live-performance-interface';
+import { AppConfigService } from '../app-config/app-config-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LiveHealthCheck {
   http = inject(HttpClient);
-  apiUrl = 'http://localhost:8000/yf_live';
+  private config = inject(AppConfigService);
+  private get apiUrl() { return `${this.config.apiBaseUrl}/yf_live`; }
 
   checkYFssLive(): Observable<any> {
     const apiMethod = 'health_check';
@@ -21,7 +23,8 @@ export class LiveHealthCheck {
   providedIn: 'root',
 })
 export class LivePerformanceDataService {
-  apiUrl = 'http://localhost:8000/yf_live';
+  private config = inject(AppConfigService);
+  private get apiUrl() { return `${this.config.apiBaseUrl}/yf_live`; }
 
   getStream(url: string): Observable<LivePerformanceInterface> {
     return new Observable((observer) => {

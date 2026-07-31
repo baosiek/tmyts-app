@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IndexCardInterface } from '../../components/panels/indexes-cards/indexes-cards';
 import { PortfolioPerformanceModel } from '../../models/portfolio-performance-model';
+import { AppConfigService } from '../app-config/app-config-service';
 
 interface AssetDataModel {
   symbol?: string;
@@ -16,7 +17,8 @@ interface AssetDataModel {
 export class LiveDataService {
 
   http = inject(HttpClient)
-  apiUrl = 'http://localhost:8000/live';
+  private config = inject(AppConfigService);
+  private get apiUrl() { return `${this.config.apiBaseUrl}/live`; }
 
   constructor() { }
 

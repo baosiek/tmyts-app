@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AssetPriceHistoryModel } from '../../models/assets-price-history-model';
+import { AppConfigService } from '../app-config/app-config-service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,8 @@ import { AssetPriceHistoryModel } from '../../models/assets-price-history-model'
 export class AssetsPriceHistoryService {
 
   http = inject(HttpClient)
-  apiUrl = 'http://localhost:8000/assets_price_history';
+  private config = inject(AppConfigService);
+  private get apiUrl() { return `${this.config.apiBaseUrl}/assets_price_history`; }
 
   constructor() { }
 

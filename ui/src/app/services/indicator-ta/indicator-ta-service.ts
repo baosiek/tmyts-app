@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AppConfigService } from '../app-config/app-config-service';
 
 export interface RSIModel {
   timestamp: string;
@@ -21,7 +22,8 @@ export interface ALLModel {
 })
 export class IndicatorTaService {
   http = inject(HttpClient)
-  apiUrl = 'http://localhost:8000/indicators_ta';
+  private config = inject(AppConfigService);
+  private get apiUrl() { return `${this.config.apiBaseUrl}/indicators_ta`; }
 
   constructor() { }
 

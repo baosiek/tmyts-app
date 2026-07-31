@@ -3,13 +3,15 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ReturnMessage } from '../../models/return-message';
 import { UserModel } from '../../models/user-model';
+import { AppConfigService } from '../app-config/app-config-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   http = inject(HttpClient);
-  apiUrl = 'http://localhost:8000/users';
+  private config = inject(AppConfigService);
+  private get apiUrl() { return `${this.config.apiBaseUrl}/users`; }
 
   constructor() { }
 

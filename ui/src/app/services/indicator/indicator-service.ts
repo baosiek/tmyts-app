@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { ReturnMessage } from '../../models/return-message';
 import { Observable } from 'rxjs';
 import { IndicatorDataMapModel } from '../../models/indicator-model';
+import { AppConfigService } from '../app-config/app-config-service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ import { IndicatorDataMapModel } from '../../models/indicator-model';
 export class IndicatorService {
 
   http = inject(HttpClient)
-  apiUrl = 'http://localhost:8000/indicators';
+  private config = inject(AppConfigService);
+  private get apiUrl() { return `${this.config.apiBaseUrl}/indicators`; }
 
   getObvIndicator(symbols: string[]): Observable<IndicatorDataMapModel>{
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });

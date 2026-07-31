@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IWidgetConfig } from '../../interfaces/widget-config-interface';
+import { AppConfigService } from '../app-config/app-config-service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,8 @@ import { IWidgetConfig } from '../../interfaces/widget-config-interface';
 export class UserPreferencesService {
 
   http = inject(HttpClient)
-  apiUrl = 'http://localhost:8000/dashboard_widget_config';
+  private config = inject(AppConfigService);
+  private get apiUrl() { return `${this.config.apiBaseUrl}/dashboard_widget_config`; }
 
   constructor() {}
 

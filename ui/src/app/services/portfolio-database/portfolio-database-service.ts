@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PortfolioModel } from '../../models/portfolio-model';
 import { PortfolioHoldingsModel } from '../../models/portfolio_holdings_model';
+import { AppConfigService } from '../app-config/app-config-service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ import { PortfolioHoldingsModel } from '../../models/portfolio_holdings_model';
 export class PortfolioDatabaseService {
 
   http = inject(HttpClient)
-  apiUrl = 'http://127.0.0.1:8000';
+  private config = inject(AppConfigService);
+  private get apiUrl() { return this.config.apiBaseUrl; }
 
   constructor() { }
 

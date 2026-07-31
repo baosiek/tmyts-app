@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PortfolioCashflowInterface } from '../../interfaces/cashflow-performance-interface';
+import { AppConfigService } from '../app-config/app-config-service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,8 @@ import { PortfolioCashflowInterface } from '../../interfaces/cashflow-performanc
 export class PortfolioPerformanceService {
 
   http = inject(HttpClient)
-  apiUrl = 'http://localhost:8000/portfolios';
+  private config = inject(AppConfigService);
+  private get apiUrl() { return `${this.config.apiBaseUrl}/portfolios`; }
 
   constructor() { }
 

@@ -1,18 +1,21 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PriceUpdateMessage } from '../../interfaces/price-update-message-interface';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { AppConfigService } from '../app-config/app-config-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class IBLivePriceService {
+  private config = inject(AppConfigService);
+
   private sockets: Map<string, WebSocketSubject<PriceUpdateMessage>> = new Map<
     string,
     WebSocketSubject<PriceUpdateMessage>
   >();
 
-  private readonly baseUrl: string = 'ws://localhost:8001/portfolio/ws/stream';
+  private get baseUrl(): string { return `${this.config.wsBaseUrl}/portfolio/ws/stream`; }
 
   /**
    * Retrieves an observable stream for a specific stock symbol.

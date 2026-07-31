@@ -2,13 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { PortfolioHoldingsModel } from '../../models/portfolio_holdings_model';
+import { AppConfigService } from '../app-config/app-config-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TmytsHoldingsService {
   http = inject(HttpClient);
-  apiUrl = 'http://localhost:8000/portfolio_holdings';
+  private config = inject(AppConfigService);
+  private get apiUrl() { return `${this.config.apiBaseUrl}/portfolio_holdings`; }
 
   constructor() { }
 
