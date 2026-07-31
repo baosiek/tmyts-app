@@ -36,6 +36,7 @@ export class AssetCard {
   // Bound normally (`[asset]="..."`) when rendered in the live-tracker grid.
   // Left unset when this component is instead opened as fullscreen dialog
   // content (see toggleFullscreen()), where `dialogAsset` supplies it instead.
+  // eslint-disable-next-line @angular-eslint/no-input-rename -- deliberate: see comment above distinguishing this from dialogAsset
   readonly assetInput = input<PortfolioHoldingsModel>(undefined, { alias: 'asset' });
   private readonly dialogAsset = inject<PortfolioHoldingsModel | null>(MAT_DIALOG_DATA, { optional: true });
   readonly asset = computed(() => this.dialogAsset ?? this.assetInput()!);

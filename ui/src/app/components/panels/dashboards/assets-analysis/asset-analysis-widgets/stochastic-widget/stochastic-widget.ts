@@ -109,7 +109,7 @@ export class StochasticWidget {
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(_changes: SimpleChanges): void {
     this.getIndicatorData();
   }
 

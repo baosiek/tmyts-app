@@ -1,6 +1,6 @@
-import { Component, ElementRef, Input, input, OnChanges, OnInit, Renderer2, signal, ViewChild } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
-import { NgClass, NgStyle } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export type ColorSet = {
   color: string;

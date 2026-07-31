@@ -1,12 +1,9 @@
-import { AfterViewInit, Component, ElementRef, inject, input, model, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, model, OnInit } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../../material-imports';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IWidgetConfig } from '../../../../interfaces/widget-config-interface';
 import { AssetsAnalysisDashboardService } from '../../../../services/assets-analysis-dashboard/assets-analysis-dashboard-service';
-import { UserPreferencesService } from '../../../../services/user-preferences/user-preferences-service';
-import { catchError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TmytsSnackbar } from '../../tmyts-snackbar/tmyts-snackbar';
 
 @Component({
   selector: 'app-color-setting',

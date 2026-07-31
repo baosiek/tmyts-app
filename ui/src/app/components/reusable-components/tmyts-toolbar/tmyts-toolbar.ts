@@ -24,7 +24,7 @@ export class TmytsToolbar{
 
   dialog = inject(MatDialog);
   data = input.required<ITmytsToolBar>()  
-  notifyParent = output<Map<String, any>>();
+  notifyParent = output<Map<string, any>>();
 
   constructor() {
   }
@@ -45,7 +45,7 @@ export class TmytsToolbar{
       dialogRef.afterClosed()
       .subscribe(
         {
-          next: (result: Map<String, any>) => {
+          next: (result: Map<string, any>) => {
             this.notifyParent.emit(result)
           }          
         }

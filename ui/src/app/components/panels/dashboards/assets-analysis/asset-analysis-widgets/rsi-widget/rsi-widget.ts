@@ -108,7 +108,7 @@ export class RsiWidget {
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(_changes: SimpleChanges): void {
     this.getIndicatorData();
   }
 

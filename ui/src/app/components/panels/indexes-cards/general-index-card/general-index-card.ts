@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../../material-imports';
-import { CurrencyPipe, DecimalPipe, PercentPipe, SlicePipe } from '@angular/common';
+import { DecimalPipe, PercentPipe, SlicePipe } from '@angular/common';
 import { IndexCardInterface } from '../indexes-cards';
 
 @Component({

@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { MATERIAL_IMPORTS } from './material-imports';
 import { Sidenav } from './components/panels/sidenav/sidenav';

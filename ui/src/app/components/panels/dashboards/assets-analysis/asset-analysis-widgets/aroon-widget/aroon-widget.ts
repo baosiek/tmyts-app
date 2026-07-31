@@ -109,7 +109,7 @@ export class AroonWidget {
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(_changes: SimpleChanges): void {
     console.log(`${this.resolvedData().label}`)
     this.getIndicatorData();
   }

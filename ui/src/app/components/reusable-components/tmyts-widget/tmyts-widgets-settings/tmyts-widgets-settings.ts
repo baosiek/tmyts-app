@@ -1,12 +1,10 @@
-import { Component, inject, input, model, OnChanges, OnInit, signal, SimpleChanges } from '@angular/core';
+import { Component, inject, input, model } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../../material-imports';
 import { IWidgetConfig } from '../../../../interfaces/widget-config-interface';
 import { AssetsAnalysisDashboardService } from '../../../../services/assets-analysis-dashboard/assets-analysis-dashboard-service';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ThemePalette } from '@angular/material/core';
 import { ColorSetting } from '../../tmyts-settings/color-setting/color-setting';
 import { TmytsSizeSetting } from '../../tmyts-settings/tmyts-size-setting/tmyts-size-setting';
-import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-tmyts-widgets-settings',

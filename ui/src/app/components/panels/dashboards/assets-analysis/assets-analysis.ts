@@ -36,7 +36,7 @@ export class AssetsAnalysis {
   user_id: number = inject(AuthService).userId()!
   toolbarService = inject(ToolbarService);
   data: ITmytsToolBar | undefined;
-  result = signal<Map<String, any>>(new Map())
+  result = signal<Map<string, any>>(new Map())
   asset = signal<string>('');
 
   widgetConfigService = inject(AssetsAnalysisDashboardService);
@@ -89,7 +89,7 @@ export class AssetsAnalysis {
       );
   }
 
-  parentNotified(value: Map<String, any>) {
+  parentNotified(value: Map<string, any>) {
     this.result.set(value)
     console.log(this.result());
 

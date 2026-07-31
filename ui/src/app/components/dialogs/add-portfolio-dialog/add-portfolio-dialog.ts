@@ -1,11 +1,9 @@
-import { Component, inject, Input, input, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { FormsModule } from '@angular/forms';
 
 import { createPortfolio, PortfolioModel } from '../../../models/portfolio-model';
 import { PortfolioDatabaseService } from '../../../services/portfolio-database/portfolio-database-service';
-import { catchError } from 'rxjs';
-import { ReturnMessage } from '../../../models/return-message';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DialogData } from '../general-dialog/general-dialog';
 import { MatDialogRef } from '@angular/material/dialog';

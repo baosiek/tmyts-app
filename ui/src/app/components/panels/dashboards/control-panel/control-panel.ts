@@ -92,7 +92,7 @@ export class ControlPanel {
             this.onPortfolioChange();
           }
         },
-        error: (error) => {
+        error: () => {
           // Handle error response
         },
       });

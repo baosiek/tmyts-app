@@ -8,8 +8,6 @@ import { GeneraliDialog } from '../../dialogs/general-dialog/general-dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { InfoDialog } from '../../dialogs/info-dialog/info-dialog';
-import { createDefaultWidgetConfigModel } from '../../../models/widget-config-model';
-import { IInfoDialog } from '../../../interfaces/info-dialog-interface';
 
 @Component({
   selector: 'app-tmyts-widget',
@@ -53,7 +51,7 @@ export class TmytsWidget implements OnInit, OnChanges{
     )
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(_changes: SimpleChanges): void {
     this.indicatorData.set(
       {
       'data': this.widgetConfig()

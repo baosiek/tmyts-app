@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { ReturnMessage } from '../../models/return-message';
 import { Observable } from 'rxjs';
 import { IndicatorDataMapModel } from '../../models/indicator-model';
 import { AppConfigService } from '../app-config/app-config-service';

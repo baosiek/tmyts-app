@@ -1,4 +1,4 @@
-import { Component, inject, OnChanges, OnInit, Type } from '@angular/core';
+import { Component, inject, Type } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { NgComponentOutlet } from '@angular/common';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';

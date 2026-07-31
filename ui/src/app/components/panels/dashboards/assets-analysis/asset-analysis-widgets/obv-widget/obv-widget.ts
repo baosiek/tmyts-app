@@ -96,7 +96,7 @@ export class ObvWidget implements OnChanges {
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(_changes: SimpleChanges): void {
     this.getIndicatorData();
   }
 

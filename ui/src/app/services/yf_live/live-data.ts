@@ -55,8 +55,6 @@ export class LivePerformanceDataService {
               const chunk = decoder.decode(value, { stream: true });
               const lines = (partialChunk + chunk).split(/\r?\n/);
 
-              const combined = partialChunk + chunk;
-
               // console.log(
               //   `[Stream Debug] Buffer Size: ${combined.length} bytes | New Lines Found: ${lines.length - 1}`,
               // );
@@ -73,7 +71,7 @@ export class LivePerformanceDataService {
                 if (trimmed) {
                   try {
                     observer.next(JSON.parse(trimmed));
-                  } catch (e) {
+                  } catch {
                     console.error('JSON Parse Error on line:', trimmed);
                   }
                 }
@@ -86,7 +84,7 @@ export class LivePerformanceDataService {
               if (partialChunk.trim()) {
                 try {
                   observer.next(JSON.parse(partialChunk));
-                } catch (e) {
+                } catch {
                   console.error('Final fragment parse error:', partialChunk);
                 }
               }

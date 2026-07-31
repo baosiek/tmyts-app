@@ -1,4 +1,4 @@
-import { computed, effect, inject, Injectable, signal, Type } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { IWidgetConfig, IWidgetType, WidgetConfig } from '../../interfaces/widget-config-interface';
 import { ObvWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/obv-widget/obv-widget';
 import { AdlineWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/adline-widget/adline-widget';
@@ -9,7 +9,6 @@ import { catchError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TmytsSnackbar } from '../../components/reusable-components/tmyts-snackbar/tmyts-snackbar';
 import { MacdWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/macd-widget/macd-widget';
-import { FibonacciWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/fibonacci-widget/fibonacci-widget';
 import { SarWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/sar-widget/sar-widget';
 import { BollingerWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/bollinger-widget/bollinger-widget';
 import { RsiWidget } from '../../components/panels/dashboards/assets-analysis/asset-analysis-widgets/rsi-widget/rsi-widget';
@@ -105,7 +104,6 @@ export class AssetsAnalysisDashboardService {
   widgetsToBeAdded  = computed(
     () => {
       const idsInDashboard = this.widgetsInDashboard().map((w) => w.id);
-      const widgets = this.widgetsStore().filter((w) =>  !idsInDashboard.includes(w.id));
       return this.widgetTypes().filter((w) =>  !idsInDashboard.includes(w.id));
     }      
   );

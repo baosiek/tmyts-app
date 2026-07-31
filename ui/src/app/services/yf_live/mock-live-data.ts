@@ -66,7 +66,7 @@ export const mockLivePerformanceData: LivePerformanceInterface[] = [
   providedIn: 'root',
 })
 export class MockLivePerformanceDataService extends LivePerformanceDataService {
-  override getStream(url: string): Observable<LivePerformanceInterface> {
+  override getStream(_url: string): Observable<LivePerformanceInterface> {
     return from(mockLivePerformanceData);
   }
 }

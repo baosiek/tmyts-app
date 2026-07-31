@@ -1,5 +1,3 @@
-import { Type } from "@angular/core";
-
 export type WidgetConfigModel = {
     widget_id: number;
     user_id: number;

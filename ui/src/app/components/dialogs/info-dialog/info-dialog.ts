@@ -1,6 +1,5 @@
 import { Component, input, OnInit, signal } from '@angular/core';
 import { DialogData } from '../general-dialog/general-dialog';
-import { MatButtonModule } from "@angular/material/button";
 import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { IndicatorInfo } from '../../../../assets/indicator-info'
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';

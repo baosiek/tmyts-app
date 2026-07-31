@@ -110,7 +110,7 @@ export class MacdWidget {
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(_changes: SimpleChanges): void {
     this.getIndicatorData();
   }
 
@@ -182,7 +182,6 @@ export class MacdWidget {
 
   initializeChart() {
     const { background, text } = this.themeService.getChartColors();
-    const data = this.histogram;
     this.chartOptions = {
       chart: {
         styledMode: false,

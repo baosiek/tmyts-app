@@ -91,7 +91,7 @@ export class LiveTracker implements OnInit {
           this.selectedPortfolio = response.portfolio_name as string;
           this.updatePortfolioList();
         },
-        error: (error) => {
+        error: () => {
           // Handle error response
         },
       });
@@ -108,7 +108,7 @@ export class LiveTracker implements OnInit {
   of two-way-binding with [(ngModel)]="selectedPortfolio" in mat-select 
   there is no need to associate $event to selectedPortfolio
   */
-  onPortfolioChange($event: any) {
+  onPortfolioChange(_$event: any) {
     /*
     Once the selected portfolio changes, the next step is to 
     get all its assets.

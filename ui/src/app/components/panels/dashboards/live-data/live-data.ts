@@ -80,7 +80,7 @@ export class LiveData implements OnInit {
           this.selectedPortfolio = response.portfolio_name as string;
           this.updatePortfolioList();
         },
-        error: (error) => {
+        error: () => {
           // Handle error response
         },
       });

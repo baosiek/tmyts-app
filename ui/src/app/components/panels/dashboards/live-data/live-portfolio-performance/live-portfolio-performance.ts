@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, input, InputSignal, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, inject, input, InputSignal, OnChanges, SimpleChanges } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { PortfolioCashflowInterface } from '../../../../../interfaces/cashflow-performance-interface';
 import { PortfolioPerformanceService } from '../../../../../services/portfolios/portfolio-performance-service';
@@ -11,7 +11,7 @@ import { PortfolioPerformanceService } from '../../../../../services/portfolios/
   templateUrl: './live-portfolio-performance.html',
   styleUrl: './live-portfolio-performance.scss'
 })
-export class LivePortfolioPerformance implements OnChanges, OnInit {
+export class LivePortfolioPerformance implements OnChanges {
 
   // defines the columns to be rendered
   displayedColumns: string[] = [
@@ -40,10 +40,7 @@ export class LivePortfolioPerformance implements OnChanges, OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(_changes: SimpleChanges): void {
     if (this.portfolioName()) {
       this.portfolioPerformanceService.getPortfolioTwr(this.portfolioName())
         .subscribe({

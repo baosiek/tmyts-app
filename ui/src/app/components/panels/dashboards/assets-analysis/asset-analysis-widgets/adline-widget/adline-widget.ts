@@ -1,11 +1,11 @@
-import { Component, computed, effect, inject, input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, computed, effect, inject, input, OnChanges, SimpleChanges } from '@angular/core';
 import { IWidgetConfig } from '../../../../../../interfaces/widget-config-interface';
 import { DialogData } from '../../../../../dialogs/general-dialog/general-dialog';
 import { MATERIAL_IMPORTS } from '../../../../../../material-imports';
 import { createDefaultWidgetConfigModel, WidgetConfigModel } from '../../../../../../models/widget-config-model';
 import { IndicatorService } from '../../../../../../services/indicator/indicator-service';
 import { ChartConstructorType, HighchartsChartDirective } from 'highcharts-angular';
-import { IndicatorDataMapModel, IndicatorDataModel, IndicatorModel } from '../../../../../../models/indicator-model';
+import { IndicatorDataMapModel, IndicatorModel } from '../../../../../../models/indicator-model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError } from 'rxjs';
 import { TmytsSnackbar } from '../../../../../reusable-components/tmyts-snackbar/tmyts-snackbar';
@@ -107,7 +107,7 @@ export class AdlineWidget implements OnChanges {
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(_changes: SimpleChanges): void {
     this.getIndicatorData();
   }
 

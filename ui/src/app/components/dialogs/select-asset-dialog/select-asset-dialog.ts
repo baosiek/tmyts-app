@@ -67,7 +67,7 @@ export class SelectAssetDialog implements OnInit {
   Method to search for symbols while this symbols is typed.
   The keyboard event is keyup
   */
-  searchTerm(event: KeyboardEvent) {
+  searchTerm(_event: KeyboardEvent) {
     if (this.term) {
       this.quickSearch.quickSearch(this.term)
         .pipe(
@@ -98,7 +98,7 @@ export class SelectAssetDialog implements OnInit {
   onSelectionChange(selectedOptions: MatListOption[]) {
     const selectedValue = selectedOptions.map(option => option.value).at(0) as AssetModel;
 
-    const result: Map<String, AssetModel> = new Map();
+    const result: Map<string, AssetModel> = new Map();
     result.set("asset", selectedValue)
 
     this.dialogRef.close(result)
@@ -113,7 +113,7 @@ export class SelectAssetDialog implements OnInit {
 
     // if typed asset was found, ends the dialog returning the asset 
     if (typedAsset) {
-      const result: Map<String, AssetModel> = new Map();
+      const result: Map<string, AssetModel> = new Map();
       result.set("asset", typedAsset)
       this.dialogRef.close(result)
     } else {

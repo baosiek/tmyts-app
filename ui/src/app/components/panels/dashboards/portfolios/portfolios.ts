@@ -154,7 +154,7 @@ export class Portfolios implements OnInit {
         next: (response: ReturnMessage) => {
           this._snackBar.open(response.message, 'Close');
         },
-        error: (error) => {
+        error: () => {
           // Handle error response
         },
       });

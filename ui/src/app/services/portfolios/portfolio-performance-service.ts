@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PortfolioCashflowInterface } from '../../interfaces/cashflow-performance-interface';
@@ -16,7 +16,6 @@ export class PortfolioPerformanceService {
   constructor() { }
 
   getPortfolioTwr(portfolioName: string): Observable<PortfolioCashflowInterface[]> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const apiMethod = 'twr';
 
     return this.http.get<PortfolioCashflowInterface[]>(`${this.apiUrl}/${apiMethod}/${portfolioName}/`)
