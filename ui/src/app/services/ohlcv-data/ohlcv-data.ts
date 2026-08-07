@@ -31,12 +31,8 @@ export class OhlcvData {
   }
 
   getAllBars(asset: string): Observable<OhlcvDataInterface[]> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-    return this.http.post<OhlcvDataInterface[]>(
-      `${this.apiUrl}/last_x_minutes_of_data_for_asset/?asset=${asset}`,
-      null,
-      { headers }
+    return this.http.get<OhlcvDataInterface[]>(
+      `${this.apiUrl}/last_x_minutes_of_data_for_asset/?asset=${asset}`
     );
   }
 }

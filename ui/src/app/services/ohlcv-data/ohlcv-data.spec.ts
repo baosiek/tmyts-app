@@ -39,13 +39,11 @@ describe('OhlcvData', () => {
     expect(result).toEqual([{ asset: 'AAPL' }]);
   });
 
-  it('getAllBars POSTs with the asset as a query param, no body, and a JSON content-type header', () => {
+  it('getAllBars GETs with the asset as a query param', () => {
     service.getAllBars('AAPL').subscribe();
 
     const req = httpMock.expectOne('http://localhost:8000/minute_ohlcv_data/last_x_minutes_of_data_for_asset/?asset=AAPL');
-    expect(req.request.method).toBe('POST');
-    expect(req.request.body).toBeNull();
-    expect(req.request.headers.get('Content-Type')).toBe('application/json');
+    expect(req.request.method).toBe('GET');
     req.flush([]);
   });
 });
