@@ -35,12 +35,12 @@ export class Sidenav {
       },
       {
         icon: "finance_chip",
-        label: "Live Prices",
+        label: "Bot Performance",
         route: "/live-data"
       },
       {
         icon: "finance_mode",
-        label: "Live Tracker",
+        label: "Live Price Tracker",
         route: "/live-tracker"
       },
       {
