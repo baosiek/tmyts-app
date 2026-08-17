@@ -35,12 +35,11 @@ export type PortfolioActivityModel = {
 
 export type PortfolioTransactionModel = {
     purchase_date: Date;
-    quantity: number;
     asset: string;
     asset_name: string;
+    portfolio_name: string;
     total_quantity: number;
     total_commission: number;
-    market_value: number;
     average_price: number;
     broker_name: string
 }

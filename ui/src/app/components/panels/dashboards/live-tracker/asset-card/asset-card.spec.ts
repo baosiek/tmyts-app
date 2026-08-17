@@ -25,6 +25,9 @@ describe('AssetCard', () => {
     httpMock
       .expectOne('http://localhost:8000/indicators_ta/all/asset/AAPL/lookback/14/')
       .flush([]);
+    httpMock
+      .expectOne('http://localhost:8000/portfolio-transactions/get_all_transactions//')
+      .flush([]);
   }
 
   beforeEach(async () => {
@@ -63,6 +66,7 @@ describe('AssetCard', () => {
       { asset_id: 1, asset: 'AAPL', timestamp: '2024-01-01T09:32:00Z', open_price: 0, high_price: 0, low_price: 0, close_price: 0, volume: 50 },
     ]);
     httpMock.expectOne('http://localhost:8000/indicators_ta/all/asset/AAPL/lookback/14/').flush([]);
+    httpMock.expectOne('http://localhost:8000/portfolio-transactions/get_all_transactions//').flush([]);
     // rxResource applies the emitted value to its `value` signal on a
     // microtask, one tick after the synchronous httpMock.flush() call.
     await Promise.resolve();
@@ -82,6 +86,7 @@ describe('AssetCard', () => {
       { asset_id: 1, asset: 'AAPL', timestamp: '2024-01-01T09:31:00Z', open_price: 12, high_price: 13, low_price: 10, close_price: 11, volume: 100 },
     ]);
     httpMock.expectOne('http://localhost:8000/indicators_ta/all/asset/AAPL/lookback/14/').flush([]);
+    httpMock.expectOne('http://localhost:8000/portfolio-transactions/get_all_transactions//').flush([]);
     await Promise.resolve();
 
     expect(component.maxHigh()?.price).toBe(15);

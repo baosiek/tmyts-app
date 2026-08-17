@@ -12,12 +12,11 @@ import { LiveAssetPerformance } from './live-asset-performance';
 function transaction(overrides: Partial<PortfolioTransactionModel> = {}): PortfolioTransactionModel {
   return {
     purchase_date: new Date('2024-01-01'),
-    quantity: 10,
     asset: 'AAPL',
     asset_name: 'Apple Inc.',
+    portfolio_name: 'main',
     total_quantity: 10,
     total_commission: 5,
-    market_value: 1000,
     average_price: 100,
     broker_name: 'IB',
     ...overrides,

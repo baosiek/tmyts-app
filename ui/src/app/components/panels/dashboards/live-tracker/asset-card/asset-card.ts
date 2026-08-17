@@ -11,10 +11,12 @@ import { ChartConstructorType, HighchartsChartComponent, providePartialHighchart
 import * as Highcharts from 'highcharts/highstock'; // Import Highcharts
 import { catchError, interval, of, startWith, switchMap } from 'rxjs'; // Import catchError and of
 import { OhlcvDataInterface } from '../../../../../interfaces/ohlcv-interface';
+import { PortfolioTransactionModel } from '../../../../../models/portfolio-activity-model';
 import { PortfolioHoldingsModel } from '../../../../../models/portfolio_holdings_model';
 import { ALLModel, IndicatorTaService } from '../../../../../services/indicator-ta/indicator-ta-service';
 import { LoggingService } from '../../../../../services/logging/logging-service';
 import { OhlcvData } from '../../../../../services/ohlcv-data/ohlcv-data';
+import { PortfolioActivityService } from '../../../../../services/portfolio-activity/portfolio-activity-service';
 import { ThemeService } from '../../../../../services/theme-service/theme-service';
 
 
@@ -296,14 +298,6 @@ export class AssetCard {
           enabled: true,
         },
       },
-      {
-        // Index 1: The dummy axis for your vertical signals
-        title: { text: '' },
-        visible: false, // Hides the axis line, labels, and gridlines
-        min: 0,
-        max: 1,
-        opposite: true
-      }
     ]
   });
 
@@ -313,6 +307,7 @@ export class AssetCard {
   ohlcvDataService = inject(OhlcvData); // service for aquiring OHLCV data
   destroyRef = inject(DestroyRef); // Modern cleanup in Angular
   indicatorService = inject(IndicatorTaService)
+  private readonly portfolioActivityService = inject(PortfolioActivityService);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly themeService = inject(ThemeService);
   private readonly logging = inject(LoggingService);
@@ -526,12 +521,6 @@ export class AssetCard {
           Number(dp.ADX),
         ]
       ),
-      atr: data.map(dp =>
-        [
-          new Date(dp.timestamp).getTime(),
-          Number(dp.ATR),
-        ]
-      ),
       plus_di: data.map(dp =>
         [
           new Date(dp.timestamp).getTime(),
@@ -546,6 +535,25 @@ export class AssetCard {
       ),
     };
   })
+
+  // Order entry for this asset (purchase time/price), fetched from the
+  // portfolio's transactions so it can be marked on the chart.
+  readonly orderRawData = rxResource<PortfolioTransactionModel[], any>(
+    {
+      params: () => ({ portfolioName: this.asset().portfolio_name }),
+      stream: ({ params }) => this.portfolioActivityService.getTransactionsForPortfolio(params.portfolioName).pipe(
+        catchError(error => {
+          this.logging.logError(error, { component: 'AssetCard', method: 'getTransactionsForPortfolio', portfolio: params.portfolioName });
+          return of([]);
+        })
+      )
+    }
+  );
+
+  readonly currentOrder = computed(() => {
+    const transactions = this.orderRawData.value() ?? [];
+    return transactions.find(t => t.asset === this.asset().asset) ?? null;
+  });
 
   constructor() {
     // Use an effect to synchronize chart options with data updates. This runs
@@ -621,13 +629,14 @@ export class AssetCard {
         labels: {
           ...(options.xAxis as Highcharts.XAxisOptions).labels,
           style: { ...(options.xAxis as Highcharts.XAxisOptions).labels?.style, color: textColor }
-        }
+        },
+        plotLines: this.buildOrderTimeLine()
       },
       yAxis: (options.yAxis as Highcharts.YAxisOptions[]).map((axis, i) => ({
         ...axis,
         labels: { ...axis.labels, style: { ...axis.labels?.style, color: textColor } },
         title: { ...axis.title, style: { ...axis.title?.style, color: textColor } },
-        ...(i === 0 ? { plotLines: this.buildPriceLevelLines() } : {})
+        ...(i === 0 ? { plotLines: [...this.buildPriceLevelLines(), ...this.buildOrderPriceLine()] } : {})
       })),
       navigator: {
         ...options.navigator,
@@ -691,36 +700,6 @@ export class AssetCard {
             units: this.groupingUnits,
           },
         },
-        {
-          type: 'errorbar',
-          name: 'ATR %',
-          yAxis: 4,
-          data: this.allData().atr
-            .filter(([_, value]) => value > 0.18)
-            .map(([timestamp]) => [
-              timestamp, // X coordinate
-              0,         // Low Y-bound
-              1       // High Y-bound
-            ]),
-          linkedTo: 'main-series', // Links legend and zooming behavior
-          color: '#b4f306',             // Line color
-          lineWidth: 2,                 // Line thickness
-          whiskerLength: 0,             // Set to 0 to remove the horizontal T-bars
-          zIndex: -50,                    // Ensures lines sit on top of candles
-          states: {
-            hover: {
-              lineWidth: 2          // Thicker line on mouse hover
-            }
-          },
-          tooltip: {
-            pointFormat: 'ATR / Close > 0.18'
-          },
-          dataGrouping: {
-            enabled: true,
-            approximation: 'range',
-            forced: true
-          }
-        }
       ]
     }));
   }
@@ -773,6 +752,50 @@ export class AssetCard {
     }
 
     return lines;
+  }
+
+  /**
+   * Horizontal reference line at the order's average purchase price. Colors
+   * (cyan/violet) are picked to stand apart from every hue already in use
+   * elsewhere on the chart (the red/green/blue/orange/magenta family used by
+   * the candles, indicators, and buildPriceLevelLines()).
+   */
+  private buildOrderPriceLine(): Highcharts.YAxisPlotLinesOptions[] {
+    const order = this.currentOrder();
+    if (!order) {
+      return [];
+    }
+
+    return [{
+      value: order.average_price,
+      color: '#7c4dff',
+      width: 2,
+      zIndex: 5,
+      label: { text: `Order ${order.average_price.toFixed(2)}`, align: 'left', y: 12, style: { color: '#7c4dff' } },
+    }];
+  }
+
+  /**
+   * Vertical reference line at the time the order was placed.
+   */
+  private buildOrderTimeLine(): Highcharts.XAxisPlotLinesOptions[] {
+    const order = this.currentOrder();
+    if (!order) {
+      return [];
+    }
+
+    const timestamp = new Date(order.purchase_date).getTime();
+    if (!Number.isFinite(timestamp)) {
+      return [];
+    }
+
+    return [{
+      value: timestamp,
+      color: '#00b8d4',
+      width: 2,
+      zIndex: 5,
+      label: { text: 'Order', y: 12, style: { color: '#00b8d4' } },
+    }];
   }
 
   /**
