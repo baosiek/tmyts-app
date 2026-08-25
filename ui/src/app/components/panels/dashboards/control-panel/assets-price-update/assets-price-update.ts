@@ -65,7 +65,7 @@ export class AssetsPriceUpdate implements OnChanges, AfterViewInit {
   isUpToDate(lastDownload: string | null): boolean {
     if (!lastDownload) return false;
     const previousMarketDate = toIsoDateString(previousNyseTradingDate(new Date()));
-    return lastDownload.slice(0, 10) === previousMarketDate;
+    return lastDownload.slice(0, 10) >= previousMarketDate;
   }
 
   ngOnChanges(): void {
