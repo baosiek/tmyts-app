@@ -18,7 +18,9 @@ const JOB_NAMES: string[] = [
   'allocation_rebalancer',
   'nlp_history_sync',
   'train_unified_direction_classifier',
-  'daily_backup'
+  'daily_backup',
+  'compute_daily_ticker_vectors',
+  'compute_surprise'
 ];
 
 // Job run statuses, grouped by the chip style they should render with.
