@@ -51,20 +51,32 @@
     font-weight: 600;
   }
 
-  .mat-column-actions {
+  .actions-header {
     text-align: right;
   }
+}
+
+.actions-cell {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .job-action-button {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 4px;
+  width: 84px;
+  min-width: 84px;
+  height: 32px;
+  padding: 0 8px;
+  font-size: 12px;
+  line-height: 1;
 
   mat-icon {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
   }
 
   mat-spinner {

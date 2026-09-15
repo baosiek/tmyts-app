@@ -44,35 +44,37 @@
 
     <!-- Actions -->
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <th mat-header-cell *matHeaderCellDef class="actions-header"> Actions </th>
       <td mat-cell *matCellDef="let element">
-        @if (isJobRunning(element.status)) {
-          <button mat-flat-button
-                  class="job-action-button kill-button"
-                  [disabled]="!canControlJob(element.job_name) || pendingJobName === element.job_name"
-                  [matTooltip]="canControlJob(element.job_name) ? '' : 'No manual control available for this job'"
-                  (click)="killJob(element)">
-            @if (pendingJobName === element.job_name) {
-              <mat-spinner diameter="16"></mat-spinner>
-            } @else {
-              <mat-icon fontSet="material-symbols-outlined">stop_circle</mat-icon>
-            }
-            Kill
-          </button>
-        } @else {
-          <button mat-flat-button
-                  class="job-action-button start-button"
-                  [disabled]="!canControlJob(element.job_name) || pendingJobName === element.job_name"
-                  [matTooltip]="canControlJob(element.job_name) ? '' : 'No manual control available for this job'"
-                  (click)="startJob(element)">
-            @if (pendingJobName === element.job_name) {
-              <mat-spinner diameter="16"></mat-spinner>
-            } @else {
-              <mat-icon fontSet="material-symbols-outlined">play_circle</mat-icon>
-            }
-            Start
-          </button>
-        }
+        <div class="actions-cell">
+          @if (isJobRunning(element.status)) {
+            <button mat-flat-button
+                    class="job-action-button kill-button"
+                    [disabled]="!canControlJob(element.job_name) || pendingJobName === element.job_name"
+                    [matTooltip]="canControlJob(element.job_name) ? '' : 'No manual control available for this job'"
+                    (click)="killJob(element)">
+              @if (pendingJobName === element.job_name) {
+                <mat-spinner diameter="16"></mat-spinner>
+              } @else {
+                <mat-icon fontSet="material-symbols-outlined">stop_circle</mat-icon>
+              }
+              Kill
+            </button>
+          } @else {
+            <button mat-flat-button
+                    class="job-action-button start-button"
+                    [disabled]="!canControlJob(element.job_name) || pendingJobName === element.job_name"
+                    [matTooltip]="canControlJob(element.job_name) ? '' : 'No manual control available for this job'"
+                    (click)="startJob(element)">
+              @if (pendingJobName === element.job_name) {
+                <mat-spinner diameter="16"></mat-spinner>
+              } @else {
+                <mat-icon fontSet="material-symbols-outlined">play_circle</mat-icon>
+              }
+              Start
+            </button>
+          }
+        </div>
       </td>
     </ng-container>
 
