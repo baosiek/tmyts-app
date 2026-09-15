@@ -94,12 +94,20 @@
   }
 }
 
-.start-button {
+// Selectors are scoped to .job-action-button as well (not just
+// .start-button/.kill-button alone) so their specificity reliably beats
+// Angular Material's own default unthemed button color
+// (.mdc-button--unelevated:not(:disabled)) regardless of the order the two
+// stylesheets happen to load in - which otherwise varies between an SPA
+// navigation into this lazy-loaded route and a full page refresh landing
+// on it directly, making the button flip to Material's default primary
+// color instead of the container color below.
+.job-action-button.start-button {
   background-color: var(--mat-sys-primary-container);
   color: var(--mat-sys-on-primary-container);
 }
 
-.kill-button {
+.job-action-button.kill-button {
   background-color: var(--mat-sys-error-container);
   color: var(--mat-sys-on-error-container);
 }
