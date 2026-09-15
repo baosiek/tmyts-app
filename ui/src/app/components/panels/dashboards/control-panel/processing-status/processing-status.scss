@@ -51,8 +51,17 @@
     font-weight: 600;
   }
 
+  // Locking the column width means the header and the cell below it always
+  // agree on where the right edge is, regardless of how table-layout:auto
+  // would otherwise size each independently.
+  .mat-column-actions {
+    width: 104px;
+  }
+
   .actions-header {
-    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
   }
 }
 
@@ -65,18 +74,18 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  width: 84px;
-  min-width: 84px;
-  height: 32px;
-  padding: 0 8px;
-  font-size: 12px;
+  gap: 3px;
+  width: 72px;
+  min-width: 72px;
+  height: 28px;
+  padding: 0 6px;
+  font-size: 11px;
   line-height: 1;
 
   mat-icon {
-    font-size: 16px;
-    width: 16px;
-    height: 16px;
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
   }
 
   mat-spinner {
