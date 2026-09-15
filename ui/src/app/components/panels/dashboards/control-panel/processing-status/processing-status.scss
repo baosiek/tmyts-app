@@ -50,6 +50,36 @@
   .mat-column-job_name {
     font-weight: 600;
   }
+
+  .mat-column-actions {
+    text-align: right;
+  }
+}
+
+.job-action-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  mat-spinner {
+    display: inline-flex;
+  }
+}
+
+.start-button {
+  background-color: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+}
+
+.kill-button {
+  background-color: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
 }
 
 .spinner-container {

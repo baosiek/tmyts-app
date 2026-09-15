@@ -18,4 +18,12 @@ export class JobRunService {
       `${this.apiUrl}/${apiMethod}/?job_name=${job_name}&limit=${limit}`,
     );
   }
+
+  startJob(job_name: string): Observable<JobRunModel> {
+    return this.http.post<JobRunModel>(`${this.apiUrl}/start_job/`, { job_name });
+  }
+
+  killJob(job_name: string): Observable<JobRunModel[]> {
+    return this.http.post<JobRunModel[]>(`${this.apiUrl}/kill_job/`, { job_name });
+  }
 }
